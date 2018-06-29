@@ -7,7 +7,7 @@ const expressLayouts = require('express-ejs-layouts');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var packBookRouter = require('./routes/packBook/index');
+var packBookListRouter = require('./routes/packBook/list');
 var wikiRouter = require('./routes/wiki/index');
 var youtubeRouter = require('./routes/youtube/index');
 
@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/packbook', packBookRouter);
+app.use('/pack', packBookListRouter);
 app.use('/wiki', wikiRouter);
 app.use('/youtube', youtubeRouter);
 
