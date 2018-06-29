@@ -11,7 +11,10 @@ router.get('/', function(req, res, next) {
   res.render('pack/list', {});
 });
 
-router.get('/list', function(req,res, next) {
+//TODO 검색, 페이징, 출력갯수
+router.get('/list', function(req, res, next) {
+  let pageNum = req.query.pageNum
+  
   db.all("SELECT * FROM book limit 0, 20", function(err, rows) {
     res.send({"books" : rows});
   });	

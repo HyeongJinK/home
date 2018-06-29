@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function () {
-        $.getJSON('/pack/list', { }, function (data) {
+        $.getJSON('/pack/list', {pageNum : 1 }, function (data) {
             $.each(data, function () {
                 console.log(data);
             });
