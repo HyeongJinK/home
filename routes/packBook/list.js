@@ -2,22 +2,28 @@ var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
 
-var db = new sqlite3.Database('db/books.db');
-var books;
-
-
-console.log(db)
 router.get('/', function(req, res, next) {
   res.render('pack/list', {});
 });
 
-//TODO 검색, 페이징, 출력갯수
 router.get('/list', function(req, res, next) {
+  let db = new sqlite3.Database('db/books.db');
   let pageNum = req.query.pageNum
-  
-  db.all("SELECT * FROM book limit 0, 20", function(err, rows) {
+  let rowNum = 20;
+  let searchText = "";
+  let startNum = (pageNum - 1) * rowNum;
+  db.all("SELECT * FROM book limit ?, ?", [startNum, rowNum],  function(err, rows) {
     res.send({"books" : rows});
   });	
+  db.close();
+});
+
+router.get('/:isbn', function(req, res,next) {
+  let db = new sqlite3.Database('db/books.db');
+  db.all("SELECT * FROM content where isbn = ? order by contentIndex", [req.params.isbn], function(err, rows) {
+    res.send({"book_data" : rows})
+  });
+  db.close();
 });
 
 module.exports = router;
