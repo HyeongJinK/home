@@ -12,7 +12,7 @@ router.get('/list', function(req, res, next) {
   let rowNum = 20;
   let searchText = "";
   let startNum = (pageNum - 1) * rowNum;
-  db.all("SELECT * FROM book limit ?, ?", [startNum, rowNum],  function(err, rows) {
+  db.all("SELECT * FROM book LIMIT ?, ?", [startNum, rowNum],  function(err, rows) {
     res.send({"books" : rows});
   });	
   db.close();
@@ -20,7 +20,7 @@ router.get('/list', function(req, res, next) {
 
 router.get('/:isbn', function(req, res,next) {
   let db = new sqlite3.Database('db/books.db');
-  db.all("SELECT * FROM content where isbn = ? order by contentIndex", [req.params.isbn], function(err, rows) {
+  db.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
     res.send({"book_data" : rows})
   });
   db.close();
