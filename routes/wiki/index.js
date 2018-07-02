@@ -3,6 +3,10 @@ const sqlite3 = require('sqlite3').verbose();
 let router = express.Router();
 const dbName = 'db/wiki.db';
 
+//CREATE TABLE `wikidata` ( `wikiTitle` TEXT, `title` TEXT, `contents` TEXT, `createDate` TEXT, `modifyDate` TEXT, PRIMARY KEY(`title`,`wikiTitle`) )
+//CREATE TABLE `wikis` ( `title` TEXT NOT NULL, `regDate` TEXT, PRIMARY KEY(`title`) )
+
+
 function dbQuery(run) {
   run();
 }
