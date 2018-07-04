@@ -25,6 +25,24 @@ router.get('/list', function (req, res, next) {
   db.close();
 });
 
+router.post("/:wikiTitle"
+, (req, res, next) => {
+  let db = new sqlite3.Database(dbName);
+
+  db.run("INSERT INTO wikidata (title, regDate) VALUES (?, ?)"
+  , [req.params.wikiTitle
+    , new Date()]
+  , (err) => {
+    if (err) {
+
+    }
+
+    res.send({"id" : this.lastID});
+  });
+
+  db.close();
+});
+
 router.get('/:wikiTitle/list'
   , function(req, res, next) {
   let db = new sqlite3.Database(dbName);
