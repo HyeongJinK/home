@@ -2,6 +2,7 @@ var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
 
+//CREATE TABLE `contentTranslate` ( `isbn` TEXT, `menuNum` TEXT, `contentIndex` INTEGER, `title` TEXT, `content` TEXT, PRIMARY KEY(`isbn`,`contentIndex`) )
 const bookDBPath = 'db/books.db'
 
 router.get('/', function(req, res, next) {
@@ -14,6 +15,7 @@ router.get('/list', function(req, res, next) {
   let rowNum = 20;
   let searchText = "";
   let startNum = (pageNum - 1) * rowNum;
+  
   db.all("SELECT * FROM book LIMIT ?, ?", [startNum, rowNum],  function(err, rows) {
     res.send({"books" : rows});
   });	
@@ -41,7 +43,23 @@ router.get('/translate/:isbn', (req, res, next) => {
 });
 
 router.post('/translate/:isbn/:contentIndex', (req, res, next) => {
+  let db = new sqlite3.Database(bookDBPath);
 
+  db.run("INSERT INTO contentTranslate (isbn, menuNum, contentIndex, title, content) VALUES (?, ?, ?, ?, ?)"
+  , [req.params.isbn
+    , req.query.menuNum
+    , req.params.contentIndex
+    , req.query.title
+    , req.query.content]
+  , (err) => {
+    if (err) {
+
+    }
+
+    res.send({"id" : this.lastID});
+  });
+
+  db.close();
 });
 
 module.exports = router;
