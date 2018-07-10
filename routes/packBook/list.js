@@ -15,8 +15,8 @@ router.get('/list', function(req, res, next) {
   let rowNum = 20;
   let searchText = "";
   let startNum = (pageNum - 1) * rowNum;
-  
-  db.all("SELECT * FROM book LIMIT ?, ?", [startNum, rowNum],  function(err, rows) {
+  //SELECT count(*) as bookCount FROM book
+  db.all("SELECT * FROM book ORDER BY publicationDate desc LIMIT ?, ?", [startNum, rowNum],  function(err, rows) {
     res.send({"books" : rows});
   });	
   db.close();

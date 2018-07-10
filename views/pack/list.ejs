@@ -2,9 +2,20 @@
     <tbody>
 </table>
 
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    
+  </ul>
+</nav>
+
 <script>
     $(document).ready(function () {
-        $.getJSON('/pack/list', {pageNum : 1 }, function (data) {
+        function getListData(pageNum) {
+            $.getJSON('/pack/list', {pageNum : pageNum }, function (data) {
             $(data.books).each(function (index) {
                 let $tr = $("<tr></tr>");
                 $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
@@ -18,5 +29,12 @@
                 $("table tbody").append($tr);
             });
         });
+        }
+    
+        $("a.page-link").click(function() {
+            getListData($(this).html());
+        });
+
+        getListData(1);
     });
 </script>
