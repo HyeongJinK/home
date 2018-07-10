@@ -1,0 +1,46 @@
+<div class="col-4">
+    <div class="card text-white bg-dark border-dark">
+        <h3 class="card-header">
+        메뉴
+        </h3>
+        <div class="card-body">
+        <ul class="book_menu">
+            
+        </ul>
+        </div>
+    </div>
+</div>
+<div class="col-8 book_content">
+    
+</div>
+
+
+<script>
+$(document).ready(function () {
+    let isbn = <%= isbn %>
+    $.getJSON('/pack/list/'+isbn, {}, function (data) {
+        let $ul = $("ul.book_menu");
+        let $chul = $("<ul class=''></ul>");
+        $("div.book_content").html(data.book_data[0].content)
+        $(data.book_data).each(function (index) {
+            let $li = $("<li class=''>"+this.title+"</li>");
+            $li.on('click', function() {
+                console.log(this.contnet);
+                $("div.book_content").html(data.book_data[index].content);
+            });
+            if (index == 0) {
+                $ul.append($li);
+            } else if (data.book_data.length-1 == index) {
+                $ul.append($chul);
+            } else if (data.book_data[index].menuNum != data.book_data[index-1].menuNum) {
+                $ul.append($chul);    
+                $ul.append($li);
+                $chul = $("<ul class=''></ul>");
+            } else {
+                $chul.append($li);
+            }
+        });
+        
+    });
+});
+</script>

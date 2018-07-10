@@ -1,8 +1,21 @@
+<table class="table table-sm table-dark table-hover">
+    <tbody>
+</table>
+
 <script>
     $(document).ready(function () {
         $.getJSON('/pack/list', {pageNum : 1 }, function (data) {
-            $.each(data, function () {
-                console.log(data);
+            $(data.books).each(function (index) {
+                let $tr = $("<tr></tr>");
+                $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
+                $tr.append($("<td>" + this.title + "</td>"));
+                $tr.append($("<td>" + this.publicationDate + "</td>"));
+                // $tr.append($("<td>" + this.isbn + "</td>"));
+                let isbn = this.isbn;
+                $tr.on('click', function() {
+                    location.href="/pack/"+isbn
+                });
+                $("table tbody").append($tr);
             });
         });
     });

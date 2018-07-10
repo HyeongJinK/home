@@ -3,7 +3,7 @@ var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
 
 //CREATE TABLE `contentTranslate` ( `isbn` TEXT, `menuNum` TEXT, `contentIndex` INTEGER, `title` TEXT, `content` TEXT, PRIMARY KEY(`isbn`,`contentIndex`) )
-const bookDBPath = 'db/books.db'
+const bookDBPath = 'db/books.db';
 
 router.get('/', function(req, res, next) {
   res.render('pack/list', {});
@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/list', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
-  let pageNum = req.query.pageNum
+  let pageNum = req.query.pageNum;
   let rowNum = 20;
   let searchText = "";
   let startNum = (pageNum - 1) * rowNum;
@@ -23,6 +23,10 @@ router.get('/list', function(req, res, next) {
 });
 
 router.get('/:isbn', function(req, res,next) {
+  res.render('pack/read', {"isbn" : req.params.isbn})
+});
+
+router.get('/list/:isbn', function(req, res,next) {
   let db = new sqlite3.Database(bookDBPath);
   db.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
     res.send({"book_data" : rows})
