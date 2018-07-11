@@ -11,13 +11,29 @@ router.get('/', function(req, res, next) {
 
 router.get('/list', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
+  
   let pageNum = req.query.pageNum;
   let rowNum = req.query.rowNum;
-  let searchText = req.query.searchText;
   let startNum = (pageNum - 1) * rowNum;
-  //
-  db.all("SELECT * FROM book WHERE title like '%?%' ORDER BY publicationDate desc LIMIT ?, ?", [searchText, startNum, rowNum],  function(err, rows) {
-    db.get("SELECT count(*) as bookCount FROM book WHERE title like '%?%'", (err, row) => {
+  let searchText = req.query.searchText;
+  
+  let sql = "SELECT * FROM book";
+  let countSql = "SELECT count(*) as bookCount FROM book";
+  let param = [];
+  let countParam = [];
+  if (searchText != "") {
+    searchText = "%"+searchText+"%"
+    sql += " WHERE title like ?";
+    param.push(searchText);
+    countSql += " WHERE title like ?";
+    countParam.push(searchText);
+  }
+  sql += " ORDER BY publicationDate desc LIMIT ?, ?"
+  param.push(startNum);
+  param.push(rowNum);
+
+  db.all(sql, param, function(err, rows) {
+    db.get(countSql, countParam, (err, row) => {
       res.send({"books" : rows, "bookCount" : row.bookCount});
     });  
   });	 
