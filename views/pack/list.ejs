@@ -1,40 +1,71 @@
 <table class="table table-sm table-dark table-hover">
     <tbody>
+    </tbody>
 </table>
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    
-  </ul>
-</nav>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="Search" id="searchText">
+  <div class="input-group-append">
+    <button class="btn btn-success searchBt" type="button">검색</button> 
+  </div>
+</div>
+
+<ul class="pagination justify-content-center">
+</ul>
+
 
 <script>
     $(document).ready(function () {
-        function getListData(pageNum) {
-            $.getJSON('/pack/list', {pageNum : pageNum }, function (data) {
-            $(data.books).each(function (index) {
-                let $tr = $("<tr></tr>");
-                $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
-                $tr.append($("<td>" + this.title + "</td>"));
-                $tr.append($("<td>" + this.publicationDate + "</td>"));
-                // $tr.append($("<td>" + this.isbn + "</td>"));
-                let isbn = this.isbn;
-                $tr.on('click', function() {
-                    location.href="/pack/"+isbn
-                });
-                $("table tbody").append($tr);
-            });
-        });
-        }
-    
-        $("a.page-link").click(function() {
-            getListData($(this).html());
+        $("button.searchBt").click(function() {
+            getListData(1, 20, $("input#searchText").text());
+           
         });
 
-        getListData(1);
+        function getListData(pageNum, rowNum, searchText) {
+            $.getJSON('/pack/list', {"pageNum" : pageNum , "rowNum" : rowNum, "searchText" : searchText}, function (data) {
+                $("table tbody").html("");
+                $(data.books).each(function (index) {
+                    let $tr = $("<tr></tr>");
+                    $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
+                    $tr.append($("<td>" + this.title + "</td>"));
+                    $tr.append($("<td>" + this.publicationDate + "</td>"));
+                    let isbn = this.isbn;
+                    $tr.on('click', function() {
+                        location.href="/pack/"+isbn
+                    });
+                    $("table tbody").append($tr);
+                });
+                $("ul.pagination").html("");
+                let totalPage = parseInt(data.bookCount / rowNum + (data.bookCount % rowNum == 0 ? 0 : 1));
+                
+                let startPage = 1;
+                if (pageNum < 6) {
+                    startPage = 1;
+                } else if (pageNum + 4 > totalPage) {
+                    startPage = totalPage - 9;
+                } else {
+                    startPage = pageNum - 4;
+                }
+                let finishPage = startPage + 9;
+
+                for (let i = startPage; i <= finishPage; i++) {
+                    let $li = $("<li></li>");
+                    $li.addClass("page-item");
+                    if (i == pageNum) {
+                        $li.addClass("active");
+                    }
+                    let $a = $("<a href='#'>" +i+ "</a>");
+                    $a.addClass("page-link");
+                    $a.on('click', function() {
+                        getListData(i, 20, searchText);
+                    });
+                    $li.append($a);
+
+                    $("ul.pagination").append($li);
+                }
+            });
+        }
+
+        getListData(1, 20, "");
     });
 </script>
