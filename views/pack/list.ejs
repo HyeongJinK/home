@@ -1,3 +1,4 @@
+<div id="bookList"></div>
 <table class="table table-sm table-dark table-hover">
     <tbody>
     </tbody>
@@ -24,6 +25,7 @@
         });
 
         function drawTable(data) {
+
             $("table tbody").html("");
             $(data.books).each(function (index) {
                 let $tr = $("<tr></tr>");

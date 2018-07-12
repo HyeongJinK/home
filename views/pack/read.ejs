@@ -1,4 +1,71 @@
-<div class="col-4">
+<style>
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 400px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 400px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -400px;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 400px;
+  }
+  #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 400px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+</style>
+<div id="wrapper">
+<div id="sidebar-wrapper">
     <div class="card text-white bg-dark border-dark">
         <h3 class="card-header">
         메뉴
@@ -10,13 +77,20 @@
         </div>
     </div>
 </div>
-<div class="col-8 book_content">
+<a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">메뉴</a>
+<div id="page-content-wrapper" class="book_content">
     
+</div>
 </div>
 
 
 <script>
 $(document).ready(function () {
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
     let isbn = <%= isbn %>
     $.getJSON('/pack/list/'+isbn, {}, function (data) {
         let $ul = $("ul.book_menu");
@@ -25,7 +99,6 @@ $(document).ready(function () {
         $(data.book_data).each(function (index) {
             let $li = $("<li class=''>"+this.title+"</li>");
             $li.on('click', function() {
-                console.log(this.contnet);
                 $("div.book_content").html(data.book_data[index].content);
             });
             if (index == 0) {
