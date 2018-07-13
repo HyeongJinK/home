@@ -25,6 +25,9 @@
         });
 
         function drawTable(data) {
+            let $table = $("<table></table>");
+            $table.addClass("table table-sm table-dark table-hover")
+            $table.append($("<tbody></tbody>");
 
             $("table tbody").html("");
             $(data.books).each(function (index) {
@@ -38,6 +41,10 @@
                 });
                 $("table tbody").append($tr);
             });
+        }
+
+        function drawCard(data) {
+
         }
 
         function drawPagination(data, pageNum, rowNum, searchText) {
