@@ -44,12 +44,12 @@ router.get('/create/en/:isbn', function(req, res,next) {
     let isbn = req.params.isbn;
     let bookdb = new sqlite3.Database(bookDBPath);
     let mddb = new sqlite3.Database(mdPath);
-    db.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
+    bookdb.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
         console.log(rows);
         //TODO md로 파싱, db 저장
-        //res.send({"book_data" : rows})
+        res.send({"book_data" : rows})
     });
-    db.close();
+    bookdb.close();
 });
 
 

@@ -1,0 +1,13 @@
+<script>
+    $(document).ready(function () {
+        const rows = 20;
+
+        function getListData(pageNum, rowNum, searchText) {
+            $.getJSON('/md/create/en/9781786468734', {}, function (data) {
+                console.log(data)
+            });
+        }
+
+        getListData(1, rows, "");
+    });
+</script>
