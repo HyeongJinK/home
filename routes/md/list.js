@@ -1,4 +1,5 @@
 var express = require('express');
+var cheerio = require("cheerio"); 
 var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
 
@@ -40,16 +41,98 @@ router.get('/list', function(req, res, next) {
   db.close();
 });
 
+function parser(h) {
+  let temp = cheerio.load(h);
+
+  temp("h2.title").prepend("# ");
+  temp("h3.title").prepend("\n\n## ");
+  temp("h4.title").prepend("\n\n### ");
+  temp("h5.title").prepend("\n\n#### ");
+  
+  temp("pre.programlisting").prepend("\n\n```java\n").append("\n```");
+  temp("strong").prepend("**").append("**");
+  temp("img").each(function(i, elem) {
+      temp(this).parent().prepend("\n\n![](" + temp(this).attr("src") + ")");
+  });
+  temp("code.literal").each(function(i, elem) {
+      //temp(this).prepend("&lt;span style='color:red'&gt;").append("&lt;/span&gt;");
+      temp(this).prepend("\`").append("\`");
+  });
+  temp("div.note p").prepend("> ");
+  
+  temp("p").prepend("\n\n")
+  
+
+  temp("ul").prepend("\n");
+  temp("ol").prepend("\n");
+  temp("ul").find("li").prepend("\n* ");
+  temp("ol").find("li").each(function(i, elem) {
+      if (temp(this).parent().attr("start") == undefined) {
+          temp(this).prepend("\n1. ");
+      } else {
+          temp(this).prepend("\n"+temp(this).parent().attr("start")+ ". ");
+      }
+  }); 
+
+  temp("td").each(function(i, elem) {
+      temp(this).text(temp(this).text().replace(/^\n/g, "").replace(/^\n/g, ""));
+  });
+
+  temp("table").each(function(i, elem) {
+      temp(this).prepend("\n");
+      temp(this).find("tr").each(function(j, elem) {
+          let tdCount = temp(this).find("td").length;
+          temp(this).prepend("\n|");
+
+          if (j == 0) {
+              temp(this).append("\n|")
+              for (var z = 0; tdCount > z; z++) {
+                  temp(this).append("-|")
+              }
+          }
+      });
+      temp(this).find("td").append("|")
+  });
+
+  return temp.text(); //replace(htmlReplace(temp.html()));
+}
 router.get('/create/en/:isbn', function(req, res,next) {
     let isbn = req.params.isbn;
     let bookdb = new sqlite3.Database(bookDBPath);
     let mddb = new sqlite3.Database(mdPath);
-    bookdb.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
-        console.log(rows);
+    bookdb.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [isbn], function(err, rows) {
+      mddb.serialize(function() {        
+        let stmt = mddb.prepare("INSERT INTO book_title (isbn, title, local) VALUES (?,?,?)");
+        
+        stmt.run(isbn, "Java9", "en");
+        input++;
+        stmt.finalize();
+      }); 
+      // rows.forEach(function(value, index, array) {
+      //   mddb.serialize(function() {        
+      //     let stmt = mddb.prepare("INSERT INTO book_content VALUES (?,?,?,?)");
+          
+      //     stmt.run(isbn, value.contentIndex, value.title, parser(value,content));
+      //     input++;
+      //     stmt.finalize();
+      //   }); 
+      // });
+        //console.log(parser(rows[0].content));
         //TODO md로 파싱, db 저장
         res.send({"book_data" : rows})
     });
-    bookdb.close();
+    // bookdb.close();
+    // mddb.close();
+});
+
+
+
+router.post('/create/en/:isbn', function(req, res, next) {
+
+});
+
+router.put('/create/en/:isbn', function (req, res, next) {
+
 });
 
 
