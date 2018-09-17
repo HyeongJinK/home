@@ -101,28 +101,24 @@ router.get('/create/en/:isbn', function(req, res,next) {
     let bookdb = new sqlite3.Database(bookDBPath);
     let mddb = new sqlite3.Database(mdPath);
     bookdb.all("SELECT * FROM content WHERE isbn = ? ORDER BY contentIndex", [isbn], function(err, rows) {
-      mddb.serialize(function() {        
-        let stmt = mddb.prepare("INSERT INTO book_title (isbn, title, local) VALUES (?,?,?)");
-        
-        stmt.run(isbn, "Java9", "en");
-        input++;
-        stmt.finalize();
-      }); 
-      // rows.forEach(function(value, index, array) {
-      //   mddb.serialize(function() {        
-      //     let stmt = mddb.prepare("INSERT INTO book_content VALUES (?,?,?,?)");
-          
-      //     stmt.run(isbn, value.contentIndex, value.title, parser(value,content));
-      //     input++;
-      //     stmt.finalize();
-      //   }); 
-      // });
-        //console.log(parser(rows[0].content));
-        //TODO md로 파싱, db 저장
-        res.send({"book_data" : rows})
+        mddb.run("INSERT INTO book_title (isbn, title, local) VALUES (?,?,?)", [isbn, "Java9", "en"], function(err) {
+            if (err) {
+              return console.log(err.message);
+            }
+            //console.log(`${this.lastID}`);
+            rows.forEach(function(value, index, array) {
+                mddb.run("INSERT INTO book_content VALUES (?,?,?,?)", [isbn, value.contentIndex, value.title, parser(value.content)], function(err) {        
+                    if (err) {
+                        console.log(err.message);
+                    }
+                    mddb.close();
+                });
+            });
+        });
+        bookdb.close();
     });
-    // bookdb.close();
-    // mddb.close();
+    
+    
 });
 
 
