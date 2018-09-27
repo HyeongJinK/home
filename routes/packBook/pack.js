@@ -40,6 +40,9 @@ router.get('/list', function(req, res, next) {
   db.close();
 });
 
+/**
+ * read 
+ */
 router.get('/:isbn', function(req, res,next) {
   res.render('pack/read', {"isbn" : req.params.isbn})
 });
@@ -52,6 +55,9 @@ router.get('/list/:isbn', function(req, res,next) {
   db.close();
 });
 
+/**
+ * 번역
+ */
 router.get('/translate/:isbn', (req, res, next) => {
   let db = new sqlite3.Database(bookDBPath);
 
@@ -83,5 +89,14 @@ router.post('/translate/:isbn/:contentIndex', (req, res, next) => {
 
   db.close();
 });
+
+/**
+ * 다운
+ */
+router.get('/down', function(req, res, next) {
+  res.render('pack/down', {});
+});
+
+
 
 module.exports = router;

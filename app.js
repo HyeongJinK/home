@@ -7,10 +7,10 @@ const expressLayouts = require('express-ejs-layouts');
 //https://github.com/sparksuite/simplemde-markdown-editor
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const packBookListRouter = require('./routes/packBook/list');
-const mdRouter = require('./routes/md/list');
-const wikiRouter = require('./routes/wiki/index');
-const youtubeRouter = require('./routes/youtube/index');
+const packBookListRouter = require('./routes/packBook/pack');
+const mdRouter = require('./routes/md/md');
+const wikiRouter = require('./routes/wiki/wiki');
+const youtubeRouter = require('./routes/youtube/youtube');
 
 const app = express();
 
