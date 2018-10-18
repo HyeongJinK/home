@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "start": "supervisor ./bin/www"
+    , "start2" : "sudo forever start ./bin/www"
+    , "stop" : "sudo forever stop 0"
+    , "list" : "sudo forever list"
   },
   "dependencies": {
     "bootstrap": "^4.1.1",
