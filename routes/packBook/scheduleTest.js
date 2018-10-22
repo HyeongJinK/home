@@ -33,18 +33,50 @@ let db = new sqlite3.Database(bookDBPath);
 
 insertTranslateContent()
 
-function selectTest(callback) {
+function selctBookReservationAll(callback) {
   db.all("SELECT * FROM bookReservation WHERE finish = true ORDER BY orderNum", [], function(err, rows) {
-    console.log("adksjf3");
     callback(rows)
-    return rows;
   });
 }
 
+function selectBookAll(callBack) {
+  db.all("SELECT * FROM book ORDER BY publicationDate", [], function(err, rows) {
+    callback(rows)
+  });
+}
+
+function select(callBack) {
+  db.all("SELECT isbn FROM book WHERE isbn NOT IN (SELECT isbn FROM bookTranslate WHERE finish = 'true')", [], function(err, rows) {
+    callback(rows)
+  }); 
+}
+
+function selectContent(callBack, isbn, save) {
+  db.all("SELECT * FROM content WHERE isbn = ? AND contentIndex > ? order by contentIndex)", [isbn, save], function(err, rows) {
+    callback(rows)
+  }); 
+}
+
+
+// rows.forEach(function(value, index, array) {
+//   if (step != value.menuNum) {
+//       step = value.menuNum;
+//       summaryContent += "\n- ["+ value.title +"](/_draft/ch"+step+"/"+step+"_"+value.contentIndex+".md)"
+//       createDir(draftPath+"/ch"+step);
+//   } else {
+//       summaryContent += "\n   - ["+ value.title +"](/_draft/ch"+step+"/"+step+"_"+value.contentIndex+".md)"
+//   }
+//   parser(value.content, draftPath, step, value.contentIndex); 
+// });
 function insertTranslateContent() {
-  console.log("adksjf");
-  let data = selectTest((e) => {console.log(e)})
-  console.log(data)
-  console.log("adksjf2");
+  selctBookReservationAll((e) => {
+    if (e.length != 0) {
+      e.forEach(function(){
+        selectContent((r) => {
+          //TODO 번역 + 저장
+        }, this.isbn, this. save);
+      });
+    }
+  })
 }
 db.close();
