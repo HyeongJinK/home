@@ -14,15 +14,11 @@
 
 var schedule = require('node-schedule');
  
-var j = schedule.scheduleJob('0 0 1 * *', function(){
-  //TODO 미리 예약된 책이 있는 지 확인
-  let db = new sqlite3.Database(bookDBPath);
-  db.all("SELECT * FROM bookReservation WHERE finish = true ORDER BY orderNum", [], function(err, rows) {
-    //TODO 예약된 책이 있을 경우 그 책부터 없을 경우 책 목록에서 가져오기
-    rows
+exports.schedules = function() {
+  schedule.scheduleJob('0 0 1 * *', function(){ 
   });
-  db.close();
-});
+}
+
 
 
 

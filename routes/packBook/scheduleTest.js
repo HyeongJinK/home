@@ -33,7 +33,7 @@ let db = new sqlite3.Database(bookDBPath);
 
 insertTranslateContent()
 
-function selctBookReservationAll(callback) {
+exports.selctBookReservationAll = function(callback) {
   db.all("SELECT * FROM bookReservation WHERE finish = true ORDER BY orderNum", [], function(err, rows) {
     callback(rows)
   });
