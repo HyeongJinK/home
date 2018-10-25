@@ -49,10 +49,14 @@ exports.insertBookTranslate = function(db, callBack, isbn) {
   });
 }
 
-exports.insertContentTranslate = function(db, callBack, data) {
+exports.insertContentTranslate = function(db, data, callBack) {
   db.run("INSERT INTO contentTranslate (isbn, menuNum, contentIndex, title, content) VALUES (?, ?, ?, ?, ?)", data, (err) => {
     callBack(err);
   });
+}
+
+exports.updateBookReservation = function(db, data, callBack) {
+  
 }
 
 

@@ -18,10 +18,9 @@ query.selectBookReservationByFinish(db, (rows) => {
             contents.forEach((content) => {
                 parser.HtmlToWiki(content.content, (data) => {
                     insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, data], ()=> {})
-                    console.log(data)
                 });
             }); 
-        }, element.isbn, /*element.save*/49)
+        }, element.isbn, element.save)
     });
 });
 
