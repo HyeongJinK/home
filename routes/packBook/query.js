@@ -1,8 +1,16 @@
 exports.selectBookReservationByAll = function(db, callBack) {
-  db.all("SELECT * FROM bookReservation WHERE finish = true ORDER BY orderNum", [], function(err, rows) {
+  db.all("SELECT * FROM bookReservation ORDER BY idx", [], function(err, rows) {
+    if(err)
+      console.log(err);
     callBack(rows);
   });
-  db.close();
+}
+
+exports.selectBookReservationByFinish = function(db, callBack) {
+  db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum", [], function(err, rows) {
+    callBack(rows)
+  });
+  
 }
 
 exports.selectBookByAll = function(db, callBack) {
@@ -11,7 +19,6 @@ exports.selectBookByAll = function(db, callBack) {
       console.log(err)
     callBack(rows);
   });
-  db.close();
 }
 
 exports.selectBookByNotTranslate = function(db, callBack) {
@@ -20,33 +27,35 @@ exports.selectBookByNotTranslate = function(db, callBack) {
       console.log(err)
     callBack(rows);
   }); 
-  db.close();
-}
-
-exports.selectBookTranslate = function(db, callBack) {
-
 }
 
 exports.selectContentByIsbnAndContentIndex = function(db, callBack, isbn, save) {
-  db.all("SELECT * FROM content WHERE isbn = ? AND contentIndex > ? order by contentIndex)", [isbn, save], function(err, rows) {
+  db.all("SELECT * FROM content WHERE isbn = ? AND contentIndex > ? order by contentIndex", [isbn, save], function(err, rows) {
+    if (err)
+      console.log(err);
     callBack(rows);
   }); 
-  db.close();
-}
-
-exports.insertBookTranslate = function(db, callBack, isbn) {
-  db.run("INSERT INTO bookTranslate (isbn) VALUES (?)", [isbn], (err) => {
-    callBack();
-  });
-  db.close();
 }
 
 exports.insertBookReservation = function(db, callBack, data) {
   db.run("INSERT INTO bookReservation (isbn, finish, save, orderNum) VALUES (?, ?, ?, ?)", data, function(err) {
     callBack(err);
   });
-  db.close();
 }
+
+exports.insertBookTranslate = function(db, callBack, isbn) {
+  db.run("INSERT INTO bookTranslate (isbn) VALUES (?)", [isbn], (err) => {
+    callBack(err);
+  });
+}
+
+exports.insertContentTranslate = function(db, callBack, data) {
+  db.run("", [], (err) => {
+    callBack(err);
+  });
+}
+
+
 
 //exports.selectBookByNotTranslate((rows) => {console.log(rows)})
 
