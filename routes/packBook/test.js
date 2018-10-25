@@ -17,6 +17,7 @@ query.selectBookReservationByFinish(db, (rows) => {
         query.selectContentByIsbnAndContentIndex(db, (contents) => {
             contents.forEach((content) => {
                 parser.HtmlToWiki(content.content, (data) => {
+                    insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, data], ()=> {})
                     console.log(data)
                 });
             }); 

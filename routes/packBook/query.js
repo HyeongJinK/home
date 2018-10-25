@@ -50,7 +50,7 @@ exports.insertBookTranslate = function(db, callBack, isbn) {
 }
 
 exports.insertContentTranslate = function(db, callBack, data) {
-  db.run("", [], (err) => {
+  db.run("INSERT INTO contentTranslate (isbn, menuNum, contentIndex, title, content) VALUES (?, ?, ?, ?, ?)", data, (err) => {
     callBack(err);
   });
 }
