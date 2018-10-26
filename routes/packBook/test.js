@@ -6,7 +6,7 @@ let db = new sqlite3.Database(bookDBPath);
 const translate = require('./translate');
 const query = require('./query');
 const papago = require('./papago');
-const parser = require("./parser");
+
 
 // query.selectContentByIsbnAndContentIndex(db, (content) => {
 //     console.log(content);
@@ -16,10 +16,15 @@ query.selectBookReservationByFinish(db, (rows) => {
     rows.forEach(element => {
         query.selectContentByIsbnAndContentIndex(db, (contents) => {
             contents.forEach((content) => {
-                parser.HtmlToWiki(content.content, (data) => {
-                    insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, data], ()=> {})
-                });
+                let replaceStr = papago.HtmlToWiki(content.content)
+                if (replaceStr == -1) {
+                    query.updateBookReservation(db, ["0", content.contentIndex - 1, content.isbn], () => {});
+                    return
+                } else {
+                    query.insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {})
+                }
             }); 
+            query.updateBookReservation(db, ["1", 999, element.isbn], () => {});
         }, element.isbn, element.save)
     });
 });

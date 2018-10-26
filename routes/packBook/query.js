@@ -56,7 +56,9 @@ exports.insertContentTranslate = function(db, data, callBack) {
 }
 
 exports.updateBookReservation = function(db, data, callBack) {
-  
+  db.run("UPDATE bookReservation SET finish = ?, save = ?  WHERE isbn = ?", data, (err) => {
+
+  });
 }
 
 

@@ -2,15 +2,9 @@ const request = require("request");
 var rp = require('request-promise');
 var cheerio = require("cheerio");
 
-let gitbookPath = "./gitbook"
-
 let FolderReplace = (s) => s.replace(/\?/g, "@").replace(/</g, "[").replace(/>/g, "]").replace(/:/g, "-").replace(/\*/g, "+").replace(/\\/g, " ").replace(/\//g, "&").replace(/\n/, "").replace(/|/, " ");
 let htmlReplace = (s) => s.replace(/(<([^>]+)>)/ig,"");
 let replace = (s) => s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x2013;/g, '-').replace(/&apos;/g, '\'').replace(/&#xA0;/g, ' ').replace(/&amp;/g, '&').replace(/&#x/g, '%u').replace(/;/g, '');
-
-// let param = [
-//     isbn
-// ]
 
 function translateApiCall(oriStr) {
     let formData = "key=AIzaSyBkoF9oYJIpYB_Msi2ZENcNOkld3jNo4_o&target=ko&q="+oriStr
@@ -210,3 +204,4 @@ exports.HtmlToWiki = function(h, callBack/*, draftPath, step, contentIndex*/) {
             });
     }); 
 }
+
