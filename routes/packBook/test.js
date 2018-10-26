@@ -11,17 +11,22 @@ const papago = require('./papago');
 // query.selectContentByIsbnAndContentIndex(db, (content) => {
 //     console.log(content);
 // }, "9781849696968", 0)
-
+let stop = 0;
 query.selectBookReservationByFinish(db, (rows) => {
     rows.forEach(element => {
         query.selectContentByIsbnAndContentIndex(db, (contents) => {
             contents.forEach((content) => {
-                let replaceStr = papago.HtmlToWiki(content.content)
-                if (replaceStr == -1) {
-                    query.updateBookReservation(db, ["0", content.contentIndex - 1, content.isbn], () => {});
-                    return
-                } else {
-                    query.insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {})
+                if (stop == 0) {
+                    let replaceStr = papago.HtmlToWiki(content.content)
+                    console.log("contentIndex = " +content.contentIndex)
+                    console.log(replaceStr)
+                    if (replaceStr == -1) {
+                        stop = 1
+                        query.updateBookReservation(db, ["0", content.contentIndex - 1, content.isbn], () => {});
+                        return
+                    } else {
+                        query.insertContentTranslate(db, [content.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {})
+                    }
                 }
             }); 
             query.updateBookReservation(db, ["1", 999, element.isbn], () => {});

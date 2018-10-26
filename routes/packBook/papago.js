@@ -42,39 +42,44 @@ function translateApiCall(oriStr) {
 
 exports.HtmlToWiki = function(h) {
     let temp = cheerio.load(h);
-
+    let stop = 0;
     temp("h2.title").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("# ");
-    });
+    }); if (stop == -1) return -1
+
     temp("h3.title").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("\n\n## ");
-    });
+    }); if (stop == -1) return -1
     temp("h4.title").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("\n\n### ");
-    });
+    }); if (stop == -1) return -1
     temp("h5.title").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);    
         temp(this).prepend("\n\n#### ");
-    });
+    }); if (stop == -1) return -1
     
     temp("pre.programlisting").prepend("\n\n```java\n").append("\n```");
     temp("strong").prepend("**").append("**");
@@ -90,11 +95,12 @@ exports.HtmlToWiki = function(h) {
     temp("p").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(replaceStr);  
         temp(this).prepend("\n\n");
-    });
+    }); if (stop == -1) return -1
     
     temp("ul").prepend("\n");
     temp("ol").prepend("\n");
@@ -102,16 +108,18 @@ exports.HtmlToWiki = function(h) {
     temp("ul").find("li").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(replaceStr);  
         temp(this).prepend("\n* ");
-    });
+    }); if (stop == -1) return -1
     
     temp("ol").find("li").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(replaceStr);  
         if (temp(this).parent().attr("start") == undefined) {
@@ -119,15 +127,16 @@ exports.HtmlToWiki = function(h) {
         } else {
             temp(this).prepend("\n"+temp(this).parent().attr("start")+ ". ");
         } 
-    });
+    }); if (stop == -1) return -1
 
     temp("td").each(function(i, elem) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
-            return -1
+            stop = -1;
+            break;
         }
         temp(this).text(replaceStr.replace(/^\n/g, "").replace(/^\n/g, ""));  
-    });
+    }); if (stop == -1) return -1
 
     temp("table").each(function(i, elem) {
         temp(this).prepend("\n");
