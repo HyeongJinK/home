@@ -47,7 +47,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("# ");
@@ -57,7 +57,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("\n\n## ");
@@ -66,7 +66,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("\n\n### ");
@@ -75,7 +75,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(temp(this).text() + " - " + replaceStr);    
         temp(this).prepend("\n\n#### ");
@@ -96,7 +96,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(replaceStr);  
         temp(this).prepend("\n\n");
@@ -109,7 +109,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(replaceStr);  
         temp(this).prepend("\n* ");
@@ -119,7 +119,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(replaceStr);  
         if (temp(this).parent().attr("start") == undefined) {
@@ -133,7 +133,7 @@ exports.HtmlToWiki = function(h) {
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
-            break;
+            return -1;
         }
         temp(this).text(replaceStr.replace(/^\n/g, "").replace(/^\n/g, ""));  
     }); if (stop == -1) return -1
