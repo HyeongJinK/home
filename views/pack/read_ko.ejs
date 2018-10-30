@@ -6,7 +6,7 @@
 
 <style>
 #wrapper {
-  width: 100%;
+  width : 100%;
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -15,7 +15,7 @@
 }
 
 #wrapper.toggled {
-  padding-left: 20px;
+  padding-left: 400px;
 }
 
 #sidebar-wrapper {
@@ -45,7 +45,7 @@
 
 #wrapper.toggled #page-content-wrapper {
   position: absolute;
-  margin-right: -100px;
+  margin-right: -400px;
 }
 
 @media(min-width:768px) {
@@ -128,6 +128,7 @@ $(document).ready(function () {
               //console.log(converter.makeHtml(data.book_data[index].content))
               //$("div.book_content").html(data.book_data[index].content);
               //$("div.book_content").html(converter.makeHtml(data.book_data[index].content));
+              $("#wrapper").removeClass("toggled");
               editor.setValue(data.book_data[index].content)
             });
             if (index == 0) {

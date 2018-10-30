@@ -99,6 +99,7 @@ $(document).ready(function () {
         $(data.book_data).each(function (index) {
             let $li = $("<li class=''>"+this.title+"</li>");
             $li.on('click', function() {
+                $("#wrapper").removeClass("toggled");
                 $("div.book_content").html(data.book_data[index].content);
             });
             if (index == 0) {
