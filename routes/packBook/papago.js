@@ -28,9 +28,10 @@ function translateApiCall(oriStr) {
         return trText;
     } catch (e) {
         ++currentNaver;
-        console.log(e);        
+        //console.log(e);        
         console.log("currentNaver = " + currentNaver);
         if (currentNaver >= naverId.length) {
+            console.log(e);
             return -1;
         } else {
             return translateApiCall(oriStr);
@@ -41,7 +42,11 @@ function translateApiCall(oriStr) {
 exports.HtmlToWiki = function(h) {
     let temp = cheerio.load(h);
     let stop = 0;
+    
     temp("h2.title").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -50,8 +55,10 @@ exports.HtmlToWiki = function(h) {
         temp(this).text(temp(this).text() + " - " + replaceStr);
         temp(this).prepend("# ");
     }); if (stop == -1) return -1
-
     temp("h3.title").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -61,6 +68,9 @@ exports.HtmlToWiki = function(h) {
         temp(this).prepend("\n\n## ");
     }); if (stop == -1) return -1
     temp("h4.title").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -70,6 +80,9 @@ exports.HtmlToWiki = function(h) {
         temp(this).prepend("\n\n### ");
     }); if (stop == -1) return -1
     temp("h5.title").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -91,6 +104,9 @@ exports.HtmlToWiki = function(h) {
     temp("div.note p").prepend("> ");
     
     temp("p").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -104,6 +120,9 @@ exports.HtmlToWiki = function(h) {
     temp("ol").prepend("\n");
 
     temp("ul").find("li").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -114,6 +133,9 @@ exports.HtmlToWiki = function(h) {
     }); if (stop == -1) return -1
     
     temp("ol").find("li").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;
@@ -128,6 +150,9 @@ exports.HtmlToWiki = function(h) {
     }); if (stop == -1) return -1
 
     temp("td").each(function(i, elem) {
+        if (stop == -1) {
+            return -1;
+        }
         let replaceStr = translateApiCall(temp(this).text());
         if (replaceStr == -1) {
             stop = -1;

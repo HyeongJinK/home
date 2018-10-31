@@ -44,7 +44,7 @@ exports.insertBookReservation = function(db, data, callBack) {
 }
 
 exports.deleteBookReservation = function(db, isbn, callBack) {
-  db.run("DELETE FROM bookReservation WHERE isbn = ?", [isbn], function(err) {
+  db.run("DELETE FROM bookReservation WHERE isbn = ? AND save = 0", [isbn], function(err) {
     callBack(err);
   });
 }
