@@ -37,13 +37,13 @@ exports.selectContentByIsbnAndContentIndex = function(db, callBack, isbn, save) 
   }); 
 }
 
-exports.insertBookReservation = function(db, callBack, data) {
+exports.insertBookReservation = function(db, data, callBack) {
   db.run("INSERT INTO bookReservation (isbn, finish, save, orderNum) VALUES (?, ?, ?, ?)", data, function(err) {
     callBack(err);
   });
 }
 
-exports.insertBookTranslate = function(db, callBack, isbn) {
+exports.insertBookTranslate = function(db, isbn, callBack) {
   db.run("INSERT INTO bookTranslate (isbn) VALUES (?)", [isbn], (err) => {
     callBack(err);
   });
