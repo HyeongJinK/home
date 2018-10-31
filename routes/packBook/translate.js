@@ -27,6 +27,20 @@ router.get('/add',(req, res, next) => {
     }
 });
 
+router.get('/del',(req, res, next) => {
+    if (req.query.isbn != null) {
+        let db = new sqlite3.Database(bookDBPath);
+        
+        query.deleteBookReservation(db, req.query.isbn, () => {
+            res.send({"result": 0})
+        });
+        db.close();
+    } else {
+        res.send({"result": 1})
+    }
+});
+
+
 router.get('/list', (req, res, next) => {
     //번역본 리스트
     let db = new sqlite3.Database(bookDBPath);

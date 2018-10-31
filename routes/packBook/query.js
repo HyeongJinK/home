@@ -43,6 +43,12 @@ exports.insertBookReservation = function(db, data, callBack) {
   });
 }
 
+exports.deleteBookReservation = function(db, isbn, callBack) {
+  db.run("DELETE FROM bookReservation WHERE isbn = ?", [isbn], function(err) {
+    callBack(err);
+  });
+}
+
 exports.insertBookTranslate = function(db, isbn, callBack) {
   db.run("INSERT INTO bookTranslate (isbn) VALUES (?)", [isbn], (err) => {
     callBack(err);
