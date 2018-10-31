@@ -28,10 +28,9 @@ function translateApiCall(oriStr) {
         return trText;
     } catch (e) {
         ++currentNaver;
-        //console.log(e);        
+        console.log(e);        
         console.log("currentNaver = " + currentNaver);
         if (currentNaver >= naverId.length) {
-            console.log(oriStr)
             return -1;
         } else {
             return translateApiCall(oriStr);
