@@ -6,7 +6,12 @@ const naverSecret = ['IC57QXbTkQ', 'KkBf_8n9nP', 'pePl0dDFLK', 'LlEHqsIH8P','_oA
 let currentNaver = 0;
 function translateApiCall(oriStr) {
     oriStr = oriStr.replace(/^\n/g, "");
+    oriStr = oriStr.replace(/^\n/g, "");
+    oriStr = oriStr.replace(/^\n/g, "");
     if (oriStr.replace(/\s/g, "") == "") {
+        return "";
+    }
+    if (oriStr == "") {
         return "";
     }
     try {
