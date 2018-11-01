@@ -32,6 +32,7 @@ function translateApiCall(oriStr) {
         console.log("currentNaver = " + currentNaver);
         if (currentNaver >= naverId.length) {
             console.log(e);
+            console.log("oriStr = " +oriStr)
             return -1;
         } else {
             return translateApiCall(oriStr);
