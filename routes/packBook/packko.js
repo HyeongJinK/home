@@ -19,15 +19,15 @@ router.get('/list', function(req, res, next) {
   let startNum = (pageNum - 1) * rowNum;
   let searchText = req.query.searchText;
   
-  let sql = "SELECT b.* FROM bookReservation AS bt LEFT JOIN book AS b ON b.isbn = bt.isbn";
-  let countSql = "SELECT count(*) AS bookCount FROM bookReservation";
+  let sql = "SELECT b.* FROM bookReservation AS bt LEFT JOIN book AS b ON b.isbn = bt.isbn WHERE bt.save > 0";
+  let countSql = "SELECT count(*) AS bookCount FROM bookReservation WHERE bt.save > 0";
   let param = [];
   let countParam = [];
   if (searchText != "") {
     searchText = "%"+searchText+"%"
-    sql += " WHERE b.title like ?";
+    sql += " AND b.title like ?";
     param.push(searchText);
-    countSql += " WHERE b.title like ?";
+    countSql += " AND b.title like ?";
     countParam.push(searchText);
   }
   sql += " ORDER BY b.publicationDate desc LIMIT ?, ?"
