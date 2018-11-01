@@ -4,7 +4,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
-//https://github.com/sparksuite/simplemde-markdown-editor
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const packBookListRouter = require('./routes/packBook/pack');
@@ -12,6 +11,7 @@ const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
 const youtubeRouter = require('./routes/youtube/youtube');
+const schedule = require('./routes/packBook/schedule');
 
 const app = express();
 
@@ -51,5 +51,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+schedule.translateSchedules()
 module.exports = app;
