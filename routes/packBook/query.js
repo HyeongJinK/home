@@ -61,9 +61,15 @@ exports.insertContentTranslate = function(db, data, callBack) {
   });
 }
 
+exports.updateContentTranslate = function(db, data, callBack) {
+  db.run("UPDATE contentTranslate SET content = ? WHERE isbn = ? AND contentIndex = ?", data, (err) => {
+    callBack(err);
+  });
+}
+
 exports.updateBookReservation = function(db, data, callBack) {
   db.run("UPDATE bookReservation SET finish = ?, save = ?  WHERE isbn = ?", data, (err) => {
-
+    callBack(err);
   });
 }
 
