@@ -10,7 +10,9 @@ const papago = require('./papago');
 function translateSchedule() {
     let db = new sqlite3.Database(bookDBPath);
     let stop = 0;
+    console.log("start")
     query.selectBookReservationByFinish(db, (rows) => {
+        console.log(rows.length);
         rows.forEach(element => {
             query.selectContentByIsbnAndContentIndex(db, (contents) => {
                 contents.forEach((content, i, arr) => {
