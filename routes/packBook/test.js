@@ -36,3 +36,5 @@ function translateSchedule() {
     });
     db.close();
 }
+
+translateSchedule()
