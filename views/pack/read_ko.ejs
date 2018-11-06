@@ -89,6 +89,7 @@
 <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">메뉴</a>
 <div id="page-content-wrapper" class="book_content">
   <div id="editSection"></div>
+  <button class="btn btn-success" id="modifyBt" type="button">수정</button> 
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
@@ -113,6 +114,10 @@ $(document).ready(function () {
         $("#wrapper").toggleClass("toggled");
     });
     
+    $("#modifyBt").click(function(e) {
+      console.log(editor.getValue())
+    });
+
     //var simplemde = new SimpleMDE({ element: document.getElementById("simplemde") });
     var converter = new showdown.Converter();
     

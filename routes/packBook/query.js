@@ -37,6 +37,15 @@ exports.selectContentByIsbnAndContentIndex = function(db, callBack, isbn, save) 
   }); 
 }
 
+exports.selectContentTranslateByIsbn = function(db, isbn, callBack) {
+  db.all("SELECT * FROM contentTranslate WHERE isbn = ? ORDER BY contentIndex", [isbn], function(err, rows) {
+    if (err) {
+      console.log(err);
+    }
+    callBack(rows);
+  });
+}
+
 exports.insertBookReservation = function(db, data, callBack) {
   db.run("INSERT INTO bookReservation (isbn, finish, save, orderNum) VALUES (?, ?, ?, ?)", data, function(err) {
     callBack(err);

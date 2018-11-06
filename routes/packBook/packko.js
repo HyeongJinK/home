@@ -1,4 +1,5 @@
 const translate = require('./translate');
+var query = require('./query');
 var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
@@ -45,16 +46,20 @@ router.get('/list', function(req, res, next) {
 /**
  * read 
  */
-router.get('/:isbn', function(req, res,next) {
+router.get('/:isbn', function(req, res, next) {
   res.render('pack/read_ko', {"isbn" : req.params.isbn})
 });
 
-router.get('/list/:isbn', function(req, res,next) {
+router.get('/list/:isbn', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
   db.all("SELECT * FROM contentTranslate WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
     res.send({"book_data" : rows})
   });
   db.close();
 });
+
+router.put('/ContentTranslate/:idx', function(req, res, next) {
+
+})
 
 module.exports = router;
