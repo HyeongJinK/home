@@ -1,3 +1,37 @@
+exports.commonSelect = function(db, sql, data, callBack) {
+  db.all(sql, data, function(err, rows) {
+    if (err) {
+      console.log(err)
+    }
+    callBack(rows);
+  });
+}
+
+exports.commonSelectOne = function(db, sql, data, callBack) {
+  db.get(sql, data, function(err, rows) {
+    if (err) {
+      console.log(err)
+    }
+    callBack(rows);
+  });
+}
+
+exports.commonRun = function (db, sql, data, callBack) {
+  db.run(sql, data, function (err) {
+
+  }); 
+}
+
+exports.commonSelect = function(db, sql, data, callBack) {
+  db.all(sql, data, function(err, rows) {
+    if (err) {
+      console.log(err)
+    }
+    callBack(rows);
+  });
+}
+
+
 exports.selectBookReservationByAll = function(db, callBack) {
   db.all("SELECT * FROM bookReservation ORDER BY idx", [], function(err, rows) {
     if(err)

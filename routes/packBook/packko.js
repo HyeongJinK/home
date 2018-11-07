@@ -59,7 +59,9 @@ router.get('/list/:isbn', function(req, res, next) {
 });
 
 router.put('/ContentTranslate/:idx', function(req, res, next) {
+  let db = new sqlite3.Database(bookDBPath);
 
+  db.close();
 })
 
 module.exports = router;
