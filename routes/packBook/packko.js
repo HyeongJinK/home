@@ -58,9 +58,17 @@ router.get('/list/:isbn', function(req, res, next) {
   db.close();
 });
 
-router.put('/ContentTranslate/:idx', function(req, res, next) {
+router.put('/ContentTranslate/:isbn/:contentIndex', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
+  query.selectContentTranslateByIsbnAndContentIndex(db, [req.params.isbn, req.params.contentIndex], (rows) => {
+    if (rows.length != 0) {
+      query.updateContentTranslate(db
+        , [req.body.content, req.params.isbn, req.params.contentIndex]
+        , (err) => {
 
+      });
+    }
+  });
   db.close();
 })
 

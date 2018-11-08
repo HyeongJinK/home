@@ -88,8 +88,8 @@
 </div>
 <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">메뉴</a>
 <div id="page-content-wrapper" class="book_content">
+  <button class="btn btn-success" id="modifyBt" type="button">수정</button>   
   <div id="editSection"></div>
-  <button class="btn btn-success" id="modifyBt" type="button">수정</button> 
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
@@ -102,12 +102,15 @@
 <script src="/javascripts/showdown/showdown.min.js"></script>
 <script>
 $(document).ready(function () {
-    var editor = new tui.Editor({
+    let editor = new tui.Editor({
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',
         previewStyle: 'vertical',
         height: '1000px'
     });
+    let converter = new showdown.Converter(); 
+    let isbn = <%= isbn %>
+    let choiceIndex = 0;
 
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
@@ -115,26 +118,33 @@ $(document).ready(function () {
     });
     
     $("#modifyBt").click(function(e) {
-      console.log(editor.getValue())
+      $.ajax({
+          url : '/packko/ContentTranslate/'+isbn+'/'+choiceIndex,
+          method : 'put',
+          data : {
+              content : editor.getValue(),
+          },
+          success : function (data) {
+              console.log(data);
+          },
+          error : function (err) {
+              console.log(err.toString());
+          }
+      });
     });
-
-    //var simplemde = new SimpleMDE({ element: document.getElementById("simplemde") });
-    var converter = new showdown.Converter();
     
-    let isbn = <%= isbn %>
     $.getJSON('/packko/list/'+isbn, {}, function (data) {
         let $ul = $("ul.book_menu");
         let $chul = $("<ul class=''></ul>");
         editor.setValue(data.book_data[0].content)
-        //$("div.book_content").html(converter.makeHtml(data.book_data[0].content));
+        choiceIndex = data.book_data[0].contentIndex;
+        
         $(data.book_data).each(function (index) {
             let $li = $("<li class=''>"+this.title+"</li>");
             $li.on('click', function() {
-              //console.log(converter.makeHtml(data.book_data[index].content))
-              //$("div.book_content").html(data.book_data[index].content);
-              //$("div.book_content").html(converter.makeHtml(data.book_data[index].content));
               $("#wrapper").removeClass("toggled");
               editor.setValue(data.book_data[index].content)
+              choiceIndex = data.book_data[index].contentIndex;
             });
             if (index == 0) {
                 $ul.append($li);

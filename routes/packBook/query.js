@@ -18,7 +18,10 @@ exports.commonSelectOne = function(db, sql, data, callBack) {
 
 exports.commonRun = function (db, sql, data, callBack) {
   db.run(sql, data, function (err) {
-
+    if (err) {
+      console.log(err)
+    }
+    callBack(err);
   }); 
 }
 
@@ -41,7 +44,7 @@ exports.selectBookReservationByAll = function(db, callBack) {
 }
 
 exports.selectBookReservationByFinish = function(db, callBack) {
-  db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum", [], function(err, rows) {
+  db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum desc", [], function(err, rows) {
     callBack(rows)
   });
   
@@ -73,6 +76,15 @@ exports.selectContentByIsbnAndContentIndex = function(db, callBack, isbn, save) 
 
 exports.selectContentTranslateByIsbn = function(db, isbn, callBack) {
   db.all("SELECT * FROM contentTranslate WHERE isbn = ? ORDER BY contentIndex", [isbn], function(err, rows) {
+    if (err) {
+      console.log(err);
+    }
+    callBack(rows);
+  });
+}
+
+exports.selectContentTranslateByIsbnAndContentIndex = function(db, data, callBack) {
+  db.all("SELECT * FROM contentTranslate WHERE isbn = ? AND contentIndex = ?", data, function(err, rows) {
     if (err) {
       console.log(err);
     }
