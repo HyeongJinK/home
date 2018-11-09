@@ -36,7 +36,7 @@ exports.commonSelect = function(db, sql, data, callBack) {
 
 
 exports.selectBookReservationByAll = function(db, callBack) {
-  db.all("SELECT * FROM bookReservation ORDER BY idx", [], function(err, rows) {
+  db.all("SELECT * FROM bookReservation ORDER BY idx asc", [], function(err, rows) {
     if(err)
       console.log(err);
     callBack(rows);
@@ -44,7 +44,7 @@ exports.selectBookReservationByAll = function(db, callBack) {
 }
 
 exports.selectBookReservationByFinish = function(db, callBack) {
-  db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum desc", [], function(err, rows) {
+  db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum desc, idx asc", [], function(err, rows) {
     callBack(rows)
   });
   

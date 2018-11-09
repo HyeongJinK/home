@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
+const coreRouter = require('./routes/core');
 const usersRouter = require('./routes/users');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/core', coreRouter);
 app.use('/users', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);

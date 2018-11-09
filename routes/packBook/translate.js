@@ -45,9 +45,20 @@ router.get('/list', (req, res, next) => {
     //번역본 리스트
     let db = new sqlite3.Database(bookDBPath);
 
-    db.all("SELECT * FROM BookReservation", [], (err, rows) => {
+    query.selectBookReservationByAll(db, (rows) => {
         res.send({"book" : rows})
     });
+
+    db.close();
+});
+
+router.get('/list_down', (req, res, next) => {
+    let db =  new sqlite3.Database(bookDBPath);
+
+    query.selectBookReservationByFinish(db, (rows) => {
+        res.send({"book" : rows})
+    });
+
     db.close();
 });
 
