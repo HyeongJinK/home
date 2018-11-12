@@ -14,16 +14,24 @@ router.get('/', function(req, res, next) {
 router.get('/add',(req, res, next) => {
     if (req.query.isbn != null) {
         let db = new sqlite3.Database(bookDBPath);
-        let orderNum = 0
-        if (req.query.orderNum != null) {
-            orderNum = req.query.orderNum
-        }
-        query.insertBookReservation(db, [req.query.isbn, 0, 0, orderNum], () => {
-            res.send({"result": 0})
+
+        query.selectBookReservationByIsbn(db, req.query.isbn, (row) => {
+            if (row != null) {
+                let orderNum = 0
+                if (req.query.orderNum != null) {
+                    orderNum = req.query.orderNum
+                }
+                query.insertBookReservation(db, [req.query.isbn, 0, 0, orderNum], () => {
+                    res.send({"result": "sucess"})
+                });
+                db.close();
+            } else {
+                db.close();
+                res.send({"result": "overlap"})
+            }
         });
-        db.close();
     } else {
-        res.send({"result": 1})
+        res.send({"result": "isbn param nil"})
     }
 });
 

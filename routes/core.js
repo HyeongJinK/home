@@ -24,7 +24,7 @@ router.post('/sql', function(req, res, next) {
 router.get("/db", function (req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
 
-  db.all("SELECT * FROM sqlite_master", (err, rows) => {
+  db.all("SELECT * FROM sqlite_master where type = 'table' order by name", (err, rows) => {
     if (err) {
       console.log(err);
     }

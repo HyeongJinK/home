@@ -47,7 +47,12 @@ exports.selectBookReservationByFinish = function(db, callBack) {
   db.all("SELECT * FROM bookReservation WHERE finish = 0 ORDER BY orderNum desc, idx asc", [], function(err, rows) {
     callBack(rows)
   });
-  
+}
+
+exports.selectBookReservationByIsbn = function(db, isbn, callBack) {
+  db.get("SELECT * FROM bookReservation WHERE isbn = ?", [isbn], (err, row) => {
+    callBack(row);
+  });
 }
 
 exports.selectBookByAll = function(db, callBack) {
