@@ -65,7 +65,11 @@ router.put('/ContentTranslate/:isbn/:contentIndex', function(req, res, next) {
       query.updateContentTranslate(db
         , [req.body.content, req.params.isbn, req.params.contentIndex]
         , (err) => {
-
+          if (err == null)
+            res.send({"result" : "성공"})
+          else {
+            res.send({"result" : err})
+          }
       });
     }
   });

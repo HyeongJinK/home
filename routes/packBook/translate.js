@@ -1,7 +1,9 @@
-var express = require('express');
-var query = require('./query');
-var sqlite3 = require('sqlite3').verbose();
-var router = express.Router();
+const express = require('express');
+const query = require('./query');
+const contentGoogle = require('../query/contentGoogle');
+const sqlite3 = require('sqlite3').verbose();
+const router = express.Router();
+const google = require('./google');
 
 const bookDBPath = 'db/books.db';
 
@@ -68,6 +70,21 @@ router.get('/list_down', (req, res, next) => {
     });
 
     db.close();
+});
+
+router.get('/google', (req, res, next) => {
+    let db = new sqlite3.Database(bookDBPath);
+    query.selectContentByIsbnAndContentIndex(db, (contents) => {
+        let i = 0;
+        contents.forEach((content, i, arr) => {
+            let replaceStr = google.HtmlToWiki(content.content)                
+            
+            query.insertContentGoogle(db, [req.query.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {            
+                res.send({"result" : "sucess"})
+                db.close();
+            })
+        }); 
+    }, req.query.isbn, 0)
 });
 
 

@@ -88,7 +88,7 @@
 </div>
 <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">메뉴</a>
 <div id="page-content-wrapper" class="book_content">
-  <button class="btn btn-success" id="modifyBt" type="button">수정</button>   
+  <button class="btn btn-success" id="modifyBt" type="button">수정</button><span id="modifyResultText"></span> 
   <div id="editSection"></div>
 </div>
 </div>
@@ -125,10 +125,10 @@ $(document).ready(function () {
               content : editor.getValue(),
           },
           success : function (data) {
-              console.log(data);
+            $("#modifyResultText").text("결과 : " + data.result)
           },
           error : function (err) {
-              console.log(err.toString());
+            $("#modifyResultText").text("실패 : " + err.toString())
           }
       });
     });
