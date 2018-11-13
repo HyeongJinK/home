@@ -58,6 +58,15 @@ router.get('/list/:isbn', function(req, res, next) {
   db.close();
 });
 
+router.get('/listGoogle/:isbn', function(req, res, next) {
+  let db = new sqlite3.Database(bookDBPath);
+  db.all("SELECT * FROM contentGoogle WHERE isbn = ? ORDER BY contentIndex", [req.params.isbn], function(err, rows) {
+    res.send({"book_data" : rows})
+  });
+  db.close();
+});
+
+
 router.put('/ContentTranslate/:isbn/:contentIndex', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
   query.selectContentTranslateByIsbnAndContentIndex(db, [req.params.isbn, req.params.contentIndex], (rows) => {

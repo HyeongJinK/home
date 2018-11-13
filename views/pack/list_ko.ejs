@@ -63,14 +63,18 @@
                 $cardbody.addClass("card-body").addClass("text-dark");
                 $cardbody.append("<h4 class='card-title'>"+ this.title +"</h4>");
                 $cardbody.append("<h6 class='card-subtitle mb-2 text-muted'>"+ this.publicationDate +"</h6>");
-                $cardbody.append("<p class='card-text'>"+ this.description +"</p>");
+                //$cardbody.append("<p class='card-text'>"+ this.description +"</p>");
+                let papago = $("<a href='#' class='btn btn-primary'>파파고 번역</p>");
+                let google = $("<a href='#' class='btn btn-danger'>구글 번역</p>");
+                $cardbody.append(papago);
+                $cardbody.append(google);
 
                 //$card.append("<div class='card-header'>" +this.title+ "</div>");
                 $card.append("<img class='card-img-top' src='"+ this.imgUrl +"'></img>");
                 $card.append($cardbody);
 
                 let isbn = this.isbn;
-                $card.on('click', function() {
+                papago.on('click', function() {
                     location.href="/packko/"+isbn
                 });
                 $("div.card-columns").append($card);
