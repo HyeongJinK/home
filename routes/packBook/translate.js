@@ -3,7 +3,7 @@ const query = require('./query');
 const contentGoogle = require('../query/contentGoogle');
 const sqlite3 = require('sqlite3').verbose();
 const router = express.Router();
-const google = require('./google');
+const google = require('./google_before');
 
 const bookDBPath = 'db/books.db';
 
@@ -77,11 +77,9 @@ router.get('/google', (req, res, next) => {
     query.selectContentByIsbnAndContentIndex(db, (contents) => {
         let i = 0;
         contents.forEach((content, i, arr) => {
-            let replaceStr = google.HtmlToWiki(content.content)                
-            
-            query.insertContentGoogle(db, [req.query.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {            
-                
-                db.close();
+            google.HtmlToWiki(content.content, (data) => {
+                query.insertContentGoogle(db, [isbn, content.menuNum, content.contentIndex, content.title, data], ()=> {
+                });                
             })
         }); 
     }, req.query.isbn, 0)
