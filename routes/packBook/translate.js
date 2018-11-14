@@ -80,11 +80,12 @@ router.get('/google', (req, res, next) => {
             let replaceStr = google.HtmlToWiki(content.content)                
             
             query.insertContentGoogle(db, [req.query.isbn, content.menuNum, content.contentIndex, content.title, replaceStr], ()=> {            
-                res.send({"result" : "sucess"})
+                
                 db.close();
             })
         }); 
     }, req.query.isbn, 0)
+    res.send({"result" : "sucess"})
 });
 
 
