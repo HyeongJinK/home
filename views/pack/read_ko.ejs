@@ -109,31 +109,37 @@ $(document).ready(function () {
         height: '1000px'
     });
     let converter = new showdown.Converter(); 
-    let isbn = <%= isbn %>
+    let isbn = <%= isbn %>;
+    let type = <%= type %>;
     let choiceIndex = 0;
+
+    
 
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
     
-    $("#modifyBt").click(function(e) {
-      $.ajax({
-          url : '/packko/ContentTranslate/'+isbn+'/'+choiceIndex,
-          method : 'put',
-          data : {
-              content : editor.getValue(),
-          },
-          success : function (data) {
-            $("#modifyResultText").text("결과 : " + data.result)
-          },
-          error : function (err) {
-            $("#modifyResultText").text("실패 : " + err.toString())
-          }
+    if (type == 1) {
+      $("#modifyBt").click(function(e) {
+        $.ajax({
+            url : '/packko/ContentTranslate/'+isbn+'/'+choiceIndex,
+            method : 'put',
+            data : {
+                content : editor.getValue(),
+            },
+            success : function (data) {
+              $("#modifyResultText").text("결과 : " + data.result)
+            },
+            error : function (err) {
+              $("#modifyResultText").text("실패 : " + err.toString())
+            }
+        });
       });
-    });
-    
-    $.getJSON('/packko/list/'+isbn, {}, function (data) {
+    }
+    let addStr = type == 2 ? "Google" : "";
+    $.getJSON('/packko/list'+addStr+'/'+isbn, {}, function (data) {
+      if (data.book_data.length > 0) {
         let $ul = $("ul.book_menu");
         let $chul = $("<ul class=''></ul>");
         editor.setValue(data.book_data[0].content)
@@ -158,7 +164,7 @@ $(document).ready(function () {
                 $chul.append($li);
             }
         });
-        
+      } 
     });
 });
 </script>

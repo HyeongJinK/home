@@ -47,7 +47,7 @@ router.get('/list', function(req, res, next) {
  * read 
  */
 router.get('/:isbn', function(req, res, next) {
-  res.render('pack/read_ko', {"isbn" : req.params.isbn})
+  res.render('pack/read_ko', {"isbn" : req.params.isbn, "type" : req.query.type})
 });
 
 router.get('/list/:isbn', function(req, res, next) {

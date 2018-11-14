@@ -75,7 +75,10 @@
 
                 let isbn = this.isbn;
                 papago.on('click', function() {
-                    location.href="/packko/"+isbn
+                    location.href="/packko/"+isbn+"?type=1"
+                });
+                google.on('click', function() {
+                    location.href="/packko/"+isbn+"?type=2"
                 });
                 $("div.card-columns").append($card);
             });
