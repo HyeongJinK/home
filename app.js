@@ -12,6 +12,7 @@ const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
 const youtubeRouter = require('./routes/youtube/youtube');
+const boardRouter = require('./routes/board/board');
 const schedule = require('./routes/packBook/schedule');
 
 const app = express();
@@ -37,6 +38,7 @@ app.use('/packko', packkoListRouter);
 app.use('/wiki', wikiRouter);
 app.use('/youtube', youtubeRouter);
 app.use('/md', mdRouter);
+app.use('/board', boardRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
