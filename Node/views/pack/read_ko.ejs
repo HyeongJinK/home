@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<!-- https://nhnent.github.io/tui.editor/api/latest/index.html -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.41.0/lib/codemirror.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/styles/rainbow.css">
+
+<style>
+#wrapper {
+  width : 100%;
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 400px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  overflow-y: auto;
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 400px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -400px;
+}
+
+@media(min-width:768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 400px;
+  }
+  #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 400px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+</style>
+
+
+<div id="wrapper">
+<div id="sidebar-wrapper">
+    <div class="card text-white bg-dark border-dark">
+        <h3 class="card-header">
+        메뉴
+        </h3>
+        <div class="card-body">
+        <ul class="book_menu">
+            
+        </ul>
+        </div>
+    </div>
+</div>
+<a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">메뉴</a>
+<div id="page-content-wrapper" class="book_content">
+  <button class="btn btn-success" id="modifyBt" type="button">수정</button><span id="modifyResultText"></span> 
+  <div id="editSection"></div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/to-mark@1.1.3/dist/to-mark.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tui-code-snippet@1.4.0/dist/tui-code-snippet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5.41.0/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highlightjs@9.12.0/highlight.pack.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/squire-rte@1.9.0/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+<script>
+$(document).ready(function () {
+    let editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '1000px'
+    });
+    let converter = new showdown.Converter(); 
+    let isbn = <%= isbn %>;
+    let type = <%= type %>;
+    let choiceIndex = 0;
+
+    
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    
+    if (type == 1) {
+      $("#modifyBt").click(function(e) {
+        $.ajax({
+            url : '/packko/ContentTranslate/'+isbn+'/'+choiceIndex,
+            method : 'put',
+            data : {
+                content : editor.getValue(),
+            },
+            success : function (data) {
+              $("#modifyResultText").text("결과 : " + data.result)
+            },
+            error : function (err) {
+              $("#modifyResultText").text("실패 : " + err.toString())
+            }
+        });
+      });
+    }
+    let addStr = type == 2 ? "Google" : "";
+    $.getJSON('/packko/list'+addStr+'/'+isbn, {}, function (data) {
+      if (data.book_data.length > 0) {
+        let $ul = $("ul.book_menu");
+        let $chul = $("<ul class=''></ul>");
+        editor.setValue(data.book_data[0].content)
+        choiceIndex = data.book_data[0].contentIndex;
+        
+        $(data.book_data).each(function (index) {
+            let $li = $("<li class=''>"+this.title+"</li>");
+            $li.on('click', function() {
+              $("#wrapper").removeClass("toggled");
+              editor.setValue(data.book_data[index].content)
+              choiceIndex = data.book_data[index].contentIndex;
+            });
+            if (index == 0) {
+                $ul.append($li);
+            } else if (data.book_data.length-1 == index) {
+                $ul.append($chul);
+            } else if (data.book_data[index].menuNum != data.book_data[index-1].menuNum) {
+                $ul.append($chul);    
+                $ul.append($li);
+                $chul = $("<ul class=''></ul>");
+            } else {
+                $chul.append($li);
+            }
+        });
+      } 
+    });
+});
+</script>
