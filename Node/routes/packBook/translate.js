@@ -18,7 +18,7 @@ router.get('/add',(req, res, next) => {
         let db = new sqlite3.Database(bookDBPath);
 
         query.selectBookReservationByIsbn(db, req.query.isbn, (row) => {
-            if (row != null) {
+            if (row == null) {
                 let orderNum = 0
                 if (req.query.orderNum != null) {
                     orderNum = req.query.orderNum
