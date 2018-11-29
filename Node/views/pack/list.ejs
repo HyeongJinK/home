@@ -30,7 +30,9 @@
 </style>
 
 <script>
+console.log("test")
     $(document).ready(function () {
+        console.log("test")
         const rows = 20;
 
         $("button.searchBt").click(function() {
@@ -118,6 +120,7 @@
             $.getJSON('/pack/list', {"pageNum" : pageNum , "rowNum" : rowNum, "searchText" : searchText}, function (data) {
                 //테이블 그리기
                 //drawTable(data);
+                console.log(data.length)
                 drawCard(data);
                 //페이징
                 drawPagination(data, pageNum, rowNum, searchText);

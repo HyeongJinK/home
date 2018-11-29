@@ -24,4 +24,4 @@ function translateSchedule(isbn) {
     }, isbn, 0)
 }
 
-translateSchedule("9781788475709")
+translateSchedule("9781788831147")
