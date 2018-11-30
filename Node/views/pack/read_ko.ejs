@@ -15,22 +15,28 @@
 }
 
 #wrapper.toggled {
-  padding-left: 400px;
+  padding-left: 200px;
 }
 
 #sidebar-wrapper {
   z-index: 1000;
   position: fixed;
+  top : 0;
   left: 250px;
   width: 0;
   height: 100%;
   margin-left: -250px;
   overflow-y: auto;
-  background: #000;
+  background: #3a3633;
+  color : #c0bbb7;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+
+ul.book_menu>li.subTitle {
+  color : #57889c;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -53,7 +59,7 @@
     padding-left: 0;
   }
   #wrapper.toggled {
-    padding-left: 400px;
+    padding-left: 200px;
   }
   #sidebar-wrapper {
     width: 0;
@@ -153,12 +159,12 @@ $(document).ready(function () {
               choiceIndex = data.book_data[index].contentIndex;
             });
             if (index == 0) {
-                $ul.append($li);
+                $ul.append($li.addClass("subTitle"));
             } else if (data.book_data.length-1 == index) {
                 $ul.append($chul);
             } else if (data.book_data[index].menuNum != data.book_data[index-1].menuNum) {
                 $ul.append($chul);    
-                $ul.append($li);
+                $ul.append($li.addClass("subTitle"));
                 $chul = $("<ul class=''></ul>");
             } else {
                 $chul.append($li);

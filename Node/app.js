@@ -14,6 +14,7 @@ const wikiRouter = require('./routes/wiki/wiki');
 const youtubeRouter = require('./routes/youtube/youtube');
 const boardRouter = require('./routes/board/board');
 const schedule = require('./routes/packBook/schedule');
+const templateRouter = require('./routes/template');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('/wiki', wikiRouter);
 app.use('/youtube', youtubeRouter);
 app.use('/md', mdRouter);
 app.use('/board', boardRouter);
+app.use('/template', templateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
