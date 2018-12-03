@@ -4,8 +4,8 @@ const bookDBPath = 'db/books.db';
 
 
 const translate = require('./translate');
-const query = require('./query');
-const papago = require('./papago');
+const query = require('./module/query');
+const papago = require('./module/papago');
 
 function translateSchedule() {
     let db = new sqlite3.Database(bookDBPath);

@@ -1,10 +1,7 @@
-const translate = require('./translate');
-var query = require('./query');
+var query = require('./module/query');
 var express = require('express');
 var sqlite3 = require('sqlite3').verbose();
 var router = express.Router();
-
-router.use('/translate', translate);
 
 const bookDBPath = 'db/books.db';
 

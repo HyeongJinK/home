@@ -3,7 +3,7 @@ var sqlite3 = require('sqlite3').verbose();
 const bookDBPath = 'db/books.db';
 
 const query = require('../query/contentGoogle');
-const google = require('./google_before');
+const google = require('./module/google_before');
 
 function translateSchedule(isbn) {
     let db = new sqlite3.Database(bookDBPath);

@@ -11,9 +11,8 @@
 └───────────────────────── second (0 - 59, OPTIONAL)
 
  */
-const translate = require('./translate');
-const query = require('./query');
-const papago = require('./papago');
+const query = require('./module/query');
+const papago = require('./module/papago');
 var schedule = require('node-schedule');
 var sqlite3 = require('sqlite3').verbose();
 
