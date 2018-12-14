@@ -97,6 +97,17 @@ exports.selectContentTranslateByIsbnAndContentIndex = function(db, data, callBac
   });
 }
 
+exports.insertBookIsbn = function (db, data) {
+  data.forEach(function(e) {
+    db.get("SELECT * FROM book WHERE isbn = ?", [e], (err, row) => {
+      if (row == undefined)
+        db.run("INSERT INTO book (isbn, title) VALUES (?, 'noName')", [e], function(err) {
+          console.log("insert = " +e)
+        });
+    });
+  });
+}
+
 exports.insertBookReservation = function(db, data, callBack) {
   db.run("INSERT INTO bookReservation (isbn, finish, save, orderNum) VALUES (?, ?, ?, ?)", data, function(err) {
     callBack(err);

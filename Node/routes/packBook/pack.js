@@ -1,7 +1,10 @@
 const translate = require('./translate');
-var express = require('express');
-var sqlite3 = require('sqlite3').verbose();
-var router = express.Router();
+const isbn = require('./module/isbn');
+const query = require('./module/query');
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+let router = express.Router();
+
 
 router.use('/translate', translate);
 
@@ -20,15 +23,15 @@ router.get('/list', function(req, res, next) {
   let startNum = (pageNum - 1) * rowNum;
   let searchText = req.query.searchText;
   
-  let sql = "SELECT * FROM book";
-  let countSql = "SELECT count(*) as bookCount FROM book";
+  let sql = "SELECT * FROM book where publicationDate notnull";
+  let countSql = "SELECT count(*) as bookCount FROM book where publicationDate notnull";
   let param = [];
   let countParam = [];
   if (searchText != "") {
     searchText = "%"+searchText+"%"
-    sql += " WHERE title like ?";
+    sql += " AND title like ?";
     param.push(searchText);
-    countSql += " WHERE title like ?";
+    countSql += " AND title like ?";
     countParam.push(searchText);
   }
   sql += " ORDER BY publicationDate desc LIMIT ?, ?"
@@ -41,6 +44,21 @@ router.get('/list', function(req, res, next) {
     });  
   });	 
   db.close();
+});
+
+router.get('/newisbn', function (req, res, next) {
+  let isbnNum = req.query.isbnNum
+  if (isbnNum == undefined) { isbnNum = 200 }
+  let db = new sqlite3.Database(bookDBPath);
+  let isbnArr = isbn.getIsbn(isbnNum)
+  
+  query.insertBookIsbn(db, isbnArr);
+  res.send({"isbn" : isbnArr});
+  db.close();
+});
+
+router.get('/getNullTitle', function (res, res, next) {
+
 });
 
 /**
@@ -57,5 +75,6 @@ router.get('/list/:isbn', function(req, res,next) {
   });
   db.close();
 });
+
 
 module.exports = router;
