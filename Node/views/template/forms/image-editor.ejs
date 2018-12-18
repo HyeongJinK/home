@@ -1,0 +1,349 @@
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="alert alert-danger hidden-lg hidden-md hidden-sm">
+                <b>Please note:</b>
+                This plugin is non-responsive
+            </div>
+
+            <!-- Widget ID (each widget will need unique ID)-->
+
+            <div class="jarviswidget jarviswidget-sortable" id="wid-id-0" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" role="widget" style="">
+                <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+                -->
+                <header role="heading">
+                    <span class="widget-icon"> <i class="fa fa-file-image-o txt-color-darken"></i> </span>
+                    <h2 class="hidden-xs hidden-sm">jcrop </h2>
+
+                    <ul class="nav nav-tabs pull-right in" id="myTab">
+                        
+                        <li class="active">
+                            <a data-toggle="tab" href="#s1"><i class="fa fa-crop text-success"></i> <span class="hidden-mobile hidden-tablet">API</span></a>
+                        </li>
+                        
+                        <li>
+                            <a data-toggle="tab" href="#s2"><i class="fa fa-crop text-primary"></i> <span class="hidden-mobile hidden-tablet">Default</span></a>
+                        </li>
+
+                        <li>
+                            <a data-toggle="tab" href="#s3"><i class="fa fa-crop text-warning"></i> <span class="hidden-mobile hidden-tablet">Basic</span></a>
+                        </li>
+
+                        <li>
+                            <a data-toggle="tab" href="#s4"><i class="fa fa-crop text-danger"></i> <span class="hidden-mobile hidden-tablet">Aspect Ratio</span></a>
+                        </li>
+
+                        <li>
+                            <a data-toggle="tab" href="#s5"><i class="fa fa-crop txt-color-purple"></i> <span class="hidden-mobile hidden-tablet">Animations</span></a>
+                        </li>
+
+                        <li>
+                            <a data-toggle="tab" href="#s6"><i class="fa fa-crop txt-color-pink"></i> <span class="hidden-mobile hidden-tablet">Styling</span></a>
+                        </li>
+
+                    </ul>
+
+                    <span class="jarviswidget-loader"><i class="fa fa-refresh fa-spin"></i></span>
+                </header>
+
+                <!-- widget div-->
+                <div role="content">
+                    <!-- widget edit box -->
+
+                    <div class="widget-body">
+                        <!-- content -->
+                        <div id="myTabContent" class="tab-content">
+
+                            <!-- new tab: API interface -->
+                            <div class="tab-pane fade clearfix active in" id="s1">
+
+                                <h4 class="margin-bottom-10">API Interface — real-time API example</h4>
+                                
+                                <div class="alert alert-info">
+                                    <b>Experimental shader active.</b>
+                                    Jcrop now includes a shading mode that facilitates building
+                                    better transparent Jcrop instances. The experimental shader is less
+                                    robust than Jcrop's default shading method and should only be
+                                    used if you require this functionality.
+                                    <br>
+                                    View jcrop's documentation by going to: <a href="http://deepliquid.com/content/Jcrop.html" target="_blank">http://deepliquid.com/content/Jcrop.html</a>
+                                </div>
+                                
+                                <img src="img/superbox/superbox-full-7.jpg" id="target-5" alt="[Jcrop Example]" class="pull-left" />
+        
+                                <div class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options">
+                                    
+                                    <fieldset>
+
+                                        <legend>
+                                            Option Toggles
+                                        </legend>										
+
+                                        <span class="requiresjcrop">
+                                            <button id="setSelect" class="btn btn-default btn-sm">
+                                                setSelect
+                                            </button>
+                                            <button id="animateTo" class="btn btn-default btn-sm">
+                                                animateTo
+                                            </button>
+                                            <button id="release" class="btn btn-default btn-sm">
+                                                Release
+                                            </button>
+                                            <button id="disable" class="btn btn-default btn-sm">
+                                                Disable
+                                            </button> 
+                                        </span>
+                                        <button id="enable" class="btn btn-default btn-sm" style="display:none;">
+                                            Re-Enable
+                                        </button>
+                                        <button id="unhook" class="btn btn-default btn-sm">
+                                            Destroy!
+                                        </button>
+                                        <button id="rehook" class="btn btn-default btn-sm" style="display:none;">
+                                            Attach Jcrop
+                                        </button>
+                                    </fieldset>
+                                    
+                                    <fieldset class="optdual requiresjcrop">
+                                        <legend>
+                                            Option Toggles
+                                        </legend>
+                                        <div class="optlist offset">
+                                            <label class="margin-top-0">
+                                              <input type="checkbox" class="checkbox style-0" id="ar_lock">
+                                              <span>Aspect ratio</span>
+                                            </label>
+                                            
+                                            <label class="">
+                                              <input type="checkbox" class="checkbox style-0" id="size_lock">
+                                              <span>minSize/maxSize setting</span>
+                                            </label>
+                                        </div>
+                                        <div class="optlist">
+                                            <label class="margin-top-0">
+                                              <input type="checkbox" class="checkbox style-0" id="can_click">
+                                              <span>Allow new selections</span>
+                                            </label>
+                                            
+                                            <label class="">
+                                              <input type="checkbox" class="checkbox style-0" id="can_move">
+                                              <span>Selection can be moved</span>
+                                            </label>
+                                            
+                                            <label class="">
+                                              <input type="checkbox" class="checkbox style-0" id="can_size">
+                                              <span>Resizable selection</span>
+                                            </label>
+
+                                        </div>
+                                    </fieldset>
+        
+                                    <fieldset class="requiresjcrop changeImages">
+                                        <legend>
+                                            Change Image
+                                        </legend>
+                                        <div class="btn-group">
+                                            <button class="btn btn-default" id="img2">
+                                                Lego
+                                            </button>
+                                            <button class="btn btn-default active" id="img1">
+                                                Breakdance
+                                            </button>
+                                            <button class="btn btn-default" id="img3">
+                                                Dragon Fly
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                
+                                </div>	
+
+                            </div>
+                            <!-- end s1 tab pane -->
+
+                            <!-- new tab: Default -->
+                            <div class="tab-pane clearfix fade" id="s2">
+
+                                <h4 class="margin-bottom-10">Default Behaviour</h4>
+
+                                <div class="alert alert-info">
+                                    <b>This example demonstrates the default behavior of Jcrop.</b>
+                                    <br />
+                                    Since no event handlers have been attached it only performs
+                                    the cropping behavior.
+                                </div>
+
+                                <img src="img/superbox/superbox-full-11.jpg" id="target" alt="[Jcrop Example]" />
+
+                            </div>
+                            <!-- end s1 tab pane -->
+
+                            <!-- new tab: Basic handler -->
+                            <div class="tab-pane clearfix fade" id="s3">
+
+                                <h4 class="margin-bottom-10">Basic Handler — basic form integration</h4>
+
+                                <div class="alert alert-info">
+                                    <b>An example with a basic event handler.</b> Here we've tied
+                                    several form values together with a simple event handler invocation.
+                                    The result is that the form values are updated in real-time as
+                                    the selection is changed using Jcrop's <em>onChange</em> handler.
+                                </div>
+
+                                <!-- This is the image we're attaching Jcrop to -->
+                                <img src="img/superbox/superbox-full-10.jpg" id="target-2" alt="[Jcrop Example]" />
+
+                                <!-- This is the form that our event handler fills -->
+                                <form id="coords"
+                                class="coords margin-top-10"
+                                onsubmit="return false;"
+                                action="http://example.com/post.php">
+
+                                    <div class="inline-labels">
+                                        <label>X1
+                                            <input type="text" size="4" id="x1" name="x1" />
+                                        </label>
+                                        <label>Y1
+                                            <input type="text" size="4" id="y1" name="y1" />
+                                        </label>
+                                        <label>X2
+                                            <input type="text" size="4" id="x2" name="x2" />
+                                        </label>
+                                        <label>Y2
+                                            <input type="text" size="4" id="y2" name="y2" />
+                                        </label>
+                                        <label>W
+                                            <input type="text" size="4" id="w" name="w" />
+                                        </label>
+                                        <label>H
+                                            <input type="text" size="4" id="h" name="h" />
+                                        </label>
+                                    </div>
+                                </form>
+
+                            </div>
+                            <!-- end s2 tab pane -->
+
+                            <!-- new tab: Aspect ratio -->
+                            <div class="tab-pane clearfix fade" id="s4">
+
+                                <h4 class="margin-bottom-10">Aspect Ratio w/ Preview Pane — nice visual example</h4>
+
+                                <div class="alert alert-info">
+                                    <b>An example implementing a preview pane.</b>
+                                    Obviously the most visual demo, the preview pane is accomplished
+                                    entirely outside of Jcrop with a simple jQuery-flavored callback.
+                                    This type of interface could be useful for creating a thumbnail
+                                    or avatar. The onChange event handler is used to update the
+                                    view in the preview pane.
+                                </div>
+
+                                <img src="img/superbox/superbox-full-9.jpg" id="target-3" alt="[Jcrop Example]" />
+
+                            </div>
+                            <!-- end s3 tab pane -->
+
+                            <!-- new tab: animation/transitions -->
+                            <div class="tab-pane clearfix fade" id="s5">
+
+                                <h4 class="margin-bottom-10">Animation/Transitions — animation/fading demo</h4>
+
+                                <div class="alert alert-info">
+                                    <b>Experimental shader active.</b>
+                                    Jcrop now includes a shading mode that facilitates building
+                                    better transparent Jcrop instances. The experimental shader is less
+                                    robust than Jcrop's default shading method and should only be
+                                    used if you require this functionality.
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+
+                                        <img src="img/superbox/superbox-full-7.jpg" id="target-4" alt="Jcrop Image" class="pull-left" />
+
+            
+                                        <div id="interface" class="pull-left padding-gutter padding-top-0 padding-bottom-0">
+                                            <p>
+                                                <label>
+                                                  <input type="checkbox" class="checkbox style-0" id="fadetog">
+                                                  <span>Enable fading (bgFade: true)</span>
+                                                </label>
+                                            </p>
+                                            <p>
+                                            <label>
+                                              <input type="checkbox" class="checkbox style-0" id="shadetog">
+                                              <span>Use experimental shader (shade: true)</span>
+                                            </label>
+                                            </p>
+                                        
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- end s4 tab pane -->
+
+                            <!-- new tab: Styling -->
+                            <div class="tab-pane fade clearfix padding-10 no-padding-bottom" id="s6">
+
+                                <h4 class="margin-bottom-10">Styling Example — style Jcrop dynamically with CSS</h4>
+
+                                <img src="img/superbox/superbox-full-16.jpg" id="target-6" alt="[Jcrop Example]" />
+        
+                                <div class="pull-left pull-left padding-gutter padding-top-0 padding-bottom-0">
+                                    <fieldset>
+                                        <legend>
+                                            Manipulate classes
+                                        </legend>
+                                        <div class="btn-group" id="buttonbar">
+                                            <button class="btn btn-default active" data-setclass="jcrop-light" id="radio1">
+                                                jcrop-light
+                                            </button>
+                                            <button class="btn btn-default" data-setclass="jcrop-dark" id="radio2">
+                                                jcrop-dark
+                                            </button>
+                                            <button class="btn btn-default" data-setclass="jcrop-normal" id="radio3">
+                                                normal
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                            </div>
+                            <!-- end s6 tab pane -->
+
+                        </div>
+
+                        <!-- end content -->
+                    </div>
+
+                </div>
+                <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <!-- end row -->
+
+</section>
