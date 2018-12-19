@@ -33,3 +33,53 @@ exports.getIsbn = function(allBookCount) {
   //console.log(isbnArray);
   return isbnArray;
 }
+
+exports.downBookContent = function(user, isbn) {
+  let menuUrl = "https://www.packtpub.com/mapt-rest/products/"+isbn+"/metadata";
+  let menuData = request("GET", menuUrl);
+  let menuParserData = JSON.parse(menuData.getBody());
+
+  if (menuParserData.data.title.indexOf("[Video]") == -1) {
+		if (menuParserData.status === 'success' && menuParserData.data.earlyAccess == false) {
+			
+			// console.log(mParserData.data.imageUrl) // 이미지
+			menuParserData.data.tableOfContents.forEach(element => {
+				let parentID = element.id
+				let baseContentUrl = "https://www.packtpub.com/mapt-rest/users/me/products/"+isbn+"/chapters/"+parentID;
+				let contentUrl, contentData, contentParserData;
+				
+				element.children.forEach(element => {
+					if (parentID != element.id) {
+						contentUrl = baseContentUrl + "/sections/" + element.id
+					} else {
+						contentUrl = baseContentUrl;
+					}
+
+					contentData = request("GET", contentUrl, {
+						headers: {
+							"Authorization" : user
+						}
+					});
+
+					if (contentData.getBody().toString('utf-8') != "") {
+						contentParserData = JSON.parse(contentData.getBody().toString('utf-8'));
+
+						if (contentParserData.status === 'success') {
+							if (contentParserData.data.entitled) {
+                //contentParserData.data.content
+								//fs.writeFileSync(bookPath+"/"+parentID+"_"+element.index+"_"+replace(element.title)+".html", contentParserData.data.content);
+								console.log(parentID+"_"+element.index+"_"+element.title)
+								//sleep(200);
+							} else {
+								//fs.writeFileSync(bookPath+"/"+parentID+"_"+element.index+"_"+replace(element.title)+"_demo.txt", contentParserData.data.content);
+								console.log(parentID+"_"+element.index+"_"+element.title+"_demo")
+							}
+						}
+					} else {
+						console.log("error :" +parentID+"_"+element.index+"_"+element.title)
+					} 
+				})
+			});    
+		}
+	}
+}
