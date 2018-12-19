@@ -1,5 +1,4 @@
 const translate = require('./translate');
-const isbn = require('./module/isbn');
 const query = require('./module/query');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
@@ -46,20 +45,7 @@ router.get('/list', function(req, res, next) {
   db.close();
 });
 
-router.get('/newisbn', function (req, res, next) {
-  let isbnNum = req.query.isbnNum
-  if (isbnNum == undefined) { isbnNum = 200 }
-  let db = new sqlite3.Database(bookDBPath);
-  let isbnArr = isbn.getIsbn(isbnNum)
-  
-  query.insertBookIsbn(db, isbnArr);
-  res.send({"isbn" : isbnArr});
-  db.close();
-});
 
-router.get('/getNullTitle', function (res, res, next) {
-
-});
 
 /**
  * read 

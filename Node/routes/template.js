@@ -146,7 +146,7 @@ router.get('/widgets', function(req, res, next) {
 router.get('/cool_features/calendar', function(req, res, next) {
     res.render('template/cool_features/calendar', { menu: ['템플릿', 'Cool Features', 'Calendar'] });
 });
-router.get('/cool_features/app_layout', function(req, res, next) {
+router.get('/cool_features/gmap_xml', function(req, res, next) {
     res.render('template/cool_features/gmap_xml', { menu: ['템플릿', 'Cool Features', 'GMap Skins'] });
 });
 /**
