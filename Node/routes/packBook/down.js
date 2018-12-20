@@ -15,6 +15,13 @@ router.get('/newisbn', function (req, res, next) {
     db.close();
 });
   
-router.get('/getNullTitle', function (res, res, next) {
+router.get('/getNullTitle', function (req, res, next) {
 
 });
+
+router.get('/test', function (req, res, next) {
+    console.log(down.downBookContent().length)
+    //console.log(down.downBookContent()[0])
+});
+
+module.exports = router;

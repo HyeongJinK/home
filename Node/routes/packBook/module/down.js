@@ -38,6 +38,7 @@ exports.downBookContent = function(user, isbn) {
   let menuUrl = "https://www.packtpub.com/mapt-rest/products/"+isbn+"/metadata";
   let menuData = request("GET", menuUrl);
   let menuParserData = JSON.parse(menuData.getBody());
+  let contents = new Array();
 
   if (menuParserData.data.title.indexOf("[Video]") == -1) {
 		if (menuParserData.status === 'success' && menuParserData.data.earlyAccess == false) {
@@ -66,6 +67,7 @@ exports.downBookContent = function(user, isbn) {
 
 						if (contentParserData.status === 'success') {
 							if (contentParserData.data.entitled) {
+                contents.push(contentParserData.data.content);
                 //contentParserData.data.content
 								//fs.writeFileSync(bookPath+"/"+parentID+"_"+element.index+"_"+replace(element.title)+".html", contentParserData.data.content);
 								console.log(parentID+"_"+element.index+"_"+element.title)
@@ -77,9 +79,11 @@ exports.downBookContent = function(user, isbn) {
 						}
 					} else {
 						console.log("error :" +parentID+"_"+element.index+"_"+element.title)
-					} 
-				})
+          } 
+        });
 			});    
 		}
-	}
+  }
+  
+  return contents;
 }

@@ -1,0 +1,46 @@
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>번역 예약 현황</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body">                        
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>isbn</th>
+                                        <th>완료</th>
+                                        <th>진행상황</th>
+                                        <th>우선도</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trformTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+<script>
+    $(document).ready(function () {
+        $.getJSON('/pack/translate/list', {}, function (data) {
+            data.book.forEach(element => {
+                let $tr = $("<tr></tr>");
+                $tr.append($("<td></td>").text(element.isbn));
+                $tr.append($("<td></td>").text(element.finish));
+                $tr.append($("<td></td>").text(element.save));
+                $tr.append($("<td></td>").text(element.orderNum));
+                $("#trformTable").append($tr);
+            });
+        });
+    });
+</script>

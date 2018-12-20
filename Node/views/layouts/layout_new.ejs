@@ -110,7 +110,9 @@
 			<div id="content">
 				<div class="row">
 					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-						<h1 class="page-title txt-color-blueDark"><i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span></h1>
+						<h1 class="page-title txt-color-blueDark">
+							<!-- <i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span><span>> My Dashboard</span> -->
+						</h1>
 					</div>
 				</div>
 				
@@ -211,7 +213,21 @@
 		
 		<!-- Full Calendar -->
 		<script src="/js/plugin/moment/moment.min.js"></script>
-        <script src="/js/plugin/fullcalendar/fullcalendar.min.js"></script>
+		<script src="/js/plugin/fullcalendar/fullcalendar.min.js"></script>
+		<!-- 리본 -->
+		<script>
+		let menus = "<%= menu %>"
+		let menu = menus.split(",");
+		$("h1.page-title").html("<i class='fa-fw fa fa-home'></i>"+menu[0])
+		menu.forEach(function(data, i) {
+			let $li = $("<li></li>").text(data);
+			$("ol.breadcrumb").append($li);
+			let $span = $("<span></span>").text(" > "+data);
+			if (i != 0) {
+				$("h1.page-title").append($span);
+			}
+		});
+		</script>
         <%- script %>
 	</body>
 </html>

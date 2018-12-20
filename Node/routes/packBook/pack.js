@@ -1,4 +1,5 @@
 const translate = require('./translate');
+const down = require('./down');
 const query = require('./module/query');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
@@ -6,12 +7,13 @@ let router = express.Router();
 
 
 router.use('/translate', translate);
+router.use('/down', down);
 
 //CREATE TABLE `contentTranslate` ( `isbn` TEXT, `menuNum` TEXT, `contentIndex` INTEGER, `title` TEXT, `content` TEXT, PRIMARY KEY(`isbn`,`contentIndex`) )
 const bookDBPath = 'db/books.db';
 
 router.get('/', function(req, res, next) {
-  res.render('pack/list', {});
+  res.render('pack/list', { menu: ['PackPub', '원서'] });
 });
 
 router.get('/list', function(req, res, next) {
@@ -45,6 +47,9 @@ router.get('/list', function(req, res, next) {
   db.close();
 });
 
+router.get('/trform', function(req, res, next) {
+  res.render('pack/trform', { menu: ['PackPub', '번역 예약'] });
+});
 
 
 /**

@@ -7,8 +7,6 @@ const google = require('./module/google_before');
 
 const bookDBPath = 'db/books.db';
 
-module.exports = router;
-
 router.get('/', function(req, res, next) {
     res.render('pack/list', {});
 });
@@ -126,3 +124,4 @@ router.get('/down', function(req, res, next) {
     res.render('pack/down', {});
 });
 
+module.exports = router;
