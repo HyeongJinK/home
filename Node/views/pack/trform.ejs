@@ -4,7 +4,7 @@
             <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                    <h2>Form Grid </h2>
+                    <h2>번역 예약 추가</h2>
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -13,23 +13,21 @@
 
                         <form class="smart-form">
                             <header>
-                                번역 예약 추가
+                                ISBN 입력
                             </header>
 
                             <fieldset>
                                 <section>
-                                    <label class="input">
-                                        <input type="text" placeholder="12/12">
+                                    <label class="input" id="isbnAddLabel">
+                                        <input type="text" placeholder="" id="isbnAddText">
                                     </label>
+                                    <div class="note note-error" id="isbnAdderror"></div>
                                 </section>
                             </fieldset>
 
                             <footer>
-                                <button type="submit" class="btn btn-primary">
-                                    Submit
-                                </button>
-                                <button type="button" class="btn btn-default" onclick="window.history.back();">
-                                    Back
+                                <button type="button" class="btn btn-primary" id="isbnAddBtn">
+                                    추가
                                 </button>
                             </footer>
                         </form>
@@ -73,15 +71,45 @@
 
 <script>
     $(document).ready(function () {
-        $.getJSON('/pack/translate/list', {}, function (data) {
-            data.book.forEach(element => {
-                let $tr = $("<tr></tr>");
-                $tr.append($("<td></td>").text(element.isbn));
-                $tr.append($("<td></td>").text(element.finish));
-                $tr.append($("<td></td>").text(element.save));
-                $tr.append($("<td></td>").text(element.orderNum));
-                $("#trformTable").append($tr);
+        function tablePrint() {
+            $.getJSON('/pack/translate/list', {}, function (data) {
+                $("#trformTable").html("")
+                data.book.forEach(element => {
+                    let $tr = $("<tr></tr>");
+                    $tr.append($("<td></td>").text(element.isbn));
+                    $tr.append($("<td></td>").text(element.finish));
+                    $tr.append($("<td></td>").text(element.save));
+                    $tr.append($("<td></td>").text(element.orderNum));
+                    $("#trformTable").append($tr);
+                });
             });
+        }
+        tablePrint();
+        $("button#isbnAddBtn").click(function() {
+            $.ajax({
+                url : '/pack/translate/add',
+                method : 'post',
+                data : {
+                    isbn : $("#isbnAddText").val(),
+                },
+                success : function (data) {
+                    if (data.result == 0) {
+                        $("#isbnAddText").val("")
+                        $("label#isbnAddLabel").removeClass("state-error")
+                        $("label#isbnAddLabel").addClass("state-success")
+                        $("div#isbnAdderror").text(data.message);
+                        tablePrint();
+                    } else {
+                        $("label#isbnAddLabel").addClass("state-error")
+                        $("label#isbnAddLabel").removeClass("state-success")
+                        $("div#isbnAdderror").text(data.message);
+                    }
+                },
+                error : function (err) {
+                    console.log(err);
+                }
+            });
+            
         });
     });
 </script>

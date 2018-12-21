@@ -34,6 +34,11 @@ exports.commonSelect = function(db, sql, data, callBack) {
   });
 }
 
+exports.selectBookByIsbn = function(db, isbn, callBack) {
+  db.get("SELECT * FROM book WHERE isbn = ?", [isbn], (err, row) => {
+    callBack(row);
+  });
+}
 
 exports.selectBookReservationByAll = function(db, callBack) {
   db.all("SELECT * FROM bookReservation ORDER BY idx asc", [], function(err, rows) {

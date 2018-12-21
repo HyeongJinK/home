@@ -11,27 +11,36 @@ router.get('/', function(req, res, next) {
     res.render('pack/list', {});
 });
 
-router.get('/add',(req, res, next) => {
-    if (req.query.isbn != null) {
+router.post('/add',(req, res, next) => {
+    let isbn = req.body.isbn;
+    let orderNum = 0
+    if (req.body.orderNum != null) {
+        orderNum = req.body.orderNum
+    }
+    if (isbn != null && isbn != "") {
         let db = new sqlite3.Database(bookDBPath);
-
-        query.selectBookReservationByIsbn(db, req.query.isbn, (row) => {
+        
+        query.selectBookReservationByIsbn(db, isbn, (row) => {
             if (row == null) {
-                let orderNum = 0
-                if (req.query.orderNum != null) {
-                    orderNum = req.query.orderNum
-                }
-                query.insertBookReservation(db, [req.query.isbn, 0, 0, orderNum], () => {
-                    res.send({"result": "sucess"})
-                });
-                db.close();
+                query.selectBookByIsbn(db, isbn, (row) => {
+                    if (row == null) {
+                        db.close();
+                        res.send({result: -1, message : "없는 책입니다."})
+                    } else {
+                        query.insertBookReservation(db, [isbn, 0, 0, orderNum], () => {
+                            res.send({result: 0, message: "success"})
+                        });
+                        db.close();
+                    }
+                });    
             } else {
                 db.close();
-                res.send({"result": "overlap"})
-            }
+                res.send({result: -1, message : "이미 예약된 책입니다."})
+            } 
         });
     } else {
-        res.send({"result": "isbn param nil"})
+        db.close();
+        res.send({result: -1, message: "isbn 파라미터가 없습니다."})
     }
 });
 
