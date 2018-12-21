@@ -56,7 +56,7 @@ router.get('/trform', function(req, res, next) {
  * read 
  */
 router.get('/:isbn', function(req, res,next) {
-  res.render('pack/read', {"isbn" : req.params.isbn})
+  res.render('pack/read', {"isbn" : req.params.isbn, menu: ['PackPub', '원서'] })
 });
 
 router.get('/list/:isbn', function(req, res,next) {
