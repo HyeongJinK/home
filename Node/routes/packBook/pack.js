@@ -16,6 +16,10 @@ router.get('/', function(req, res, next) {
   res.render('pack/list', { menu: ['PackPub', '원서'] });
 });
 
+router.get('/trform', function(req, res, next) {
+  res.render('pack/trform', { menu: ['PackPub', '번역 예약'] });
+});
+
 router.get('/list', function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
   
@@ -45,10 +49,6 @@ router.get('/list', function(req, res, next) {
     });  
   });	 
   db.close();
-});
-
-router.get('/trform', function(req, res, next) {
-  res.render('pack/trform', { menu: ['PackPub', '번역 예약'] });
 });
 
 

@@ -41,7 +41,7 @@ exports.selectBookByIsbn = function(db, isbn, callBack) {
 }
 
 exports.selectBookReservationByAll = function(db, callBack) {
-  db.all("SELECT * FROM bookReservation ORDER BY idx asc", [], function(err, rows) {
+  db.all("SELECT * FROM bookReservation ORDER BY idx desc", [], function(err, rows) {
     if(err)
       console.log(err);
     callBack(rows);

@@ -117,12 +117,9 @@ router.post('/translate/:isbn/:contentIndex', (req, res, next) => {
         , req.query.content]
     , (err) => {
         if (err) {
-
         }
-
         res.send({"id" : this.lastID});
     });
-
     db.close();
 });
 
