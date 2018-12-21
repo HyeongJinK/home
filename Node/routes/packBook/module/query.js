@@ -34,9 +34,31 @@ exports.commonSelect = function(db, sql, data, callBack) {
   });
 }
 
+exports.selectBookByAll = function(db, callBack) {
+  db.all("SELECT * FROM book ORDER BY publicationDate", [], function(err, rows) {
+    if (err)
+      console.log(err)
+    callBack(rows);
+  });
+}
+
 exports.selectBookByIsbn = function(db, isbn, callBack) {
   db.get("SELECT * FROM book WHERE isbn = ?", [isbn], (err, row) => {
     callBack(row);
+  });
+}
+
+exports.selectBookByNotTranslate = function(db, callBack) {
+  db.all("SELECT isbn FROM book WHERE isbn NOT IN (SELECT isbn FROM bookTranslate)", [], function(err, rows) {
+    if (err)
+      console.log(err)
+    callBack(rows);
+  }); 
+}
+
+exports.selectBookByNotData = function(db, callBack) {
+  db.all("", [], (err, rows) => {
+
   });
 }
 
@@ -58,22 +80,6 @@ exports.selectBookReservationByIsbn = function(db, isbn, callBack) {
   db.get("SELECT * FROM bookReservation WHERE isbn = ?", [isbn], (err, row) => {
     callBack(row);
   });
-}
-
-exports.selectBookByAll = function(db, callBack) {
-  db.all("SELECT * FROM book ORDER BY publicationDate", [], function(err, rows) {
-    if (err)
-      console.log(err)
-    callBack(rows);
-  });
-}
-
-exports.selectBookByNotTranslate = function(db, callBack) {
-  db.all("SELECT isbn FROM book WHERE isbn NOT IN (SELECT isbn FROM bookTranslate)", [], function(err, rows) {
-    if (err)
-      console.log(err)
-    callBack(rows);
-  }); 
 }
 
 exports.selectContentByIsbnAndContentIndex = function(db, callBack, isbn, save) {
