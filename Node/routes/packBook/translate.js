@@ -1,6 +1,6 @@
 const express = require('express');
 const query = require('./module/query');
-const contentGoogle = require('../query/contentGoogle');
+const contentGoogle = require('./query/contentGoogle');
 const sqlite3 = require('sqlite3').verbose();
 const router = express.Router();
 const google = require('./module/google_before');

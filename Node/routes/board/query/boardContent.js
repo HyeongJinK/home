@@ -1,4 +1,12 @@
-exports.findbyBoardIdx = function(db, data, callBack) {
+exports.findByAll = (db, data, callBack) => {
+    db.all("SELECT * FROM boardContent ORDER BY idx DESC LIMIT ?, ?", data, function(err, rows) {
+        if (err)
+        console.log(err);
+        callBack(rows);
+    }); 
+}
+
+exports.findbyBoardIdx = (db, data, callBack) => {
     db.all("SELECT * FROM boardContent WHERE boardIdx = ? ORDER BY idx DESC LIMIT ?, ?", data, function(err, rows) {
         if (err)
         console.log(err);

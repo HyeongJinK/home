@@ -4,6 +4,10 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 let router = express.Router();
 
+router.get('/', function(req, res, next) {
+    res.render('pack/down', { menu: ['PackPub', '스크래핑'] });
+  });
+
 router.get('/newisbn', function (req, res, next) {
     let isbnNum = req.query.isbnNum
     if (isbnNum == undefined) { isbnNum = 200 }
@@ -16,7 +20,7 @@ router.get('/newisbn', function (req, res, next) {
 });
   
 router.get('/getNullTitle', function (req, res, next) {
-
+    
 });
 
 router.get('/test', function (req, res, next) {
