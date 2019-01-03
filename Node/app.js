@@ -1,20 +1,27 @@
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
+const passport = require('passport');
+require('./routes/user/module/passport')(passport);
+//라우터
 const indexRouter = require('./routes/index');
 const coreRouter = require('./routes/core');
-const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
 const youtubeRouter = require('./routes/youtube/youtube');
 const boardRouter = require('./routes/board/board');
-const schedule = require('./routes/packBook/schedule');
+//템플릿
 const templateRouter = require('./routes/template');
+//스케쥴
+const schedule = require('./routes/packBook/schedule');
+
 
 const app = express();
 
@@ -31,9 +38,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//로그인 설정
+//app.use(express.cookieParser());
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: false })); // 세션 활성화
+app.use(passport.initialize()); // passport 구동
+app.use(passport.session()); // 세션 연결
+
+//라우팅 설정
 app.use('/', indexRouter);
 app.use('/core', coreRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
 app.use('/wiki', wikiRouter);
@@ -55,7 +69,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {menu: ['에러']});
 });
 schedule.translateSchedules()
 module.exports = app;

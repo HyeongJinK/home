@@ -13,5 +13,9 @@ exports.save = (db, callBack) => {
 };
 
 exports.delete = (db, boardIdx, callBack) => {
-
+    db.run("DELETE FROM board WHERE boardIdx = ?"
+    , [boardIdx]
+    , (err) => {
+        callBack(err);
+    });
 }
