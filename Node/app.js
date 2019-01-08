@@ -9,18 +9,19 @@ const passport = require('passport');
 require('./routes/user/module/passport')(passport);
 //라우터
 const indexRouter = require('./routes/index');
-const coreRouter = require('./routes/core');
+const coreRouter = require('./routes/core/core');
 const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
-const youtubeRouter = require('./routes/youtube/youtube');
+//const youtubeRouter = require('./routes/youtube/youtube');
 const boardRouter = require('./routes/board/board');
 //템플릿
 const templateRouter = require('./routes/template');
 //스케쥴
-const schedule = require('./routes/packBook/schedule');
+require('./routes/packBook/schedule').translateSchedules();
+console.log("Server Start...");
 
 
 const app = express();
@@ -50,7 +51,7 @@ app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
 app.use('/wiki', wikiRouter);
-app.use('/youtube', youtubeRouter);
+//app.use('/youtube', youtubeRouter);
 app.use('/md', mdRouter);
 app.use('/board', boardRouter);
 app.use('/template', templateRouter);
@@ -70,5 +71,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {menu: ['에러']});
 });
-schedule.translateSchedules()
+
 module.exports = app;

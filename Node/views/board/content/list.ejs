@@ -4,7 +4,7 @@
             <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                    <h2>번역 예약 현황</h2>
+                    <h2>게시판</h2>
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -34,7 +34,7 @@
 <script>
     $(document).ready(function () {
         function tablePrint() {
-            $.getJSON('/board/content/getList', {}, function (data) {
+            $.getJSON('/board/content/list', {}, function (data) {
                 $("#trformTable").html("")
                 data.book.forEach(element => {
                     let $tr = $("<tr></tr>");

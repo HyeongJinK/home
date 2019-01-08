@@ -12,14 +12,20 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-router.get("/login", (req, res, next) => {
-    res.render('user/login', { menu: ['유저', '로그인'] });
-});
+console.log("User Route...")
 
-router.post('/login', passport.authenticate('login', {
+router.route("/login")
+.get((req, res, next) => {
+	res.render('user/login', { menu: ['유저', '로그인'] });
+}).post(passport.authenticate('login', {
     successRedirect : '/'
     , failureRedirect : '/user/login'
     //, failureFlash: true
+}));
+
+router.post('/logout', passport.authenticate('logout', {
+	successRedirect : '/'
+	, failureRedirect : '/'
 }));
 
 module.exports = router;

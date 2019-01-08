@@ -5,7 +5,7 @@ var router = express.Router();
 const bookDBPath = 'db/books.db';
 
 router.get('/', function(req, res, next) {
-  res.render('core', {menu: ['관리', 'DB'] });
+  res.render('core/core', {menu: ['관리', 'DB'] });
 });
 
 router.post('/sql', function(req, res, next) {

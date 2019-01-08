@@ -1,4 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
+var user = require('../query/user');
 
 
 module.exports = (passport) => {
@@ -9,6 +10,7 @@ module.exports = (passport) => {
     passport.deserializeUser((user, done) => { // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
         done(null, user); // 여기의 user가 req.user가 됨
     });
+
     passport.use('login', new LocalStrategy({
         usernameField : 'id',
         passwordField : 'pw',
@@ -16,17 +18,26 @@ module.exports = (passport) => {
         passReqToCallback : true 
     },
     function(req, id, password, done) { 
-        console.log(req.body);
-        console.log("faksdjf");
-        return done(null, {"id":"test"});
-        // User.findOne({ 'email' : email }, function(err, user) {
-        //     if (err)
+        return done(null, {"id" : "sadkfj"});
+        // user.findById(id, (err, row) => {
+        //     if (err) {
         //         return done(err);
-        //     if (!user)
+        //     }
+        //     if (!row) {
         //         return done(null, false, req.flash('loginMessage', '사용자를 찾을 수 없습니다.'));
-        //     if (!user.validPassword(password))
-        //         return done(null, false, req.flash('loginMessage', '비밀번호가 다릅니다.')); 
-        //     return done(null, {id:"test"});
+        //     }
+        //     if (row.password != password) {
+        //         return done(null, false, req.flash('loginMessage', '비밀번호가 다릅니다.'));
+        //     }
+        //     return done(null, row);
         // });
+    }));
+
+    passport.use('logout', new LocalStrategy({
+
+    },
+    (req, id, password, done) => {
+        console.log("logout");
+        req.session.destory();
     }));
 };

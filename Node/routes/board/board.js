@@ -13,7 +13,7 @@ function template(callFun, req, res) {
     db.close();
 }
 
-router.get("/content/list", (req, res, next) => {
+router.get("/content", (req, res, next) => {
     res.render('board/content/list', {menu: ['게시판', '목록'] })  
 });
 
@@ -21,11 +21,38 @@ router.get("/content/read", (req, res, next) => {
     res.render('board/content/read', {menu: ['게시판', '내용'] })  
 });
 
-router.get("/content/form", (req, res, next) => {
+router.route("/content/form")
+.get((req, res, next) => {
     res.render('board/content/form', {menu: ['게시판', '입력'] })  
+}).post((req, res, next) => {
+    template((db) => {
+        let idx = req.body.idx;
+
+        boardContent.save(db
+        , [idx, req.body.title, req.body.content, req.body.createDate, req.body.modifyDate, req.body.hidden]
+        , (err) => {
+
+        });
+    });
+}).put((req, res, next) => {
+    template((db) => {
+        boardContent.update(db
+            , [req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
+            , (err) => {
+                res.send({"result" : err});
+        });
+    });
+}).delete((req, res, next) => {
+    template((db) => {
+        let idx = req.body.idx;
+
+        boardContent.delete(db, idx, (err) => {
+            res.send({"result" : err});
+        })
+    });
 });
 
-router.get("/content/getList", (req, res, next) => {
+router.get("/content/list", (req, res, next) => {
     template((db) => {
         let boardIdx = req.query.boardIdx;
         let start = req.query.start;
@@ -43,38 +70,6 @@ router.get("/content/:idx", (req, res, next) => {
         boardContent.findByIdx(db, [idx], (row) => {
             res.send({"row" : row});
         });
-    });
-});
-
-router.post("/content/:idx", (req, res, next) => {
-    template((db) => {
-        let idx = req.body.idx;
-
-        boardContent.save(db
-        , [idx, req.body.title, req.body.content, req.body.createDate, req.body.modifyDate, req.body.hidden]
-        , (err) => {
-
-        });
-    });
-});
-
-router.put("/content/:idx", (req, res, next) => {
-    template((db) => {
-        boardContent.update(db
-            , [req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
-            , (err) => {
-                res.send({"result" : err});
-        });
-    });
-});
-
-router.delete("/content/:idx", (req, res, next) => {
-    template((db) => {
-        let idx = req.body.idx;
-
-        boardContent.delete(db, idx, (err) => {
-            res.send({"result" : err});
-        })
     });
 });
 
