@@ -1,0 +1,55 @@
+<script src="/js/plugin/markdown/markdown.min.js"></script>
+<script src="/js/plugin/markdown/to-markdown.min.js"></script>
+<script src="/js/plugin/markdown/bootstrap-markdown.min.js"></script>
+<section id="widget-grid" class="">
+	<div class="row">
+		<article class="col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-purple" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">	
+				<header>
+					<span class="widget-icon"> <i class="fa fa-pencil"></i> </span>
+					<h2>입력</h2>
+                </header>
+                <div>
+                        <div class="jarviswidget-editbox">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <form id="checkout-form" class="smart-form" novalidate="novalidate">
+                                <fieldset>
+                                    <section>
+                                        <label class="label">제목</label>
+                                        <label class="input">
+                                            <i class="icon-append fa fa-tag"></i>
+                                            <input type="text" name="subject" id="subject">
+                                        </label>
+                                    </section>
+                                </fieldset>
+                            </form>
+                            <textarea id="mymarkdown" class="custom-scroll">
+                            </textarea>
+                        </div>
+                    </div>
+			</div>
+		</article>
+	</div>	
+</section>
+<fieldset>
+        
+        
+    </fieldset>
+<script>
+$(document).ready(function() {
+    $("#mymarkdown").markdown({
+        autofocus:false
+        , savable:true
+        , height: "560"
+        , onShow: (e) => {}
+        , onSave: (e) => {
+            alert(e.getContent());
+        }
+        , onChange: (e) => {}
+        , onFocus: (e) => {}
+        , onBlur: (e) => {}
+        , onPreview: (e) => {}
+    })
+})
+</script>

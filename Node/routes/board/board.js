@@ -1,75 +1,72 @@
 var express = require('express');
-var sqlite3 = require('sqlite3').verbose();
+
 var boardContent = require('./query/boardContent');
 var router = express.Router();
 
-const bookDBPath = 'db/books.db';
+console.log("Board Route...");
 
-function template(callFun, req, res) {
-    let db = new sqlite3.Database(bookDBPath);
-
-    callFun(db);
-
-    db.close();
-}
-
-router.get("/content", (req, res, next) => {
+router.get("/content", (req, res) => {
     res.render('board/content/list', {menu: ['게시판', '목록'] })  
 });
 
-router.get("/content/read", (req, res, next) => {
+router.get("/content/read", (req, res) => {
     res.render('board/content/read', {menu: ['게시판', '내용'] })  
 });
 
 router.route("/content/form")
-.get((req, res, next) => {
+.get((req, res) => {
     res.render('board/content/form', {menu: ['게시판', '입력'] })  
-}).post((req, res, next) => {
-    template((db) => {
-        let idx = req.body.idx;
+}).post((req, res) => { 
+    let idx = req.body.idx;
 
-        boardContent.save(db
-        , [idx, req.body.title, req.body.content, req.body.createDate, req.body.modifyDate, req.body.hidden]
+    boardContent.save([idx, req.body.title, req.body.content, req.body.createDate, req.body.modifyDate, req.body.hidden]
+    , (err) => {
+
+    });
+}).put((req, res) => {
+    boardContent.update([req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
         , (err) => {
-
-        });
-    });
-}).put((req, res, next) => {
-    template((db) => {
-        boardContent.update(db
-            , [req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
-            , (err) => {
-                res.send({"result" : err});
-        });
-    });
-}).delete((req, res, next) => {
-    template((db) => {
-        let idx = req.body.idx;
-
-        boardContent.delete(db, idx, (err) => {
             res.send({"result" : err});
-        })
     });
-});
+}).delete((req, res) => {
+    let idx = req.body.idx;
 
-router.get("/content/list", (req, res, next) => {
-    template((db) => {
-        let boardIdx = req.query.boardIdx;
-        let start = req.query.start;
-        let rows = req.query.rows;
-        boardContent.findbyBoardIdx(db, [boardIdx, start, rows], (rows) => {
-            res.send({"list" : rows});
-        });
+    boardContent.delete(idx, (err) => {
+        res.send({"result" : err});
     })
 });
 
-router.get("/content/:idx", (req, res, next) => {
-    template((db) => {
-        let idx = req.query.idx;
+function undefinedCheck(data, def) {
+    if (data == undefined)
+        return def;
+    else
+        return data;
+}
 
-        boardContent.findByIdx(db, [idx], (row) => {
-            res.send({"row" : row});
-        });
+router.get("/content/list", (req, res) => {
+    let boardIdx = req.query.boardIdx;
+    let start = req.query.start;
+    let rows = req.query.rows;
+
+    boardIdx = undefinedCheck(boardIdx, "0");
+    start = undefinedCheck(start, "0");
+    rows = undefinedCheck(rows, "10");
+    
+    boardContent.findbyBoardIdx([boardIdx, start, rows]
+        , (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+
+        res.send({"list" : rows});
+    });
+});
+
+router.get("/content/:idx", (req, res) => {
+    let idx = req.query.idx;
+
+    boardContent.findByIdx([idx], (row) => {
+        res.send({"row" : row});
     });
 });
 
