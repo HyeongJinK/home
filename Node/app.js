@@ -1,3 +1,15 @@
+console.log("\x1b[31m", "\nApp Setting Start...")
+console.log("\x1b[32m")
+//설정파일 로드&설정
+const _ = require('lodash');
+const config = require("./config.json");
+const defaultConfig = config.development;
+const environment = process.env.NODE_ENV || 'development';
+const environmentConfig = config[environment];
+const finalConfig = _.merge(defaultConfig, environmentConfig);
+global.gConfig = finalConfig;
+
+//모듈 로드
 const createError = require('http-errors');
 const express = require('express');
 const session = require('express-session');
@@ -9,21 +21,21 @@ const passport = require('passport');
 require('./routes/user/module/passport')(passport);
 //라우터
 const indexRouter = require('./routes/index');
-const coreRouter = require('./routes/core/core');
+const systemDB = require('./routes/system/db');
 const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
 //const youtubeRouter = require('./routes/youtube/youtube');
-const boardRouter = require('./routes/board/board');
+const boardRouter = require('./routes/board/boardRoute');
 //템플릿
 const templateRouter = require('./routes/template');
 //스케쥴
 require('./routes/packBook/schedule').translateSchedules();
-console.log("Server Start...");
 
 
+//
 const app = express();
 
 // view engine setup
@@ -46,7 +58,7 @@ app.use(passport.session()); // 세션 연결
 
 //라우팅 설정
 app.use('/', indexRouter);
-app.use('/core', coreRouter);
+app.use('/core', systemDB);
 app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
@@ -73,3 +85,5 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+console.log("\x1b[31m", "\nApp Setting Finish...");
+console.log("\x1b[37m");

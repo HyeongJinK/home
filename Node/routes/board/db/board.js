@@ -1,3 +1,8 @@
+// const sqlite3 = require('sqlite3').verbose();
+// const boardQuery = require('./boardContent.json');
+
+// const bookDBPath = global.gConfig.db
+
 exports.findByAll = (db, callBack) => {
     db.all("SELECT * FROM board", [], (err, rows) => {
         callBack(rows);

@@ -29,7 +29,6 @@ router.get('/list', function(req, res, next) {
     countSql += " WHERE title like ?";
     countParam.push(searchText);
   }
-  //sql += " ORDER BY publicationDate desc LIMIT ?, ?"
   param.push(startNum);
   param.push(rowNum);
 

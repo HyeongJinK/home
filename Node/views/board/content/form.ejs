@@ -19,7 +19,7 @@
                                         <label class="label">제목</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-tag"></i>
-                                            <input type="text" name="subject" id="subject">
+                                            <input type="text" name="title" id="title">
                                         </label>
                                     </section>
                                 </fieldset>
@@ -41,9 +41,24 @@ $(document).ready(function() {
     $("#mymarkdown").markdown({
         autofocus:false
         , savable:true
-        , height: "560"
+        , height: "400"
         , onShow: (e) => {}
         , onSave: (e) => {
+            $.ajax({
+                url: "/board/content/form"
+                , method : "post"
+                , data : {
+                    idx : ""
+                    , title : ""
+                    , content: ""
+                }
+                , success : (data) => {
+
+                }
+                , error : (err) => {
+
+                }
+            });
             alert(e.getContent());
         }
         , onChange: (e) => {}

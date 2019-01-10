@@ -1,11 +1,13 @@
-var express = require('express');
-var sqlite3 = require('sqlite3').verbose();
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
+const sqlite3 = require('sqlite3').verbose();
 const bookDBPath = 'db/books.db';
 
+console.log("System DB Route...");
+
 router.get('/', function(req, res, next) {
-  res.render('core/core', {menu: ['관리', 'DB'] });
+  res.render('system/db', {menu: ['관리', 'DB'] });
 });
 
 router.post('/sql', function(req, res, next) {

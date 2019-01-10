@@ -1,0 +1,7 @@
+{
+    "development": {
+        "dbType" : "sqlite"
+        , "db": "db/books.db"
+        , "port" : 8080
+    }
+}
