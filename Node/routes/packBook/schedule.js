@@ -19,7 +19,7 @@ var sqlite3 = require('sqlite3').verbose();
 const bookDBPath = 'db/books.db';
 
 exports.translateSchedules = function() {
-    console.log("TranslateSchedules Start...");
+    console.info("TranslateSchedules Start...");
   schedule.scheduleJob('0 0 1 * * *', function() {
     translateSchedule(); 
   });

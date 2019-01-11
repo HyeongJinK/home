@@ -7,7 +7,7 @@ const google = require('./module/google_before');
 
 const bookDBPath = 'db/books.db';
 
-console.log("Translate Route...");
+console.info("Pack - Translate Route...");
 
 router.get('/', function(req, res, next) {
     res.render('pack/list', {});

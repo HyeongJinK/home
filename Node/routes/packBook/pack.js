@@ -5,7 +5,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 let router = express.Router();
 
-
+console.info("Pack Route...")
 router.use('/translate', translate);
 router.use('/down', down);
 

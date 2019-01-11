@@ -5,6 +5,8 @@ var router = express.Router();
 
 const bookDBPath = 'db/books.db';
 
+console.info("PackKo Route...")
+
 router.get('/', function(req, res, next) {
   res.render('pack/list_ko', {"menu": ['PackPub', '번역서']});
 });

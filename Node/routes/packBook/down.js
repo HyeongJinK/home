@@ -4,6 +4,8 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 let router = express.Router();
 
+console.info("Pack - Down Route...")
+
 router.get('/', function(req, res, next) {
     res.render('pack/down', { menu: ['PackPub', '스크래핑'] });
   });

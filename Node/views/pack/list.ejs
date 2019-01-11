@@ -1,37 +1,66 @@
-<div id="bookList"></div>
-<table class="table table-sm table-dark table-hover">
-    <tbody>
-    </tbody>
-</table>
+<section id="widget-grid" class="">
+    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+        <header>
+            <h2><strong>원서</strong></h2>				
+            <div class="widget-toolbar">   
+                <ul class="pagination pagination-xs">
+                </ul>
+            </div>
+        </header>
+        <div>
+            <div class="jarviswidget-editbox">   </div>
+            <div class="widget-body no-padding">
+                <div class="widget-body-toolbar">
+                    <div class="row">
+                        <div class="col-xs-9 col-sm-5 col-md-5 col-lg-5">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control" id="searchText" placeholder="Search" type="text">
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-7 col-md-7 col-lg-7 text-right">
+                            <button class="btn btn-success searchBt">
+                                <i class="fa fa-search"></i> <span class="hidden-mobile">검색</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <div id="bookRow" class="row"></div>
+        </div>
+    </div>
+</section>
 
-<div class="card-columns">
+
+<div style="visibility: hidden;">
+<div id="bookTemplate" class="col-sm-6 col-md-6 col-lg-4">
+    <div class="product-content product-wrap clearfix">
+        <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="product-image"> 
+                        <img src="/img/demo/e-comm/3.png" alt="194x228" class="img-responsive"> 
+                        <span class="tag2"></span> 
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                <div class="product-deatil">
+                    <h5 class="name">
+                        <a class="bookTitle" href="#"><span></span></a>
+                    </h5>
+                    <span class="tag1"></span> 
+                </div>
+                <div class="description">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>	
 </div>
-
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Search" id="searchText">
-  <div class="input-group-append">
-    <button class="btn btn-success searchBt" type="button">검색</button> 
-  </div>
-</div>
-
-<ul class="pagination justify-content-center">
-</ul>
-
-<style>
-.card-columns {
-    column-count: 4;
-  @include media-breakpoint-only(lg) {
-    column-count: 4;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 4;
-  }
-}
-</style>
 
 <script>
     $(document).ready(function () {
-        const rows = 20;
+        const rows = 21;
 
         $("button.searchBt").click(function() {
             getListData(1, rows, $("input#searchText").val());
@@ -57,27 +86,48 @@
             });
         }
 
-        function drawCard(data) {
-            $("div.card-columns").html("");
-            $(data.books).each(function (index) {
-                let $card = $("<div></div>");
-                $card.addClass("card").addClass("border-dark").addClass("mb-3");
-                let $cardbody = $("<div</div>");
-                
-                $cardbody.addClass("card-body").addClass("text-dark");
-                $cardbody.append("<h4 class='card-title'>"+ this.title +"</h4>");
-                $cardbody.append("<h6 class='card-subtitle mb-2 text-muted'>"+ this.publicationDate +"</h6>");
-                $cardbody.append("<p class='card-text'>"+ this.description +"</p>");
+        function beforeDrawCard(data) {
+            let $card = $("<div></div>");
+            $card.addClass("card").addClass("border-dark").addClass("mb-3");
+            let $cardbody = $("<div</div>");
+            
+            $cardbody.addClass("card-body").addClass("text-dark");
+            $cardbody.append("<h4 class='card-title'>"+ this.title +"</h4>");
+            $cardbody.append("<h6 class='card-subtitle mb-2 text-muted'>"+ this.publicationDate +"</h6>");
+            $cardbody.append("<p class='card-text'>"+ this.description +"</p>");
 
-                //$card.append("<div class='card-header'>" +this.title+ "</div>");
-                $card.append("<img class='card-img-top' src='"+ this.imgUrl +"'></img>");
-                $card.append($cardbody);
+            //$card.append("<div class='card-header'>" +this.title+ "</div>");
+            $card.append("<img class='card-img-top' src='"+ this.imgUrl +"'></img>");
+            $card.append($cardbody);
+
+            let isbn = this.isbn;
+            $card.on('click', function() {
+                location.href="/pack/"+isbn
+            });
+            $("div.card-columns").append($card);
+        }
+
+        function drawCard(data) {
+            $("#bookRow").html("");
+            
+            $(data.books).each(function (index) {
+                let $clone = $("#bookTemplate").clone();
+
+                $($clone).find(".img-responsive").attr("src", this.imgUrl)
+                if (this.title.length > 40) {
+                    this.title = this.title.substring(0, 40) + "...";
+                }
+                if (this.description.length > 120) {
+                    this.description = this.description.substring(0, 110) + "...";
+                }
+                $($clone).find(".product-deatil h5 a").text(this.title).append("<span>"+ this.publicationDate +"</span>");
+                $($clone).find(".description p").text(this.description);
 
                 let isbn = this.isbn;
-                $card.on('click', function() {
-                    location.href="/pack/"+isbn
+                $($clone).on('click', function() {
+                    location.href="/pack/"+isbn;
                 });
-                $("div.card-columns").append($card);
+                $("#bookRow").append($clone);  
             });
         }
 

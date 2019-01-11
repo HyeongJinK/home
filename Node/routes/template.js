@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+console.info("Template Route...")
+
 /**
  * Dashboard
  */
