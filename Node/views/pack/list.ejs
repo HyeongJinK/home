@@ -31,7 +31,6 @@
     </div>
 </section>
 
-
 <div style="visibility: hidden;">
 <div id="bookTemplate" class="col-sm-6 col-md-6 col-lg-4">
     <div class="product-content product-wrap clearfix">
@@ -66,46 +65,6 @@
             getListData(1, rows, $("input#searchText").val());
            
         });
-
-        function drawTable(data) {
-            // let $table = $("<table></table>");
-            // $table.addClass("table table-sm table-dark table-hover")
-            // $table.append($("<tbody></tbody>");
-
-            $("table tbody").html("");
-            $(data.books).each(function (index) {
-                let $tr = $("<tr></tr>");
-                $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
-                $tr.append($("<td>" + this.title + "<br /><br />"+this.description+"</td>"));
-                $tr.append($("<td>" + this.publicationDate + "</td>"));
-                let isbn = this.isbn;
-                $tr.on('click', function() {
-                    location.href="/pack/"+isbn
-                });
-                $("table tbody").append($tr);
-            });
-        }
-
-        function beforeDrawCard(data) {
-            let $card = $("<div></div>");
-            $card.addClass("card").addClass("border-dark").addClass("mb-3");
-            let $cardbody = $("<div</div>");
-            
-            $cardbody.addClass("card-body").addClass("text-dark");
-            $cardbody.append("<h4 class='card-title'>"+ this.title +"</h4>");
-            $cardbody.append("<h6 class='card-subtitle mb-2 text-muted'>"+ this.publicationDate +"</h6>");
-            $cardbody.append("<p class='card-text'>"+ this.description +"</p>");
-
-            //$card.append("<div class='card-header'>" +this.title+ "</div>");
-            $card.append("<img class='card-img-top' src='"+ this.imgUrl +"'></img>");
-            $card.append($cardbody);
-
-            let isbn = this.isbn;
-            $card.on('click', function() {
-                location.href="/pack/"+isbn
-            });
-            $("div.card-columns").append($card);
-        }
 
         function drawCard(data) {
             $("#bookRow").html("");

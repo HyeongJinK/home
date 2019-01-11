@@ -1,86 +1,92 @@
-<div id="bookList"></div>
-<table class="table table-sm table-dark table-hover">
-    <tbody>
-    </tbody>
-</table>
+<section id="widget-grid" class="">
+    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-colorbutton="false" data-widget-togglebutton="false" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+        <header>
+            <h2><strong>번역서</strong></h2>				
+            <div class="widget-toolbar">   
+                <ul class="pagination pagination-xs">
+                </ul>
+            </div>
+        </header>
+        <div>
+            <div class="jarviswidget-editbox">   </div>
+            <div class="widget-body no-padding">
+                <div class="widget-body-toolbar">
+                    <div class="row">
+                        <div class="col-xs-9 col-sm-5 col-md-5 col-lg-5">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                <input class="form-control" id="searchText" placeholder="Search" type="text">
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-sm-7 col-md-7 col-lg-7 text-right">
+                            <button class="btn btn-success searchBt">
+                                <i class="fa fa-search"></i> <span class="hidden-mobile">검색</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <div id="bookRow" class="row"></div>
+        </div>
+    </div>
+</section>
 
-<div class="card-columns">
+<div style="visibility: hidden;">
+<div id="bookTemplate" class="col-sm-6 col-md-6 col-lg-4">
+    <div class="product-content product-wrap clearfix">
+        <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="product-image"> 
+                        <img src="/img/demo/e-comm/3.png" alt="194x228" class="img-responsive"> 
+                        <span class="tag2"></span> 
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-12 col-xs-12">
+                <div class="product-deatil">
+                    <h5 class="name">
+                        <a class="bookTitle" href="#"><span></span></a>
+                    </h5>
+                    <span class="tag1"></span> 
+                </div>
+                <div class="description">
+                    <p></p>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6"> <a href="#" id="papagoBt" class="btn btn-primary">파파고</a> </div>
+                <div class="col-md-6 col-sm-6 col-xs-6"> <a href="#" id="googleBt" class="btn btn-danger">구글</a> </div>
+            </div>
+        </div>
+    </div>
+</div>	
 </div>
-
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Search" id="searchText">
-  <div class="input-group-append">
-    <button class="btn btn-success searchBt" type="button">검색</button> 
-  </div>
-</div>
-
-<ul class="pagination justify-content-center">
-</ul>
-
-<style>
-.card-columns {
-    column-count: 4;
-  @include media-breakpoint-only(lg) {
-    column-count: 4;
-  }
-  @include media-breakpoint-only(xl) {
-    column-count: 4;
-  }
-}
-</style>
 
 <script>
     $(document).ready(function () {
-        const rows = 20;
+        const rows = 21;
 
         $("button.searchBt").click(function() {
             getListData(1, rows, $("input#searchText").val());
-           
         });
 
-        function drawTable(data) {
-            $("table tbody").html("");
-            $(data.books).each(function (index) {
-                let $tr = $("<tr></tr>");
-                $tr.append($("<td><img src='" + this.imgUrl + "'></td>"));
-                $tr.append($("<td>" + this.title + "<br /><br />"+this.description+"</td>"));
-                $tr.append($("<td>" + this.publicationDate + "</td>"));
-                let isbn = this.isbn;
-                $tr.on('click', function() {
-                    location.href="/packko/"+isbn
-                });
-                $("table tbody").append($tr);
-            });
-        }
-
         function drawCard(data) {
-            $("div.card-columns").html("");
+            $("#bookRow").html("");
+            
             $(data.books).each(function (index) {
-                let $card = $("<div></div>");
-                $card.addClass("card").addClass("border-dark").addClass("mb-3");
-                let $cardbody = $("<div</div>");
-                
-                $cardbody.addClass("card-body").addClass("text-dark");
-                $cardbody.append("<h4 class='card-title'>"+ this.title +"</h4>");
-                $cardbody.append("<h6 class='card-subtitle mb-2 text-muted'>"+ this.publicationDate +"</h6>");
-                //$cardbody.append("<p class='card-text'>"+ this.description +"</p>");
-                let papago = $("<a href='#' class='btn btn-primary'>파파고 번역</a>");
-                let google = $("<a href='#' class='btn btn-danger'>구글 번역</a>");
-                $cardbody.append(papago);
-                $cardbody.append(google);
+                let $clone = $("#bookTemplate").clone();
 
-                //$card.append("<div class='card-header'>" +this.title+ "</div>");
-                $card.append("<img class='card-img-top' src='"+ this.imgUrl +"'></img>");
-                $card.append($cardbody);
-
-                let isbn = this.isbn;
-                papago.on('click', function() {
+                $($clone).find(".img-responsive").attr("src", this.imgUrl)
+                if (this.title.length > 40) {
+                    this.title = this.title.substring(0, 40) + "...";
+                }
+            
+                $($clone).find(".product-deatil h5 a").text(this.title).append("<span>"+ this.publicationDate +"</span>");
+                $($clone).find("#papagoBt").on('click', function() {
                     location.href="/packko/"+isbn+"?type=1"
                 });
-                google.on('click', function() {
+                $($clone).find("#googleBt").on('click', function() {
                     location.href="/packko/"+isbn+"?type=2"
                 });
-                $("div.card-columns").append($card);
+
+                $("#bookRow").append($clone);  
             });
         }
 
