@@ -1,28 +1,22 @@
 <aside id="left-panel">
-    <!-- User info -->
     <div class="login-info">
-        <span> <!-- User image size is adjusted inside CSS, it should stay as it --> 
+        <span>
+            <% if (user) {%>
             <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
                 <!-- <img src="/img/avatars/sunny.png" alt="me" class="online" />  -->
                 <span>
-                    NanPaSun 
+                    <%=user.nickname%>
                 </span>
                 <i class="fa fa-angle-down"></i>
-            </a>  
+            </a> 
+            <%} else {%> 
+            <%}%> 
         </span>
     </div>
-    <!-- end user info -->
-
-    <!-- NAVIGATION : This navigation is also responsive-->
     <nav>
-        <!-- 
-        NOTE: Notice the gaps after each icon usage <i></i>..
-        Please note that these links work a bit different than
-        traditional href="" links. See documentation for details.
-        -->
         <ul>
             <li  class="active open">
-                <a href="/"" title="PackPub"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">메인</span></a>	
+                <a href="/" title="PackPub"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">메인</span></a>	
             </li>
             <li  class="active open">
                 <a href="#" title="PackPub"><i class="fa fa-lg fa-fw fa-book"></i> <span class="menu-item-parent">PackPub</span></a>
@@ -38,6 +32,12 @@
                     </li>
                 </ul>	
             </li>
+            <li  class="">
+                <a href="#" title="TODO"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">TODO</span></a>
+                <ul>
+                    <li><a href="/todo" title="todo"><span class="menu-item-parent">TODO</span></a></li>
+                </ul>	
+            </li>
 
             <li  class="">
                 <a href="#" title="게시판"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">게시판</span></a>
@@ -47,7 +47,7 @@
                     </li>
                 </ul>	
             </li>
-
+            <% if (user) {%>
             <li  class="">
                 <a href="#" title="시스템"><i class="fa fa-lg fa-fw fa-gears"></i> <span class="menu-item-parent">시스템</span></a>
                 <ul>
@@ -57,7 +57,7 @@
                     </li>
                 </ul>	
             </li>
-
+            <%}%>
             <li>
                 <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">템플릿</span> <span class="badge pull-right inbox-badge margin-right-13">0</span></a>
                 <ul>
@@ -346,11 +346,8 @@
                         <a href="#"><i class="fa fa-lg fa-fw fa-comment-o"><em class="bg-color-pink flash animated">!</em></i> <span class="menu-item-parent">Smart Chat API <sup>beta</sup></span></a>
                         <ul>
                             <li>
-                                <!-- DISPLAY USERS -->
                                 <div class="display-users">
-
                                     <input class="form-control chat-user-filter" placeholder="Filter" type="text">
-                                    
                                     <a href="#" class="usr" 
                                         data-chat-id="cha1" 
                                         data-chat-fname="Sadi" 
@@ -372,7 +369,6 @@
                                         "> 
                                         <i></i>Sadi Orlaf
                                     </a>
-                                    
                                     <a href="#" class="usr" 
                                         data-chat-id="cha2" 
                                         data-chat-fname="Jessica" 
@@ -394,7 +390,6 @@
                                         "> 
                                         <i></i>Jessica Dolof
                                     </a>
-                                    
                                     <a href="#" class="usr" 
                                         data-chat-id="cha3" 
                                         data-chat-fname="Zekarburg" 
@@ -414,7 +409,6 @@
                                         "> 
                                         <i></i>Zekarburg Almandalie
                                     </a>
-                                    
                                     <a href="#" class="usr" 
                                         data-chat-id="cha4" 
                                         data-chat-fname="Barley" 
@@ -434,7 +428,6 @@
                                         "> 
                                         <i></i>Barley Krazurkth
                                     </a>
-                                    
                                     <a href="#" class="usr offline" 
                                         data-chat-id="cha5" 
                                         data-chat-fname="Farhana" 
@@ -454,7 +447,6 @@
                                         "> 
                                         <i></i>Farhana Amrin (offline)
                                     </a>
-                                    
                                     <a href="#" class="usr offline" 
                                         data-chat-id="cha6" 
                                         data-chat-fname="Lezley" 
@@ -474,11 +466,8 @@
                                         "> 
                                         <i></i>Lezley Jacob (offline)
                                     </a>
-                                    
                                     <a href="chat" class="btn btn-xs btn-default btn-block sa-chat-learnmore-btn">About the API</a>
-
                                 </div>
-                                <!-- END DISPLAY USERS -->
                             </li>
                         </ul>	
                     </li>
@@ -487,7 +476,6 @@
         </ul>
     </nav>
     
-
     <span class="minifyme" data-action="minifyMenu"> 
         <i class="fa fa-arrow-circle-left hit"></i> 
     </span>

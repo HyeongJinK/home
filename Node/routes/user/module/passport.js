@@ -18,26 +18,25 @@ module.exports = (passport) => {
         passReqToCallback : true 
     },
     function(req, id, password, done) { 
-        return done(null, {"id" : "sadkfj"});
-        // user.findById(id, (err, row) => {
-        //     if (err) {
-        //         return done(err);
-        //     }
-        //     if (!row) {
-        //         return done(null, false, req.flash('loginMessage', '사용자를 찾을 수 없습니다.'));
-        //     }
-        //     if (row.password != password) {
-        //         return done(null, false, req.flash('loginMessage', '비밀번호가 다릅니다.'));
-        //     }
-        //     return done(null, row);
-        // });
+        user.findById(id, (err, row) => {
+            if (err) {
+                return done(err);
+            }
+            if (!row) {
+                return done(null, false, req.flash('loginMessage', '사용자를 찾을 수 없습니다.'));
+            }
+            if (row.password != password) {
+                return done(null, false, req.flash('loginMessage', '비밀번호가 다릅니다.'));
+            }
+            return done(null, row);
+        });
     }));
 
     passport.use('logout', new LocalStrategy({
 
     },
     (req, id, password, done) => {
-        console.log("logout");
+        //console.log("logout");
         req.session.destory();
     }));
 };

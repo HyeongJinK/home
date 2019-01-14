@@ -10,7 +10,7 @@ exports.findByAll = (db, callBack) => {
 };
 
 exports.save = (db, callBack) => {
-    db.run("INSERT INTO board (boardIdx, title, content, createDate, modifyDate, hidden) VALUES (?,?,?,?,?,?)"
+    db.run("INSERT INTO board (boardIdx, title, content, createDate, modifyDate, hidden) VALUES (?,?,?,CURRENT_TIMESTAMP,null,?)"
     , data
     , (err) => {
         callBack(err);

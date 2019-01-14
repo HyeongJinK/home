@@ -56,6 +56,15 @@ app.use(session({ secret: 'secret', resave: true, saveUninitialized: false })); 
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
 
+app.use((req, res, next) => {
+  if (req.session.passport) {
+    res.locals.user = req.session.passport.user;
+  } else {
+    res.locals.user = null;
+  }
+  next();
+});
+
 //라우팅 설정
 app.use('/', indexRouter);
 app.use('/core', systemDB);

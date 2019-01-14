@@ -1,7 +1,8 @@
-var query = require('./module/query');
-var express = require('express');
-var sqlite3 = require('sqlite3').verbose();
-var router = express.Router();
+const query = require('./module/query');
+const common = require('../common');
+const express = require('express');
+const sqlite3 = require('sqlite3').verbose();
+const router = express.Router();
 
 const bookDBPath = 'db/books.db';
 
@@ -66,7 +67,7 @@ router.get('/listGoogle/:isbn', function(req, res, next) {
 });
 
 
-router.put('/ContentTranslate/:isbn/:contentIndex', function(req, res, next) {
+router.put('/ContentTranslate/:isbn/:contentIndex', common.isLoggedIn, function(req, res, next) {
   let db = new sqlite3.Database(bookDBPath);
   query.selectContentTranslateByIsbnAndContentIndex(db, [req.params.isbn, req.params.contentIndex], (rows) => {
     if (rows.length != 0) {
