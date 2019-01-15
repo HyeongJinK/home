@@ -9,7 +9,7 @@ const boardContentDB = require('./db/boardContent');
 console.info("Board Route...");
 
 router.get("/", (req, res) => {
-    res.render("/board/board/list", {menu : ["게시판", "게시판 목록"]})
+    res.render("board/board/list", {menu : ["게시판", "게시판 목록"]})
 });
 
 router.get("/content", (req, res) => {

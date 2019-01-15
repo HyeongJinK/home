@@ -6,11 +6,26 @@ const todoDB = require('./db/todo');
 console.info("Todo Route...");
 
 router.get("/", (req, res) => {
-    res.render("/todo/list", {menu : ["TODO", "TODO 목록"]})
+    res.render("todo/list", {menu : ["TODO", "TODO 목록"]})
 });
 
-router.get("/form", (req, res) => {
-    res.render("/todo/read", {menu : ["TODO", ""]});
+router.route("/form")
+.get((req, res) => {
+    res.render("todo/form", {menu : ["TODO", ""]});
+}).post((req, res) => {
+    todoDB.save([], (err) => {
+
+    });
+}).put((req, res) => {
+    todoDB.update([], (err) => {
+
+    });
+}).delete((req, res) => {
+    
+});
+
+router.get("/read", (req, res) => {
+    res.render("todo/read", {menu : ["TODO", ""]});
 });
 
 router.get("/list", (req, res) => {
@@ -21,18 +36,6 @@ router.get("/list", (req, res) => {
             }
             res.send({"data" : rows});
         });
-});
-
-router.post("/form", (req, res) => {
-
-});
-
-router.put("/form", (req, res) => {
-    
-});
-
-router.delete("/form", (req, res) => {
-    
 });
 
 router.post("/checklist/add", (req, res) => {

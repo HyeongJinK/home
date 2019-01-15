@@ -15,20 +15,33 @@
                         <input class="form-control" type="text">	
                     </div>
                     
-                    <div class="widget-body no-padding">    
-                        <table id="example" class="display projects-table table table-striped table-bordered table-hover">
+                    <div class="widget-body no-padding"> 
+                        <div class="widget-body-toolbar">
+                            <div class="row">
+                                <div class="col-xs-3 col-sm-7 col-md-7 col-lg-7 text-right">
+                                    <button class="btn btn-success" id="todoAddBt">
+                                        <i class="fa fa-plus"></i> <span class="hidden-mobile">Add New Row</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <table id="todoTable" class="display projects-table table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th></th><th>Projects</th><th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> EST</th>
-                                    <th>Contacts</th>
+                                    <th></th>
+                                    <th>Projects</th>
+                                    <!-- <th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> EST</th> -->
+                                    <!-- <th>Contacts</th> -->
                                     <th>Status</th>
-                                    <th><i class="fa fa-circle txt-color-darken font-xs"></i> Target/ <i class="fa fa-circle text-danger font-xs"></i> Actual</th>
+                                    <!-- <th><i class="fa fa-circle txt-color-darken font-xs"></i> Target/ <i class="fa fa-circle text-danger font-xs"></i> Actual</th> -->
                                     <th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Starts</th>
                                     <th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Ends</th>
-                                    <th>Tracker</th>
+                                    <!-- <th>Tracker</th> -->
                                 </tr>
                             </thead>
                         </table>
+                        
                     </div>
                 </div>
             </div>
@@ -40,3 +53,96 @@
         </div> 
     </div>
 </section>
+
+<script src="/js/plugin/datatables/jquery.dataTables.min.js"></script>
+<script src="/js/plugin/datatables/dataTables.colVis.min.js"></script>
+<script src="/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+<script src="/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+<script src="/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+        
+<script>
+$(document).ready(function() {
+    $("#todoAddBt").click(function(e) {
+        location.href="/todo/form"
+    });
+
+    var table = $('#todoTable').DataTable( {
+        "ajax": "todo/list",
+        "bDestroy": true,
+        "iDisplayLength": 15,
+        "oLanguage": {
+            "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+        },
+        "columns": [
+            {
+                "class":          'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
+            { "data": "title" },
+            // { "data": "est" },
+            // { "data": "contacts" },
+            { "data": "status" },
+            // { "data": "target-actual" },
+            { "data": "startTime" },
+            { "data": "finishTime" },
+            // { "data": "tracker" },
+        ],
+        "order": [[1, 'asc']],
+        "fnDrawCallback": function( oSettings ) {
+            runAllCharts()
+        }
+    } );
+    
+    
+    
+    
+    
+    
+    
+    
+    function format ( d ) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">'+
+            '<tr>'+
+                '<td style="width:100px">Project Title:</td>'+
+                '<td>'+d.name+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Deadline:</td>'+
+                '<td>'+d.ends+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Extra info:</td>'+
+                '<td>And any further details here (images etc)...</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Comments:</td>'+
+                '<td>'+d.comments+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Action:</td>'+
+                '<td>'+d.action+'</td>'+
+            '</tr>'+
+        '</table>';
+    }
+        
+    // Add event listener for opening and closing details
+    $('#example tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+    
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    });    
+});
+</script>

@@ -29,13 +29,60 @@ exports.save = (data, callBack) => {
             , (err) => {
                 callBack(err);
             })
-    })
+    });
 }
 
-
-exports.update = () => {}
-exports.delete = () => {}
-exports.checkFindByAll = () => {}
-exports.checkSave = () => {}
-exports.checkMod = () => {}
-exports.checkDel = () => {}
+exports.update = (data, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.run(query.update
+            , data
+            , (err) => {
+                callBack(err);
+            })
+    });
+}
+exports.delete = (idx, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.run(query.delete
+            , [idx]
+            , (err) => {
+                callBack(err);
+            })
+    });
+}
+exports.checkFindByAll = (data, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.all(query.checkFindByAll
+            , data
+            , (err, rows) => {
+                callBack(err, rows);
+            })
+    });
+}
+exports.checkSave = (data, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.run(query.checkSave
+            , data
+            , (err) => {
+                callBack(err);
+            })
+    });
+}
+exports.checkUpdate = (data, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.run(query.checkUpdate
+            , data
+            , (err) => {
+                callBack(err);
+            })
+    });
+}
+exports.checkDel = (idx, callBack) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
+        db.run(query.checkDel
+            , [idx]
+            , (err) => {
+                callBack(err);
+            })
+    });
+}
