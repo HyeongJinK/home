@@ -1,9 +1,9 @@
 const common = require("../../common.js");
-const query = require('./todo.json')[global.gConfig.dbType];
+const query = require('./json/todo.json')[global.gConfig.dbType];
 
 
 exports.findByAll = (data, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
         db.all(query.findByAll
             , data
             , function(err, rows) {
@@ -13,7 +13,7 @@ exports.findByAll = (data, callBack) => {
 }
 
 exports.findByIdx = (idx, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
         db.get(query.findByIdx)
             , [idx]
             , (err, row) => {
@@ -23,7 +23,7 @@ exports.findByIdx = (idx, callBack) => {
 }
 
 exports.save = (data, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(global.gConfig.db.todo, (db) => {
         db.run(query.save
             , data
             , (err) => {
@@ -31,3 +31,11 @@ exports.save = (data, callBack) => {
             })
     })
 }
+
+
+exports.update = () => {}
+exports.delete = () => {}
+exports.checkFindByAll = () => {}
+exports.checkSave = () => {}
+exports.checkMod = () => {}
+exports.checkDel = () => {}

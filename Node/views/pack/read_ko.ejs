@@ -106,8 +106,12 @@ ul.book_menu>li.subTitle {
 <script src="https://cdn.jsdelivr.net/npm/squire-rte@1.9.0/build/squire-raw.js"></script>
 <script src="/javascripts/edit/dist/tui-editor-Editor.js"></script>
 <script src="/javascripts/showdown/showdown.min.js"></script>
+
 <script>
 $(document).ready(function () {
+    $("#menu-pack").addClass("open active");
+    $("#menu-pack-packko").addClass("active");
+
     let editor = new tui.Editor({
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',

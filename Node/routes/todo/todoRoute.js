@@ -9,8 +9,6 @@ router.get("/", (req, res) => {
     res.render("/todo/list", {menu : ["TODO", "TODO 목록"]})
 });
 
-
-
 router.get("/form", (req, res) => {
     res.render("/todo/read", {menu : ["TODO", ""]});
 });
@@ -21,19 +19,31 @@ router.get("/list", (req, res) => {
             if (err) {
                 console.log(err);
             }
-            res.send({"list" : rows});
+            res.send({"data" : rows});
         });
 });
 
-router.post("/form");
+router.post("/form", (req, res) => {
 
-router.put("/form");
+});
 
-router.delete("/form");
+router.put("/form", (req, res) => {
+    
+});
 
-router.post("/checklist/add");
-router.put("/checklist/modify");
-router.delete("/checklist/del");
+router.delete("/form", (req, res) => {
+    
+});
+
+router.post("/checklist/add", (req, res) => {
+    
+});
+router.put("/checklist/modify", (req, res) => {
+    
+});
+router.delete("/checklist/del", (req, res) => {
+    
+});
 
 
 module.exports = router;

@@ -1,7 +1,13 @@
 {
     "development": {
         "dbType" : "sqlite"
-        , "db": "db/books.db"
+        , "db": {
+            "book" : "db/books.db"
+            , "user" : "db/users.db"
+            , "board" : "db/board.db"
+            , "todo" : "db/todo.db"
+            , "log" : "db/log.db"
+        }
         , "port" : 8080
     }
 }

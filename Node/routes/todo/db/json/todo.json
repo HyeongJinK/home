@@ -1,7 +1,9 @@
 {
     "sqlite" : {
-        "findByAll" : "SELECT * FROM todo ORDER BY idx DESC LIMIT ?, ?"
+        "findByAll" : "SELECT * FROM todo ORDER BY idx DESC"
         , "findByIdx" : "SELECT * FROM todo WHERE idx = ?"
         , "save" : "INSERT INTO todo () VALUES ()"
+        , "update" : ""
+        , "delete" : ""
     }
 }

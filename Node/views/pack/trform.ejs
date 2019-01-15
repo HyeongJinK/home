@@ -71,6 +71,9 @@
 
 <script>
     $(document).ready(function () {
+        $("#menu-pack").addClass("active open");
+        $("#menu-pack-trform").addClass("active");
+
         function tablePrint() {
             $.getJSON('/pack/translate/list', {}, function (data) {
                 $("#trformTable").html("")

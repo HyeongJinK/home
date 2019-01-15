@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="/css/smartadmin-rtl.min.css">
 
 		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
-		<!-- <link rel="stylesheet" type="text/css" media="screen" href="/css/demo.min.css"> -->
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/demo.min.css">
 </head>
 	<body class="">
 		<!-- HEADER -->
@@ -117,11 +117,7 @@
 
 		<![endif]-->
 
-		<!-- Demo purpose only -->
-		<script src="/js/demo.min.js"></script>
-
-		<!-- MAIN APP JS FILE -->
-		<script src="/js/app.min.js"></script>
+		
 
 		<!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
 		<!-- Voice command : plugin -->
@@ -131,21 +127,6 @@
 		<script src="/js/smart-chat-ui/smart.chat.ui.min.js"></script>
 		<script src="/js/smart-chat-ui/smart.chat.manager.min.js"></script>
 		
-		<!-- PAGE RELATED PLUGIN(S) -->
-		
-		<!-- Flot Chart Plugin: Flot Engine, Flot Resizer, Flot Tooltip -->
-		<script src="/js/plugin/flot/jquery.flot.cust.min.js"></script>
-		<script src="/js/plugin/flot/jquery.flot.resize.min.js"></script>
-		<script src="/js/plugin/flot/jquery.flot.time.min.js"></script>
-		<script src="/js/plugin/flot/jquery.flot.tooltip.min.js"></script>
-		
-		<!-- Vector Maps Plugin: Vectormap engine, Vectormap language -->
-		<script src="/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-		<script src="/js/plugin/vectormap/jquery-jvectormap-world-mill-en.js"></script>
-		
-		<!-- Full Calendar -->
-		<script src="/js/plugin/moment/moment.min.js"></script>
-		<script src="/js/plugin/fullcalendar/fullcalendar.min.js"></script>
 		<!-- 리본 -->
 		<script>
 		let menus = "<%= menu %>"
@@ -160,6 +141,12 @@
 			}
 		});
 		</script>
-        <%- script %>
+		<%- script %>
+		
+		<!-- Demo purpose only -->
+		<script src="/js/demo.min.js"></script>
+
+		<!-- MAIN APP JS FILE -->
+		<script src="/js/app.min.js"></script>
 	</body>
 </html>

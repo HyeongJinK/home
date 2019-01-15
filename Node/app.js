@@ -27,8 +27,9 @@ const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
 const wikiRouter = require('./routes/wiki/wiki');
-//const youtubeRouter = require('./routes/youtube/youtube');
 const boardRouter = require('./routes/board/boardRoute');
+const todoRouter = require('./routes/todo/todoRoute');
+//const youtubeRouter = require('./routes/youtube/youtube');
 //템플릿
 const templateRouter = require('./routes/template');
 //스케쥴
@@ -72,9 +73,10 @@ app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
 app.use('/wiki', wikiRouter);
-//app.use('/youtube', youtubeRouter);
 app.use('/md', mdRouter);
 app.use('/board', boardRouter);
+app.use('/todo', todoRouter);
+//app.use('/youtube', youtubeRouter);
 app.use('/template', templateRouter);
 
 // catch 404 and forward to error handler

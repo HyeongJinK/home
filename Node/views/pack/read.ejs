@@ -92,6 +92,9 @@ ul.book_menu>li.subTitle {
 
 <script>
 $(document).ready(function () {
+    $("#menu-pack").addClass("active open");
+    $("#menu-pack-pack").addClass("active");
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
