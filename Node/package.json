@@ -1,6 +1,6 @@
 {
-  "name": "prototype-home",
-  "version": "0.0.0",
+  "name": "nanpasun-home",
+  "version": "0.1.0",
   "private": true,
   "env": {
     "NODE_ENV": "development"
