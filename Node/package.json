@@ -31,5 +31,9 @@
     "sqlite3": "^4.0.2",
     "sync-request": "^6.0.0",
     "youtube-dl": "^1.12.2"
+  },
+  "devDependencies": {
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
   }
 }

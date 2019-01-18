@@ -74,6 +74,7 @@
             $("#bookRow").html("");
             
             $(data.books).each(function (index) {
+                let isbn = this.isbn;
                 let $clone = $("#bookTemplate").clone();
 
                 $($clone).find(".img-responsive").attr("src", this.imgUrl)
