@@ -51,9 +51,9 @@ $(document).ready(function() {
                 url: "/board/content/form"
                 , method : "post"
                 , data : {
-                    idx : ""
-                    , title : ""
-                    , content: ""
+                    idx : "0"
+                    , title : $("#title").val()
+                    , content: e.getContent()
                 }
                 , success : (data) => {
 
@@ -62,7 +62,6 @@ $(document).ready(function() {
 
                 }
             });
-            alert(e.getContent());
         }
         , onChange: (e) => {}
         , onFocus: (e) => {}
