@@ -32,14 +32,14 @@ router.route("/content/form")
 }).post((req, res) => { 
     let idx = req.body.idx;
 
-    boardContentDB.save([idx, req.body.title, req.body.content, req.body.createDate, null, req.body.hidden]
+    boardContentDB.save([1, req.body.title, req.body.content/*, Date()*/, 0]
     , (err) => {
-
+        res.send({"result" : err});
     });
 }).put((req, res) => {
     boardContentDB.update([req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
         , (err) => {
-            res.send({"result" : err});
+        res.send({"result" : err});
     });
 }).delete((req, res) => {
     let idx = req.body.idx;
@@ -61,7 +61,7 @@ router.get("/content/list", (req, res) => {
     let start = req.query.start;
     let rows = req.query.rows;
 
-    boardIdx = undefinedCheck(boardIdx, "0");
+    boardIdx = undefinedCheck(boardIdx, "1");
     start = undefinedCheck(start, "0");
     rows = undefinedCheck(rows, "10");
     

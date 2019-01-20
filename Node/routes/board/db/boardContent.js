@@ -3,7 +3,7 @@ const query = require('./json/boardContent.json')[global.gConfig.dbType];
 
 
 exports.findByAll = (data, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.all(query.findByAll
             , data
             , function(err, rows) {
@@ -13,7 +13,7 @@ exports.findByAll = (data, callBack) => {
 }
 
 exports.findbyBoardIdx = (data, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.all(query.findbyBoardIdx
         , data
         , (err, rows) => {
@@ -23,7 +23,7 @@ exports.findbyBoardIdx = (data, callBack) => {
 }
 
 exports.countByBoardIdx = (boardIdx, callBack) => {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.get(query.countByBoardIdx
             , [idx]
             , (err, row) => {
@@ -33,7 +33,7 @@ exports.countByBoardIdx = (boardIdx, callBack) => {
 }
 
 exports.findByIdx = function(idx, callBack) {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.get(query.findByIdx
             , idx
             , (err, row) => {
@@ -43,7 +43,7 @@ exports.findByIdx = function(idx, callBack) {
 }
 
 exports.save = function(data, callBack) {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.run(query.save
         , data
         , function(err) {
@@ -53,7 +53,7 @@ exports.save = function(data, callBack) {
 }
 
 exports.update = function(data, callBack) {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.run(query.update
         , data
         , (err) => {
@@ -63,7 +63,7 @@ exports.update = function(data, callBack) {
 } 
 
 exports.delete = function(idx, callBack) {
-    common.dbTemplate((db) => {
+    common.dbRun(common.boardDBPath, (db) => {
         db.run(query.delete
         , [idx]
         , (err) => {

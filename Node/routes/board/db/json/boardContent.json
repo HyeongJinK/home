@@ -4,7 +4,7 @@
         , "findbyBoardIdx" : "SELECT * FROM boardContent WHERE boardIdx = ? ORDER BY idx DESC LIMIT ?, ?"
         , "countByBoardIdx" : "SELECT count(*) FROM boardContent WHERE idx = ?"
         , "findByIdx" : "SELECT * FROM boardContent WHERE idx = ?"
-        , "save" : "INSERT INTO boardContent (boardIdx, title, content, createDate, hidden) VALUES (?,?,?,?,CURRENT_TIMESTAMP,?)"
+        , "save" : "INSERT INTO boardContent (boardIdx, title, content, createDate, hidden) VALUES (?,?,?,CURRENT_TIMESTAMP,?)"
         , "update" : "UPDATE boardContent SET title = ?, content = ?, modifyDate = CURRENT_TIMESTAMP where idx = ?"
         , "delete" : "DELETE FROM boardContent WHERE idx = ?"
     }

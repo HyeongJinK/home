@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
-const bookDBPath = global.gConfig.db.book
+const bookDBPath = global.gConfig.db.book;
+exports.boardDBPath = global.gConfig.db.board;
 
 exports.dbTemplate = (func) => {
     let db = new sqlite3.Database(bookDBPath);
