@@ -7,7 +7,12 @@
             data-widget-togglebutton="false" 
             data-widget-deletebutton="false">
                 <header>
-                    <h2 class="font-md"><strong><%= row.title %></strong></h2>				 
+                    <h2 class="font-md"><strong><%= row.title %></strong></h2>
+                    <div class="widget-toolbar">
+                        <input type="hidden" id="idx" value="<%=row.idx%>">
+                        <a href="/board/content/form?idx=<%=row.idx%>" id="modifyBtn" class="btn btn-warning">수정</a>
+                        <a href="#" id="deleteBtn" class="btn btn-danger">삭제</a>
+                    </div>			 
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">   
@@ -27,5 +32,21 @@
         $("#menu-board").addClass("active open");
         $("#menu-board-content").addClass("active");       
         pageSetUp();
+
+        $("#deleteBtn").click((e) => {
+            $.ajax({
+                    url: "/board/content/form"
+                    , method : "delete"
+                    , data : {
+                        idx : $("#idx").val()
+                    }
+                    , success : (data) => {
+                        location.href="/board/content";
+                    }
+                    , error : (err) => {
+                        alert("error");
+                    }
+                });
+        });
     });
 </script>

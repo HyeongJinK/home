@@ -28,18 +28,25 @@ router.get("/content/read/:idx", (req, res) => {
 
 router.route("/content/form")
 .get((req, res) => {
-    res.render('board/content/form', {menu: ['게시판', '편집'] })  
-}).post((req, res) => { 
-    let idx = req.body.idx;
+    let idx = req.query.idx;
 
+    if (idx == undefined) {
+        idx = 0;
+        res.render('board/content/form', {menu: ['게시판', '편집'], idx: idx , row: null})
+    } else {
+        boardContentDB.findByIdx(idx, (err, row) => {
+            res.render('board/content/form', {menu: ['게시판', '편집'], idx: idx, row: row })
+        });
+    } 
+}).post((req, res) => { 
     boardContentDB.save([1, req.body.title, req.body.content/*, Date()*/, 0]
-    , (err) => {
-        res.send({"result" : err});
+    , (err, lastId) => {
+        res.send({"result" : err, "idx" : lastId});
     });
 }).put((req, res) => {
-    boardContentDB.update([req.body.title, req.body.content, req.body.modifyDate, req.body.idx]
+    boardContentDB.update([req.body.title, req.body.content, req.body.idx]
         , (err) => {
-        res.send({"result" : err});
+        res.send({"result" : err, "idx" : req.body.idx});
     });
 }).delete((req, res) => {
     let idx = req.body.idx;

@@ -2,12 +2,12 @@
     "sqlite" : {
         "findByAll" : "SELECT * FROM todo ORDER BY idx DESC"
         , "findByIdx" : "SELECT * FROM todo WHERE idx = ?"
-        , "save" : "INSERT INTO todo () VALUES ()"
-        , "update" : "UPDATE "
-        , "delete" : "DELETE"
-        , "checkFindByAll" : ""
-        , "checkSave" : ""
-        , "checkUpdate" : ""
-        , "checkDel" : ""
+        , "save" : "INSERT INTO todo (parentIdx, title, content, status, startTime, finishTime) VALUES (?,?,?,?,?,?)"
+        , "update" : "UPDATE todo SET parentIdx = ?"
+        , "delete" : "DELETE FROM todo WHERE idx = ?"
+        , "checkFindByAll" : "SELECT * FROM todoCheckList"
+        , "checkSave" : "INSERT INTO todoCheckList (todoIdx, title, order, finishDate) VALUES (?, ?, ?, ?)"
+        , "checkUpdate" : "UPDATE todoCheckList"
+        , "checkDel" : "DELETE FROM todoCheckList WHERE idx = ?"
     }
 }

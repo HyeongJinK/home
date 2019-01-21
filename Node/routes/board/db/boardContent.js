@@ -47,7 +47,7 @@ exports.save = function(data, callBack) {
         db.run(query.save
         , data
         , function(err) {
-            callBack(err);
+            callBack(err, this.lastID);
         }); 
     });
 }

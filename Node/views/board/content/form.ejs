@@ -7,7 +7,7 @@
 			<div class="jarviswidget jarviswidget-color-purple" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">	
 				<header>
 					<span class="widget-icon"> <i class="fa fa-pencil"></i> </span>
-					<h2>입력</h2>
+                    <h2>입력</h2>
                 </header>
                 <div>
                         <div class="jarviswidget-editbox">
@@ -19,12 +19,22 @@
                                         <label class="label">제목</label>
                                         <label class="input">
                                             <i class="icon-append fa fa-tag"></i>
+                                            <input type="hidden" name="idx" id="idx" value="<%=idx%>">
+                                            <% if (row) {
+                                            %>
+                                            <input type="text" name="title" id="title" value="<%=row.title%>">
+                                            <%
+                                            } else {
+                                            %>
                                             <input type="text" name="title" id="title">
+                                            <%
+                                            }
+                                            %>
                                         </label>
                                     </section>
                                 </fieldset>
                             </form>
-                            <textarea id="mymarkdown" class="custom-scroll">
+                            <textarea id="mymarkdown" class="custom-scroll"><%if(row){%><%= row.content%><%}%>
                             </textarea>
                         </div>
                     </div>
@@ -47,21 +57,26 @@ $(document).ready(function() {
         , height: "400"
         , onShow: (e) => {}
         , onSave: (e) => {
+            let method = "post";
+            if ($("#idx").val() != 0) {
+                method = "put";
+                
+            } 
             $.ajax({
-                url: "/board/content/form"
-                , method : "post"
-                , data : {
-                    idx : "0"
-                    , title : $("#title").val()
-                    , content: e.getContent()
-                }
-                , success : (data) => {
-
-                }
-                , error : (err) => {
-
-                }
-            });
+                    url: "/board/content/form"
+                    , method : method
+                    , data : {
+                        idx : $("#idx").val()
+                        , title : $("#title").val()
+                        , content: e.getContent()
+                    }
+                    , success : (data) => {
+                        location.href="/board/content/read/"+data.idx;
+                    }
+                    , error : (err) => {
+                        alert("error");
+                    }
+                });
         }
         , onChange: (e) => {}
         , onFocus: (e) => {}
