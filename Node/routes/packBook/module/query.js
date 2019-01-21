@@ -57,8 +57,8 @@ exports.selectBookByNotTranslate = function(db, callBack) {
 }
 
 exports.selectBookByNotData = function(db, callBack) {
-  db.all("", [], (err, rows) => {
-
+  db.all("SELECT isbn FROM book WHERE title = 'noName'", [], (err, rows) => {
+    callBack(err, rows);
   });
 }
 
