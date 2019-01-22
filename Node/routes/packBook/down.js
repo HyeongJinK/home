@@ -81,6 +81,7 @@ router.get('/getbook', function (req, res, next) {
                                     }
                                 } else {
                                     console.log("error :" +parentID+"_"+element.index+"_"+element.title);
+                                    //TODO 종료 방법 연구
                                     res.send({"error" : "키 만료"});
                                 } 
                             } catch {

@@ -113,7 +113,7 @@ exports.insertBookIsbn = function (db, data) {
     db.get("SELECT * FROM book WHERE isbn = ?", [e], (err, row) => {
       if (row == undefined)
         db.run("INSERT INTO book (isbn, title) VALUES (?, 'noName')", [e], function(err) {
-          console.log("insert = " +e)
+          //console.log("insert = " +e)
         });
     });
   });
