@@ -1,8 +1,10 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const HtmlLayoutWebpackPlugin = require('html-layout-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -36,7 +38,7 @@ module.exports = {
                 test: /\.html$/,
                 use: [{
                     loader: "html-loader"
-                    , options: {minimize: true}
+                    //, options: {minimize: true}
                 }]
             },
             {
@@ -54,11 +56,18 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/view/index.html",
             filename: "./index.html",
-            excludeChunks: [ 'server' ]
-        }),
-        new MiniCssExtractPlugin({
+            chunks: ['main']
+        })
+        , new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
         })
+        , new HtmlLayoutWebpackPlugin({
+            include: path.resolve('./src/view/includes')
+            , layout: path.resolve('./src/view/layouts')
+        })
+        // , new webpack.LoaderOptionsPlugin({
+        //     minimize : true
+        // })
     ]
 }

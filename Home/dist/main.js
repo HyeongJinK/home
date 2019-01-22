@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "1626b92a354388abb24b";
+/******/ 	var hotCurrentHash = "92f15bdf4d789a42e1f7";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -3064,7 +3064,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 (0, _logger2.default)("Index ...");
 
-if (typeof module.hot !== 'undefined') {
+if (true) {
     module.hot.accept();
 }
 

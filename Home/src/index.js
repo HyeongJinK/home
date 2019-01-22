@@ -3,6 +3,6 @@ import './css/style.css'
 
 logMessage("Index ...")
 
-if (typeof(module.hot) !== 'undefined') {
+if (module.hot) {
     module.hot.accept()
 }

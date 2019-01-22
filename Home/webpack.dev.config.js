@@ -1,10 +1,12 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
+const HtmlLayoutWebpackPlugin = require('html-layout-webpack-plugin');
 
 module.exports = {
     entry: {
         main: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', './src/index.js']
+        , test: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', './src/test.js']
     },
     output: {
         path: path.join(__dirname, 'dist'),
@@ -53,9 +55,19 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/view/index.html",
             filename: "./index.html",
-            excludeChunks: [ 'server' ]
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin()
+            chunks: ['main']
+        })
+        , new HtmlWebPackPlugin({
+            template: "./src/view/test.html",
+            filename: "./test.html",
+            chunks: ['test']
+        })
+        , new HtmlLayoutWebpackPlugin({
+            include: path.resolve('./src/view/includes')
+            , layout: path.resolve('./src/view/layouts')
+        })
+        , new webpack.HotModuleReplacementPlugin()
+        , new webpack.NoEmitOnErrorsPlugin()
+        
     ]
 }
