@@ -81,43 +81,51 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/server/app.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/server/app.js":
-/*!***************************!*\
-  !*** ./src/server/app.js ***!
-  \***************************/
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nconsole.log(\"\\x1b[31m\", \"\\nApp Setting Start...\");\nconsole.log(\"\\x1b[32m\");\n\nvar path = __webpack_require__(/*! path */ \"path\");\nvar express = __webpack_require__(/*! express */ \"express\");\n//const expressLayouts = require('express-ejs-layouts');\n\nvar app = express(),\n    DIST_DIR = __dirname,\n    HTML_FILE = path.join(DIST_DIR, 'index.html');\n\n//app.set('view engine', 'ejs');\n\napp.use(express.static(DIST_DIR));\n\napp.get('*', function (req, res) {\n    res.sendFile(HTML_FILE);\n});\n\nvar PORT = process.env.PORT || 8080;\napp.listen(PORT, function () {\n    console.log(\"App listening to \" + PORT);\n});\n\nconsole.log(\"\\x1b[31m\", \"\\nApp Setting Finish...\");\nconsole.log(\"\\x1b[37m\");\n\n//# sourceURL=webpack:///./src/server/app.js?");
+
+
+var _logger = __webpack_require__(/*! ./js/logger */ "./src/js/logger.js");
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+(0, _logger2.default)("Index ...");
 
 /***/ }),
 
-/***/ "express":
+/***/ "./src/js/logger.js":
 /*!**************************!*\
-  !*** external "express" ***!
+  !*** ./src/js/logger.js ***!
   \**************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("module.exports = require(\"express\");\n\n//# sourceURL=webpack:///external_%22express%22?");
+"use strict";
 
-/***/ }),
 
-/***/ "path":
-/*!***********************!*\
-  !*** external "path" ***!
-  \***********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var logMessage = function logMessage(msg) {
+  return console.info(msg);
+};
 
-eval("module.exports = require(\"path\");\n\n//# sourceURL=webpack:///external_%22path%22?");
+exports.default = logMessage;
 
 /***/ })
 
 /******/ });
+//# sourceMappingURL=main.js.map
