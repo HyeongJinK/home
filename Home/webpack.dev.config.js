@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
-const HtmlLayoutWebpackPlugin = require('html-layout-webpack-plugin');
+const HTMLLayout = require('./layout');
 
 module.exports = {
     entry: {
@@ -62,7 +62,7 @@ module.exports = {
             filename: "./test.html",
             chunks: ['test']
         })
-        , new HtmlLayoutWebpackPlugin({
+        , new HTMLLayout({
             include: path.resolve('./src/view/includes')
             , layout: path.resolve('./src/view/layouts')
         })

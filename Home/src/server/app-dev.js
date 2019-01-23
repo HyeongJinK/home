@@ -7,7 +7,6 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware'); //수정사항이 생길 경우 다시 빌드
 const webpackHotMiddleware = require('webpack-hot-middleware'); //새로고침
 const config = require('../../webpack.dev.config');
-const expressLayouts = require('express-ejs-layouts');
 
 const app = express()
 , compiler = webpack(config)
@@ -19,12 +18,9 @@ app.use(webpackDevMiddleware(compiler,
     
 app.use(webpackHotMiddleware(compiler));
 
-app.set('views', path.join(__dirname, '/src/view/'));
+app.set('views', path.join(__dirname, ''));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
-// app.set('layout', 'index');
-// app.set("layout extractScripts", true);
-// app.use(expressLayouts);
 
 
 //app.use(express.static("dist"));
