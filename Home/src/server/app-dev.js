@@ -11,7 +11,7 @@ const config = require('../../webpack.dev.config');
 const app = express()
 , compiler = webpack(config)
 , DIST_DIR = __dirname
-, HTML_FILE = path.join(DIST_DIR, 'test.html');;
+, HTML_FILE = path.join(DIST_DIR, 'index.html');;
 
 app.use(webpackDevMiddleware(compiler,
     {publicPath: config.output.publicPath}));
@@ -22,23 +22,8 @@ app.set('views', path.join(__dirname, ''));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-
-//app.use(express.static("dist"));
-
 app.get('*', (req, res) => {
-    //res.sendFile(HTML_FILE);
-    console.log(__dirname+ 'test');
-    res.render('index');
-    // compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
-    //     if (err)
-    //         console.log(err);
-    //     console.log("======================")
-    //     console.log(result)
-    //     console.log("======================")
-    //     res.set('content-type', 'text/html')
-    //     res.send(result)
-    //     res.end()
-    // })
+    res.render('index.html');
 });
 
 const PORT = process.env.PORT || 80

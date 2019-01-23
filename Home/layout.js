@@ -31,7 +31,7 @@ module.exports = class HTMLLayout {
                 if (optionsKeys.includes($2)) {
                   const fliePath = path.join(this.options[$2], `${$3}.html`);
                   const flieData = fs.readFileSync(fliePath, "utf8");
-                  compiler.hooks.beforeCompile.tap('after-compile', compilation => {//beforeCompile 로 수정
+                  compiler.hooks.afterCompile.tap('after-compile', compilation => {//beforeCompile 로 수정
                     compilation.fileDependencies.add(fliePath);
                   });
                   return flieData;

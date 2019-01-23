@@ -54,20 +54,18 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src/view/index.html",
-            filename: "./index.html",
+            template: "./src/views/index.html",
+            filename: "./views/index.html",
             chunks: ['main']
         })
-        , new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
+        , new HtmlWebPackPlugin({
+            template: "./src/views/test.html",
+            filename: "./views/test.html",
+            chunks: ['test']
         })
         , new HTMLLayout({
-            include: path.resolve('./src/view/includes')
-            , layout: path.resolve('./src/view/layouts')
+            include: path.resolve('./src/views/includes')
+            , layout: path.resolve('./src/views/layouts')
         })
-        // , new webpack.LoaderOptionsPlugin({
-        //     minimize : true
-        // })
     ]
 }

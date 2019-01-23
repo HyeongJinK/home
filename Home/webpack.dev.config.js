@@ -53,18 +53,18 @@ module.exports = {
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./src/view/index.html",
+            template: "./src/views/index.html",
             filename: "./index.html",
             chunks: ['main']
         })
         , new HtmlWebPackPlugin({
-            template: "./src/view/test.html",
+            template: "./src/views/test.html",
             filename: "./test.html",
             chunks: ['test']
         })
         , new HTMLLayout({
-            include: path.resolve('./src/view/includes')
-            , layout: path.resolve('./src/view/layouts')
+            include: path.resolve('./src/views/includes')
+            , layout: path.resolve('./src/views/layouts')
         })
         , new webpack.HotModuleReplacementPlugin()
         , new webpack.NoEmitOnErrorsPlugin()
