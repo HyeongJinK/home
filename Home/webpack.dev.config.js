@@ -67,7 +67,6 @@ module.exports = {
             , layout: path.resolve('./src/views/layouts')
         })
         , new webpack.HotModuleReplacementPlugin()
-        , new webpack.NoEmitOnErrorsPlugin()
-        
+        , new webpack.NoEmitOnErrorsPlugin()  
     ]
 }

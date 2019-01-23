@@ -8,7 +8,8 @@ const HTMLLayout = require('./layout');
 
 module.exports = {
     entry: {
-        main: './src/index.js',
+        main: './src/index.js'
+        , test: './src/test.js',
     },
     output: {
         path: path.join(__dirname, 'dist'),
@@ -55,17 +56,22 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/views/index.html",
-            filename: "./views/index.html",
+            filename: "./index.html",
             chunks: ['main']
         })
         , new HtmlWebPackPlugin({
             template: "./src/views/test.html",
-            filename: "./views/test.html",
+            filename: "./test.html",
             chunks: ['test']
         })
         , new HTMLLayout({
             include: path.resolve('./src/views/includes')
             , layout: path.resolve('./src/views/layouts')
         })
+        , new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css"
+        })
+        
     ]
 }

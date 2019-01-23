@@ -1,3 +1,5 @@
-const logMessage = msg => console.info(msg)
-
-export default logMessage
+module.exports = {
+    test : function () {
+        return "test";
+    }
+}
