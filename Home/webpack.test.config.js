@@ -1,30 +1,29 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals')
 const pages = require('./config/pages');
 
 module.exports = {
-    entry: pages.entry,
+    entry: {
+        include: ['./src/include.js']
+        , main: ['./src/index.js']
+        , server: ['./src/server/app-dev.js']
+    },
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
         filename: '[name].js'
     },
-    mode: 'development',
-    target: 'web',
+    target: 'node',
+    node: {
+        // express로 작업할 때 필요 없으면 빌드 실패
+        __dirname: false, // 이것을 넣지 않으면, __dirname
+        __filename: false, // and __filename return blank
+    },
+    externals: [nodeExternals()],
     devtool: '#source-map',
     module: {
         rules: [
-            {
-                enforce: "pre",
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: "eslint-loader",
-                options: {
-                    emitWarning: true,
-                    failOnError: false,
-                    failOnWarning: false
-                }
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -32,7 +31,9 @@ module.exports = {
             },
             {
                 test: /\.ejs$/,
-                use: [ "html-loader" ]
+                use: [{
+                    loader: "html-loader"
+                }]
             },
             {
                 test: /\.css$/,
@@ -44,10 +45,7 @@ module.exports = {
             }
         ]
     },
-    plugins: pages.pages.concat([
-        new webpack.HotModuleReplacementPlugin()
-        , new webpack.NoEmitOnErrorsPlugin()  
-    ]),
+    plugins: pages.pages,
     devServer: {
         host: '127.0.0.1'
         , contentBase: path.join(__dirname, "dist")

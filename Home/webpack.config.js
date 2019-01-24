@@ -1,16 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const HTMLLayout = require('./layout');
+const pages = require('./config/pages');
 
 module.exports = {
-    entry: {
-        main: './src/index.js'
-        , test: './src/test.js',
-    },
+    entry: pages.entry,
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
@@ -53,25 +49,10 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new HtmlWebPackPlugin({
-            template: "./src/views/index.html",
-            filename: "./index.html",
-            chunks: ['main']
-        })
-        , new HtmlWebPackPlugin({
-            template: "./src/views/test.html",
-            filename: "./test.html",
-            chunks: ['test']
-        })
-        , new HTMLLayout({
-            include: path.resolve('./src/views/includes')
-            , layout: path.resolve('./src/views/layouts')
-        })
-        , new MiniCssExtractPlugin({
+    plugins: pages.pages.concat([
+        new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
-        })
-        
-    ]
+        })  
+    ])
 }

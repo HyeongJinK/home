@@ -4,18 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "rm -rf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js"
-    , "prod": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.config.js"
-    , "start": "node ./dist/server.js"
-    , "test": "node_modules/mocha/bin/mocha $(find ./src/js -name '*.spec.js')"
-    , "cover" : "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha $(find ./src/js -name '*.spec.js')"
+    "devserver":"./node_modules/.bin/webpack-dev-server --open --progress --config webpack.test.config.js ",
+    "dev": "rm -rf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
+    "prod": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.config.js",
+    "start": "node ./dist/server.js",
+    "test": "node_modules/mocha/bin/mocha $(find ./src/js -name '*.spec.js')",
+    "cover": "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha $(find ./src/js -name '*.spec.js')"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.2.1",
     "ejs": "^2.6.1",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.6"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -26,12 +30,14 @@
     "eslint": "^5.10.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-react": "^7.12.4",
+    "exports-loader": "^0.7.0",
     "file-loader": "^3.0.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "istanbul": "^0.4.5",
     "mini-css-extract-plugin": "^0.5.0",
     "mocha": "^5.2.0",
+    "morgan": "^1.9.1",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "should": "^13.2.3",
     "style-loader": "^0.23.1",
@@ -39,6 +45,7 @@
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-middleware": "^3.5.1",
+    "webpack-dev-server": "^3.1.14",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-node-externals": "^1.7.2"
   }

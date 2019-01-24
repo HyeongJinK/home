@@ -1,18 +1,12 @@
-const path = require('path');
 const express = require('express');
+const path = require('path');
+const route = require('../js/route/route');
 
+const app = express();
 
-const app = express(),
-            DIST_DIR = __dirname,
-            HTML_FILE = path.join(DIST_DIR, 'index.html');
+app.use(express.static(__dirname));
 
-//app.set('view engine', 'ejs');
-
-app.use(express.static(DIST_DIR));
-
-app.get('*', (req, res) => {
-    res.sendFile(HTML_FILE);
-});
+app.use('/', route);
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
