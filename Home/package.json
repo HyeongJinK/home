@@ -8,7 +8,7 @@
     , "prod": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.config.js"
     , "start": "node ./dist/server.js"
     , "test": "node_modules/mocha/bin/mocha $(find ./src/js -name '*.spec.js')"
-    , "cover" : "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha $(find ./src -name '*.spec.js')"
+    , "cover" : "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha $(find ./src/js -name '*.spec.js')"
   },
   "keywords": [],
   "author": "",
