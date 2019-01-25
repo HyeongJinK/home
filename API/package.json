@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devserver":"./node_modules/.bin/webpack-dev-server --open --progress --config webpack.test.config.js ",
     "dev": "rm -rf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "prod": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.config.js",
     "start": "node ./dist/server.js",
@@ -16,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.2.1",
-    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.6"
@@ -45,7 +43,6 @@
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-middleware": "^3.5.1",
-    "webpack-dev-server": "^3.1.14",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-node-externals": "^1.7.2"
   }

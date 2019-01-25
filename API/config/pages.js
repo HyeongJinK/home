@@ -11,15 +11,10 @@ exports.entry = {
 
 exports.pages = [
     new HtmlWebPackPlugin({
-        template: "./src/views/index.ejs",
-        filename: "./index.ejs",
+        template: "./src/views/index.html",
+        filename: "./index.html",
         chunks: ['include', 'main']
     })
-    // , new HtmlWebPackPlugin({
-    //     template: "./src/views/test.html",
-    //     filename: "./test.html",
-    //     chunks: ['include']
-    // })
     , new HTMLLayout({
         include: path.resolve('./src/views/includes')
         , layout: path.resolve('./src/views/layouts')

@@ -31,7 +31,7 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.ejs$/,
+                test: /\.html$/,
                 use: [ "html-loader" ]
             },
             {
@@ -47,14 +47,5 @@ module.exports = {
     plugins: pages.pages.concat([
         new webpack.HotModuleReplacementPlugin()
         , new webpack.NoEmitOnErrorsPlugin()  
-    ]),
-    devServer: {
-        host: '127.0.0.1'
-        , contentBase: path.join(__dirname, "dist")
-        , compress: true
-        , hot: true
-        , inline: true
-        , port: 9000
-        , open: true
-    }
+    ])
 }
