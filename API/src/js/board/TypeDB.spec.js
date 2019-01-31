@@ -1,0 +1,1 @@
+const boardDB = require("./TypeDB");

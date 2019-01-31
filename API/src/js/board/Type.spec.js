@@ -1,0 +1,1 @@
+const boardController = require("./Type");
