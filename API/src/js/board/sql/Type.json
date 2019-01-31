@@ -1,0 +1,6 @@
+{
+    "findByAll" : "SELECT * FROM boardType ORDER BY idx DESC"
+    , "save" : ""
+    , "update" : ""
+    , "delete" : ""
+}

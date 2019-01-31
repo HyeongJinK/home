@@ -1,5 +1,5 @@
 const common = require("../common");
-const query = require('./sql/Content.json')[common.config.dbType];
+const query = require('./sql/Content.json')
 
 
 exports.findByAll = function (data, callBack) {
