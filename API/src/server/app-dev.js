@@ -11,6 +11,7 @@ const logger = require('morgan');   //콘솔에 로그기록
 const webpackDevMiddleware = require('webpack-dev-middleware'); //수정사항이 생길 경우 다시 빌드
 const webpackHotMiddleware = require('webpack-hot-middleware'); //새로고침
 const config = require('../../webpack.dev.config');
+const route = require('../js/route/route');
 
 
 const app = express()

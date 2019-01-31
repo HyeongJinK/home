@@ -3,5 +3,9 @@
 package-lock.json
 */db/
 */dist/
+<<<<<<< HEAD
 */coverage/
 /db/
+=======
+*/coverage/
+>>>>>>> 451ad5afca7eb669db2d9b855d75bde3d1f7ab2c
