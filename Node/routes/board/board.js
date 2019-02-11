@@ -46,3 +46,45 @@ exports.contentUpdate = (req, res) => {
         res.send({"result" : err, "idx" : req.body.idx});
     });
 }
+
+exports.contentDelete = (req, res) => {
+    let idx = req.body.idx;
+
+    boardContentDB.delete(idx, (err) => {
+        res.send({"result" : err});
+    })
+}
+
+function undefinedCheck(data, def) {
+    if (data == undefined)
+        return def;
+    else
+        return data;
+}
+
+exports.getContentList = (req, res) => {
+    let boardIdx = req.query.boardIdx;
+    let start = req.query.start;
+    let rows = req.query.rows;
+
+    boardIdx = undefinedCheck(boardIdx, "1");
+    start = undefinedCheck(start, "0");
+    rows = undefinedCheck(rows, "10");
+    
+    boardContentDB.findbyBoardIdx([boardIdx, start, rows]
+        , (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+
+        res.send({"list" : rows});
+    });
+}
+
+exports.getContent = (req, res) => {
+    let idx = req.query.idx;
+
+    boardContentDB.findByIdx([idx], (row) => {
+        res.send({"row" : row});
+    });
+}

@@ -1,42 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const todoDB = require('./db/todo');
+const todo = require('./todo');
+
 
 
 console.info("Todo Route...");
 
-router.get("/", (req, res) => {
-    res.render("todo/list", {menu : ["TODO", "TODO 목록"]})
-});
+router.get("/", todo.list);
 
 router.route("/form")
-.get((req, res) => {
-    res.render("todo/form", {menu : ["TODO", ""]});
-}).post((req, res) => {
-    todoDB.save([], (err) => {
+.get(todo.todoForm)
+.post(todo.todoAdd)
+.put(todo.todoMod)
+.delete(todo.todoDel);
 
-    });
-}).put((req, res) => {
-    todoDB.update([], (err) => {
+router.get("/read", todo.todoRead);
 
-    });
-}).delete((req, res) => {
-    
-});
+router.get("/list", todo.getList);
 
-router.get("/read", (req, res) => {
-    res.render("todo/read", {menu : ["TODO", ""]});
-});
 
-router.get("/list", (req, res) => {
-    todoDB.findByAll([]
-        , (err, rows) => {
-            if (err) {
-                console.log(err);
-            }
-            res.send({"data" : rows});
-        });
-});
+router.post("/type/add", todo.typeAdd);
+
+router.post("/status/add", todo.statusAdd)
 
 router.post("/checklist/add", (req, res) => {
     
