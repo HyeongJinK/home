@@ -84,7 +84,7 @@ router.get('/getbook', function (req, res, next) {
                                     //TODO 종료 방법 연구
                                     res.send({"error" : "키 만료"});
                                 } 
-                            } catch {
+                            } catch(e) {
                                 db.close();
                                 res.send({"error" : "키 만료"});
                             }
