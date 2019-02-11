@@ -1,13 +1,5 @@
 console.log("\x1b[31m", "\nApp Setting Start...")
 console.log("\x1b[32m")
-//설정파일 로드&설정
-const _ = require('lodash');
-const config = require("./config.json");
-const defaultConfig = config.development;
-const environment = process.env.NODE_ENV || 'development';
-const environmentConfig = config[environment];
-const finalConfig = _.merge(defaultConfig, environmentConfig);
-global.gConfig = finalConfig;
 
 //모듈 로드
 const createError = require('http-errors');

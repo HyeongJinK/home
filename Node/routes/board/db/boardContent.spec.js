@@ -1,0 +1,1 @@
+const boardContent = require("./boardContent");
