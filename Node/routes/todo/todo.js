@@ -21,7 +21,11 @@ exports.todoMod = (req, res) => {
 }
 
 exports.todoDel = (req, res) => {
-    
+    let idx = req.body.idx;
+
+    todoDB.delete(idx, (err) => {
+        res.send({"result" : err});
+    })
 }
 
 exports.todoRead = (req, res) => {
