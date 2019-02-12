@@ -1,11 +1,15 @@
 const board = require("./board");
 const httpMocks = require("node-mocks-http");
 const should = require("should");
-req = httpMocks.createRequest();
-res = httpMocks.createResponse();
+
 
 
 describe("게시판 Mock", function() {
+    beforeEach(() => {
+        req = httpMocks.createRequest();
+        res = httpMocks.createResponse();
+    });
+
     describe("Board List", function() {
         it("statusCode 200", function() {
             board.list(req, res);

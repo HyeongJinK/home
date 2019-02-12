@@ -25,4 +25,23 @@ describe("프로젝트 Real", () => {
                 });
         })
     });
+
+    describe("Task List Data", () => {
+        it("statusCode 200", (done) => {
+            supertest(app)
+                .get('/project/list')
+                .expect(200)
+                .end((err, res) => {
+                    if (err) {
+                        done(err);
+                        return;
+                    }
+                    expect(res.body).has.all.keys(['data'])
+                    expect(res.body.data).has.all.keys(['0'])
+                    expect(res.body.data[0]).has.all.keys(['idx', 'parentIdx', 'title', 'content', 'status', 'startTime', 'finishTime'])
+                    expect(res.body.data[0].idx).to.equal(1)
+                    done();
+                });
+        });
+    });
 });

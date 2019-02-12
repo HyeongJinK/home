@@ -33,15 +33,6 @@ exports.taskRead = (req, res) => {
     res.render("project/task/read", {menu : ["Project", ""]});
 }
 
-function test(err, rows) {
-    console.log("err[] = " +err);
-    console.log("rows = " +rows);
-    if (err) {
-        console.log(err);
-    }
-    //res.send({"data" : rows});
-}
-
 exports.getList = (req, res) => {
     common.dbOpen({"path": common.config.db.project, "param": []})
         .then(taskDB.findByAll)
