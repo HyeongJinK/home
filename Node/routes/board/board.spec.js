@@ -5,7 +5,7 @@ req = httpMocks.createRequest();
 res = httpMocks.createResponse();
 
 
-describe("게시판", function() {
+describe("게시판 Mock", function() {
     describe("Board List", function() {
         it("statusCode 200", function() {
             board.list(req, res);

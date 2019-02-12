@@ -19,14 +19,14 @@
                         <div class="widget-body-toolbar">
                             <div class="row">
                                 <div class="col-xs-3 col-sm-7 col-md-7 col-lg-7 text-right">
-                                    <button class="btn btn-success" id="todoAddBt">
+                                    <button class="btn btn-success" id="taskAddBt">
                                         <i class="fa fa-plus"></i> <span class="hidden-mobile">Add New Row</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         
-                        <table id="todoTable" class="display projects-table table table-striped table-bordered table-hover">
+                        <table id="taskTable" class="display projects-table table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th></th>
@@ -62,12 +62,12 @@
         
 <script>
 $(document).ready(function() {
-    $("#todoAddBt").click(function(e) {
-        location.href="/todo/form"
+    $("#taskAddBt").click(function(e) {
+        location.href="/project/form"
     });
 
-    var table = $('#todoTable').DataTable( {
-        "ajax": "todo/list",
+    var table = $('#taskTable').DataTable( {
+        "ajax": "project/list",
         "bDestroy": true,
         "iDisplayLength": 15,
         "oLanguage": {

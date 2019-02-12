@@ -7,11 +7,13 @@
   },
   "scripts": {
     "start": "supervisor ./bin/www",
-    "start2": "sudo forever start ./bin/www",
+    "start-real": "sudo forever start ./bin/www",
     "stop": "sudo forever stop 0",
     "list": "sudo forever list",
     "mocha-window": "./node_modules/.bin/mocha --recursive ./routes/**/*.spec.js",
-    "mocha-mac": "./node_modules/mocha/bin/mocha $(find ./routes -name '*.spec.js')",
+    "mocha-mac": "./node_modules/mocha/bin/mocha $(find ./routes -name '*.spec.js' & find ./routes -name '*.test.js')",
+    "mocha-mac-mock": "./node_modules/mocha/bin/mocha $(find ./routes -name '*.spec.js')",
+    "mocha-mac-real": "./node_modules/mocha/bin/mocha $(find ./routes -name '*.test.js')",
     "mochac-mac": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha $(find ./routes -name '*.spec.js')"
   },
   "dependencies": {
@@ -36,10 +38,13 @@
     "youtube-dl": "^1.12.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.3",
+    "request": "^2.88.0",
     "should": "^13.2.3",
+    "sinon": "^7.2.3",
     "supertest": "^3.4.2"
   }
 }

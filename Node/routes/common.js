@@ -24,6 +24,22 @@ exports.dbRun = (path, func) => {
     db.close();
 }
 
+exports.dbOpen = (data) => {
+    let db = new sqlite3.Database(data.path);
+    return new Promise((resolve, reject) => {
+        resolve({"db" :db, "param": data.param})
+    });
+}
+
+exports.dbClose = (data) => {
+    if (data.db)
+        data.db.close();
+    
+    return new Promise((resolve, reject) => {
+        resolve({"err" : data.err, "rows" : data.rows});
+    });
+}
+
 exports.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();

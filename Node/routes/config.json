@@ -5,7 +5,7 @@
             "book" : "db/books.db"
             , "user" : "db/users.db"
             , "board" : "db/board.db"
-            , "todo" : "db/todo.db"
+            , "project" : "db/todo.db"
             , "log" : "db/log.db"
         }
         , "port" : 8080

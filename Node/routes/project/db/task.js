@@ -1,19 +1,19 @@
 const common = require("../../common.js");
-const query = require('./json/todo.json')[common.config.dbType];
+const query = require('./json/task.json')[common.config.dbType];
 
 
-exports.findByAll = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
-        db.all(query.findByAll
-            , data
-            , function(err, rows) {
-                callBack(err, rows);
+exports.findByAll = (data) => {
+    return new Promise((resolve, reject) => {
+        data.db.all(query.findByAll
+            , data.param
+            , (err, rows) => {
+                resolve({"db" : data.db, err, rows});
         });
     });
 }
 
 exports.findByIdx = (idx, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.get(query.findByIdx)
             , [idx]
             , (err, row) => {
@@ -23,7 +23,7 @@ exports.findByIdx = (idx, callBack) => {
 }
 
 exports.save = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.save
             , data
             , (err) => {
@@ -33,7 +33,7 @@ exports.save = (data, callBack) => {
 }
 
 exports.update = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.update
             , data
             , (err) => {
@@ -42,7 +42,7 @@ exports.update = (data, callBack) => {
     });
 }
 exports.delete = (idx, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.delete
             , [idx]
             , (err) => {
@@ -50,8 +50,13 @@ exports.delete = (idx, callBack) => {
             })
     });
 }
+
+
+/**
+ * checkList
+ */
 exports.checkFindByAll = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.all(query.checkFindByAll
             , data
             , (err, rows) => {
@@ -60,7 +65,7 @@ exports.checkFindByAll = (data, callBack) => {
     });
 }
 exports.checkSave = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.checkSave
             , data
             , (err) => {
@@ -69,7 +74,7 @@ exports.checkSave = (data, callBack) => {
     });
 }
 exports.checkUpdate = (data, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.checkUpdate
             , data
             , (err) => {
@@ -78,7 +83,7 @@ exports.checkUpdate = (data, callBack) => {
     });
 }
 exports.checkDel = (idx, callBack) => {
-    common.dbRun(common.config.db.todo, (db) => {
+    common.dbRun(common.config.db.project, (db) => {
         db.run(query.checkDel
             , [idx]
             , (err) => {
