@@ -1,5 +1,5 @@
 const common = require("../common.js");
-const taskDB = require('./db/task');
+const projectDB = require('./db/projectDB');
 
 exports.list = (req, res) => {
     res.render("project/task/list", {menu : ["Project", "Task 목록"]})
@@ -10,13 +10,13 @@ exports.taskForm = (req, res) => {
 }
 
 exports.taskAdd = (req, res) => {
-    taskDB.save([], (err) => {
+    projectDB.save([], (err) => {
 
     });
 }
 
 exports.taskMod = (req, res) => {
-    taskDB.update([], (err) => {
+    projectDB.update([], (err) => {
 
     });
 }
@@ -24,7 +24,7 @@ exports.taskMod = (req, res) => {
 exports.taskDel = (req, res) => {
     let idx = req.body.idx;
 
-    taskDB.delete(idx, (err) => {
+    projectDB.delete(idx, (err) => {
         res.send({"result" : err});
     })
 }
@@ -35,7 +35,7 @@ exports.taskRead = (req, res) => {
 
 exports.getList = (req, res) => {
     common.dbOpen({"path": common.config.db.project, "param": []})
-        .then(taskDB.findByAll)
+        .then(projectDB.taskService.findByAll)
         .then(common.dbClose)
         .then((result) => {
             if (result.err) {
