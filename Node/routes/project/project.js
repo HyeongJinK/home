@@ -41,7 +41,7 @@ exports.getList = (req, res) => {
             if (result.err) {
                 console.log(result.err);
             }
-            res.send({"data" : result.rows});
+            res.send({"data" : result.result});
         })
 }
 

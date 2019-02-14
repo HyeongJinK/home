@@ -3,51 +3,41 @@ const sql_project = require('./sql/project').sql;
 const sql_task = require('./sql/task').sql;
 const sql_checkList = require('./sql/checkList').sql;
 
+function returnDataFunc(data, sql) {
+    return new Promise((resolve, reject) => {
+        data.db.all(sql
+            , data.param
+            , (err, result) => {
+                resolve({"db" : data.db, err, result});
+        });
+    });
+}
+
+function notReturnDataFunc(data, sql) {
+    return new Promise((resolve, reject) => {
+        data.db.all(sql
+            , data.param
+            , (err) => {
+                resolve({"db" : data.db, err});
+        });
+    });
+}
+
 exports.taskService = {
     findByAll: function (data) {
-        return new Promise((resolve, reject) => {
-            data.db.all(sql_task.findByAll
-                , data.param
-                , (err, rows) => {
-                    resolve({"db" : data.db, err, rows});
-            });
-        })
+        return returnDataFunc(data, sql_task.findByAll);
     },
     findByIdx: (data) => {
-        return new Promise((resolve, reject) => {
-            data.db.get(sql_task.findByIdx
-                , data.param
-                , (err, row) => {
-                    resolve({"db" : data.db, err, row})
-            });
-        })
+        return returnDataFunc(data, sql_task.findByIdx);
     },
     save: (data) => {
-        return new Promise((resolve, reject) => {
-            data.db.get(sql_task.save
-                , data.param
-                , (err) => {
-                    resolve({"db" : data.db, err})
-            });
-        })
+        return notReturnDataFunc(data, sql_task.save);
     },
-    update: (data, callBack) => {
-        return new Promise((resolve, reject) => {
-            data.db.get(sql_task.update
-                , data.param
-                , (err) => {
-                    resolve({"db" : data.db, err})
-            });
-        })
+    update: (data) => {
+        return notReturnDataFunc(data, sql_task.update);
     },
-    delete: (idx, callBack) => {
-        return new Promise((resolve, reject) => {
-            data.db.get(sql_task.delete
-                , data.param
-                , (err) => {
-                    resolve({"db" : data.db, err})
-            });
-        })
+    delete: (data) => {
+        return notReturnDataFunc(data, sql_task.delete);
     },
 };
 /**

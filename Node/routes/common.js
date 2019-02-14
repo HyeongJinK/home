@@ -27,7 +27,7 @@ exports.dbClose = (data) => {
         data.db.close();
     
     return new Promise((resolve, reject) => {
-        resolve({"err" : data.err, "rows" : data.rows});
+        resolve({"err" : data.err, "result" : data.result});
     });
 }
 

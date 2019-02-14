@@ -17,7 +17,7 @@ describe("프로젝트 Mock", () => {
                 resolve({
                     "db": null,
                     "err": null,
-                    "rows": [ { idx: 1,
+                    "result": [ { idx: 1,
                         parentIdx: 0,
                         title: 'test',
                         content: 'test',
@@ -42,7 +42,7 @@ describe("프로젝트 Mock", () => {
             res.statusCode.should.be.equal(200);
         });
 
-        it("List Data StatusCode 200 And Data Equal", (done) => {
+        it("List Data StatusCode 200 And Data Properties Equal And Data Value Equal", (done) => {
             res.on('end', ()=> {
                 let resData = res._getData().data[0];
 
