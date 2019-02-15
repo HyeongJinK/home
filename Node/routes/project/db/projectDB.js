@@ -1,7 +1,11 @@
-const common = require("../../common.js");
 const sql_project = require('./sql/project').sql;
+const sql_version = require('./sql/version').sql;
 const sql_task = require('./sql/task').sql;
 const sql_checkList = require('./sql/checkList').sql;
+const sql_checkListColum = require('./sql/checkListColum').sql;
+const sql_type = require('./sql/type').sql;
+const sql_status = require('./sql/status').sql;
+const sql_priority = require('./sql/priority').sql;
 
 function returnDataFunc(data, sql) {
     return new Promise((resolve, reject) => {
@@ -23,8 +27,20 @@ function notReturnDataFunc(data, sql) {
     });
 }
 
+exports.projectService = {
+    findByAll: (data) => {
+        return returnDataFunc(data, sql_project.findByAll);
+    }
+}
+
+exports.versionService = {
+    findByAll: (data) => {
+        return returnDataFunc(data, sql_version.findByAll);
+    }
+}
+
 exports.taskService = {
-    findByAll: function (data) {
+    findByAll: (data) => {
         return returnDataFunc(data, sql_task.findByAll);
     },
     findByIdx: (data) => {

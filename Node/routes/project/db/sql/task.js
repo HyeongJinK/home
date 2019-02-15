@@ -20,7 +20,14 @@ exports.sql = {
     UPDATE
         task 
     SET 
-        parentIdx = ?`
+        parentIdx = ?
+        , title = ?
+        , content = ?
+        , status = ?
+        , startTime = ?
+        , finishTime = ?
+    WHERE
+        idx = ?`
     , delete: `
     DELETE FROM 
         task 
