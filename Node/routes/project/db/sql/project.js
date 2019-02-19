@@ -23,6 +23,12 @@ exports.sql = {
     FROM
         project
     WHERE
-        idx = ?
-    `
+        idx = ?`
+    , findByIdx: `
+    SELECT
+        *
+    FROM
+        project
+    WHERE
+        idx = ?`
 }

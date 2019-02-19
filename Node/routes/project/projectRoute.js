@@ -2,36 +2,39 @@ const express = require('express');
 const router = express.Router();
 const project = require('./project');
 
-
-
 console.info("Project Route...");
-
-router.get("/", project.list);
-
+/**
+ * project
+ */
+router.get("/", project.ProjectController.listView);
+router.get("/list", project.ProjectController.list);
+router.get("/read", project.ProjectController.readView);
 router.route("/form")
-.get(project.taskForm)
-.post(project.taskAdd)
-.put(project.taskMod)
-.delete(project.taskDel);
-
-router.get("/read", project.taskRead);
-
-router.get("/list", project.getList);
-
-
-router.post("/type/add", project.typeAdd);
-
-router.post("/status/add", project.statusAdd)
-
-router.post("/checklist/add", (req, res) => {
-    
-});
-router.put("/checklist/modify", (req, res) => {
-    
-});
-router.delete("/checklist/del", (req, res) => {
-    
-});
-
+.get(project.ProjectController.formView)
+.post(project.ProjectController.save)
+.put(project.ProjectController.update)
+.delete(project.ProjectController.delete);
+/**
+ * version
+ */
+router.get("/version", project.VersionController.listView);
+router.get("/version/list", project.VersionController.list);
+router.get("/version/read", project.VersionController.readView);
+router.route("/version/form")
+.get(project.VersionController.formView)
+.post(project.VersionController.save)
+.put(project.VersionController.update)
+.delete(project.VersionController.delete);
+/**
+ * task
+ */
+router.get("/task", project.TaskController.listView);
+router.get("/task/list", project.TaskController.list);
+router.get("/task/read", project.TaskController.readView);
+router.route("/task/form")
+.get(project.TaskController.formView)
+.post(project.TaskController.save)
+.put(project.TaskController.update)
+.delete(project.TaskController.delete);
 
 module.exports = router;

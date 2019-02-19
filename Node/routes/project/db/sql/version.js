@@ -32,4 +32,11 @@ exports.sql = {
         version 
     WHERE 
         idx = ?`
+    , findByIdx: `
+    SELECT
+        *
+    FROM
+        version
+    WHERE
+        idx = ?`
 }

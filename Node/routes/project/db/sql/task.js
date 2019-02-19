@@ -14,7 +14,7 @@ exports.sql = {
         idx = ?`
     , save: `
     INSERT INTO task 
-        (parentIdx, title, content, status, startTime, finishTime)
+        (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, create_date, versionIdx)
         VALUES (?,?,?,?,?,?)`
     , update: `
     UPDATE

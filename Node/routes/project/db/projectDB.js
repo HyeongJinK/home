@@ -17,12 +17,25 @@ function returnDataFunc(data, sql) {
     });
 }
 
+function returnOneDataFunc(data, sql) {
+    return new Promise((resolve, reject) => {
+        data.db.get(sql
+            , data.param
+            , (err, result) => {
+                resolve({"db" : data.db, err, result});
+        });
+    });
+}
+
 function notReturnDataFunc(data, sql) {
     return new Promise((resolve, reject) => {
-        data.db.all(sql
+        data.db.run(sql
             , data.param
             , (err) => {
-                resolve({"db" : data.db, err});
+                if (this.lastID)
+                    resolve({"db" : data.db, err, result: this.lastID});
+                else
+                    resolve({"db" : data.db, err});
         });
     });
 }
@@ -30,12 +43,36 @@ function notReturnDataFunc(data, sql) {
 exports.projectService = {
     findByAll: (data) => {
         return returnDataFunc(data, sql_project.findByAll);
+    },
+    findByIdx: (data) => {
+        return returnOneDataFunc(data, sql_project.findByIdx);
+    },
+    save: (data) => {
+        return notReturnDataFunc(data, sql_project.save);
+    },
+    update: (data) => {
+        return notReturnDataFunc(data, sql_project.update);
+    },
+    delete: (data) => {
+        return notReturnDataFunc(data, sql_project.delete);
     }
 }
 
 exports.versionService = {
     findByAll: (data) => {
         return returnDataFunc(data, sql_version.findByAll);
+    },
+    findByIdx: (data) => {
+        return returnOneDataFunc(data, sql_version.findByIdx);
+    },
+    save: (data) => {
+        return notReturnDataFunc(data, sql_version.save);
+    },
+    update: (data) => {
+        return notReturnDataFunc(data, sql_version.update);
+    },
+    delete: (data) => {
+        return notReturnDataFunc(data, sql_version.delete);
     }
 }
 
@@ -44,7 +81,7 @@ exports.taskService = {
         return returnDataFunc(data, sql_task.findByAll);
     },
     findByIdx: (data) => {
-        return returnDataFunc(data, sql_task.findByIdx);
+        return returnOneDataFunc(data, sql_task.findByIdx);
     },
     save: (data) => {
         return notReturnDataFunc(data, sql_task.save);
