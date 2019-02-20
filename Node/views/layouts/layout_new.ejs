@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="smart-style-4">
+<html lang="ko" class="smart-style-2">
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <head>
 		<meta charset="utf-8">
@@ -20,7 +20,6 @@
 
 		<link rel="stylesheet" type="text/css" media="screen" href="/css/smartadmin-rtl.min.css">
 
-		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
 		<link rel="stylesheet" type="text/css" media="screen" href="/css/demo.min.css">
 </head>
 	<body class="">
@@ -28,7 +27,7 @@
 		<% include ./new/header %>
 		<!-- END HEADER -->
 
-		<!-- Left panel : Navigation area -->
+		<!-- LEFT PANEL NAVIGATION-->
 		<% include ./new/left_panel %>
 		<!-- END NAVIGATION -->
 
@@ -42,9 +41,7 @@
 			<div id="content">
 				<div class="row">
 					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-						<h1 class="page-title txt-color-blueDark">
-							<!-- <i class="fa-fw fa fa-home"></i> Dashboard <span>> My Dashboard</span><span>> My Dashboard</span> -->
-						</h1>
+						<h1 class="page-title txt-color-blueDark"></h1>
 					</div>
 				</div>
 				
@@ -71,60 +68,41 @@
 		<!-- Link to Google CDN's jQuery + jQueryUI; fall back to local -->
 		<script src="/javascripts/jquery/jquery.min.js"></script>
 		<script src="/js/libs/jquery-ui.min.js"></script>	
-
 		<!-- IMPORTANT: APP CONFIG -->
 		<script src="/js/app.config.js"></script>
-
 		<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
 		<script src="/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
-
 		<!-- BOOTSTRAP JS -->
 		<script src="/js/bootstrap/bootstrap.min.js"></script>
-
 		<!-- CUSTOM NOTIFICATION -->
 		<script src="/js/notification/SmartNotification.min.js"></script>
-
 		<!-- JARVIS WIDGETS -->
 		<script src="/js/smartwidgets/jarvis.widget.min.js"></script>
-
 		<!-- EASY PIE CHARTS -->
 		<script src="/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
-
 		<!-- SPARKLINES -->
 		<script src="/js/plugin/sparkline/jquery.sparkline.min.js"></script>
-
 		<!-- JQUERY VALIDATE -->
 		<script src="/js/plugin/jquery-validate/jquery.validate.min.js"></script>
-
 		<!-- JQUERY MASKED INPUT -->
 		<script src="/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-
 		<!-- JQUERY SELECT2 INPUT -->
 		<script src="/js/plugin/select2/select2.min.js"></script>
-
 		<!-- JQUERY UI + Bootstrap Slider -->
 		<script src="/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
-
 		<!-- browser msie issue fix -->
 		<script src="/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
-
 		<!-- FastClick: For mobile devices -->
 		<script src="/js/plugin/fastclick/fastclick.min.js"></script>
-
 		<!--[if IE 8]>
-
 		<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
-
 		<![endif]-->
-
 		<!-- ENHANCEMENT PLUGINS : NOT A REQUIREMENT -->
 		<!-- Voice command : plugin -->
 		<script src="/js/speech/voicecommand.min.js"></script>
-
 		<!-- SmartChat UI : plugin -->
 		<script src="/js/smart-chat-ui/smart.chat.ui.min.js"></script>
 		<script src="/js/smart-chat-ui/smart.chat.manager.min.js"></script>
-		
 		<!-- 리본 -->
 		<script>
 		let menus = "<%= menu %>"
@@ -143,7 +121,6 @@
 		
 		<!-- Demo purpose only -->
 		<script src="/js/demo.min.js"></script>
-
 		<!-- MAIN APP JS FILE -->
 		<script src="/js/app.min.js"></script>
 	</body>
