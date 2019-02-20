@@ -10,6 +10,6 @@ router.get('/', function(req, res, next) {
 
 router.get("/profile", (req, res, next) => {
   res.render("etc/profile", { title: '프로필', menu: ['프로필']});
-})
+});
 
 module.exports = router;

@@ -1,31 +1,31 @@
 exports.sql = {
     findByAll : `
-    SELECT
-        *
-    FROM
-        checkList`
+        SELECT
+            *
+        FROM
+            checkList`
     , findByTaskIdx: `
-    SELECT
-        *
-    FROM
-        checkList
-    WHERE
-        taskIdx = ?`
+        SELECT
+            *
+        FROM
+            checkList
+        WHERE
+            taskIdx = ?`
     , save: `
-    INSERT INTO checkList
-        (taskIdx, title)
-        VALUES (?, ?)`
+        INSERT INTO checkList
+            (taskIdx, title)
+            VALUES (?, ?)`
     , update: `
-    UPDATE
-        checkList
-    SET
-        title = ?
-    WHERE
-        idx = ?`
+        UPDATE
+            checkList
+        SET
+            title = ?
+        WHERE
+            idx = ?`
     , delete: `
-    DELETE
-    FROM
-        checkList
-    WHERE
-        idx = ?`
+        DELETE
+        FROM
+            checkList
+        WHERE
+            idx = ?`
 }

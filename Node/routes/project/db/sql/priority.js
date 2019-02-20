@@ -1,31 +1,31 @@
 exports.sql = {
     findByAll : `
-    SELECT
-        *
-    FROM
-        priority
-    ORDER BY idx DESC`
+        SELECT
+            *
+        FROM
+            priority
+        ORDER BY idx DESC`
     , findByIdx: `
-    SELECT
-        *
-    FROM
-        priority
-    WHERE
-        idx = ?`
+        SELECT
+            *
+        FROM
+            priority
+        WHERE
+            idx = ?`
     , save: `
-    INSERT INTO task 
-        (name)
-        VALUES (?)`
+        INSERT INTO task 
+            (name)
+            VALUES (?)`
     , update: `
-    UPDATE
-        priority 
-    SET 
-        name = ?
-    WHERE
-        idx = ?`
+        UPDATE
+            priority 
+        SET 
+            name = ?
+        WHERE
+            idx = ?`
     , delete: `
-    DELETE FROM 
-        priority 
-    WHERE 
-        idx = ?`
+        DELETE FROM 
+            priority 
+        WHERE 
+            idx = ?`
 }

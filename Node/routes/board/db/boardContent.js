@@ -22,6 +22,9 @@ exports.findbyBoardIdx = (data, callBack) => {
     });
 }
 
+exports.findbyText = (data, callBack) => {
+}
+
 exports.countByBoardIdx = (boardIdx, callBack) => {
     common.dbRun(common.config.db.board, (db) => {
         db.get(query.countByBoardIdx
