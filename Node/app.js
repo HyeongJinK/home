@@ -4,18 +4,18 @@ console.log("\x1b[32m")
 //모듈 로드
 const createError = require('http-errors');
 const express = require('express');
-const session = require('express-session');
+//const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const expressLayouts = require('express-ejs-layouts');
-const passport = require('passport');
-require('./routes/user/module/passport')(passport);
+//const passport = require('passport');
+//require('./routes/user/module/passport')(passport);
 //라우터
 const indexRouter = require('./routes/index');
 const profileRouter = require('./routes/etc/profile/profileRoute')
 const systemDB = require('./routes/system/db');
-const usersRouter = require('./routes/user/user');
+//const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
 const mdRouter = require('./routes/md/md');
@@ -45,25 +45,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//로그인 설정
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: false })); // 세션 활성화
-app.use(passport.initialize()); // passport 구동
-app.use(passport.session()); // 세션 연결
+//로그인 설정 속도가 느려져서 일단 제거
+// app.use(session({ secret: 'secret', resave: true, saveUninitialized: false })); // 세션 활성화
+// app.use(passport.initialize()); // passport 구동
+// app.use(passport.session()); // 세션 연결
 
+// app.use((req, res, next) => {
+//   if (req.session.passport) {
+//     res.locals.user = req.session.passport.user;
+//   } else {
+//     res.locals.user = null;
+//   }
+//   next();
+// });
 app.use((req, res, next) => {
-  if (req.session.passport) {
-    res.locals.user = req.session.passport.user;
-  } else {
-    res.locals.user = null;
-  }
+  res.locals.user = null;
   next();
 });
-
 //라우팅 설정
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
 app.use('/core', systemDB);
-app.use('/user', usersRouter);
+//app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
 app.use('/wiki', wikiRouter);
