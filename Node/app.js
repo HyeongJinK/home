@@ -13,6 +13,7 @@ const passport = require('passport');
 require('./routes/user/module/passport')(passport);
 //라우터
 const indexRouter = require('./routes/index');
+const profileRouter = require('./routes/etc/profile/profileRoute')
 const systemDB = require('./routes/system/db');
 const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 
 //라우팅 설정
 app.use('/', indexRouter);
+app.use('/profile', profileRouter);
 app.use('/core', systemDB);
 app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
