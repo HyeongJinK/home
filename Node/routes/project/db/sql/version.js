@@ -32,11 +32,11 @@ exports.sql = {
             version 
         WHERE 
             idx = ?`
-    , findByIdx: `
+    , findByProjectIdx: `
         SELECT
             *
         FROM
             version
         WHERE
-            idx = ?`
+            projectIdx = ?`
 }

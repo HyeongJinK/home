@@ -19,6 +19,7 @@ router.route("/form")
  */
 router.get("/version", project.VersionController.listView);
 router.get("/version/list", project.VersionController.list);
+router.get("/version/listByProductIdx", project.VersionController.listByProjectIdx);
 router.get("/version/read", project.VersionController.readView);
 router.route("/version/form")
 .get(project.VersionController.formView)

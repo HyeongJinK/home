@@ -14,18 +14,24 @@ exports.sql = {
             idx = ?`
     , save: `
         INSERT INTO task 
-            (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, create_date, versionIdx)
-            VALUES (?,?,?,?,?,?)`
+            (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, versionIdx, create_date)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'))`
     , update: `
         UPDATE
             task 
         SET 
             parentIdx = ?
+            , projectIdx = ?
             , title = ?
-            , content = ?
+            , description = ?
+            , type = ?
             , status = ?
-            , startTime = ?
-            , finishTime = ?
+            , start_time = ?
+            , finish_time = ?
+            , priority = ?
+            , manager = ?
+            , progress = ?
+            , versionIdx = ?
         WHERE
             idx = ?`
     , delete: `

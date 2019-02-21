@@ -80,6 +80,18 @@ exports.VersionController = {
             res.send({rows : result.result, page: 1, total: 1, records: result.result.length});
         });
     },
+    listByProjectIdx: (req, res) => {
+        common.dbOpen({"path": common.config.db.project, "param": [req.params.projectIdx]})
+        .then(projectDB.versionService.findByProjectIdx)
+        .then(common.dbClose)
+        .then((result) => {
+            if (result.err) {
+                console.log(result.err);
+            }
+
+            res.send({rows : result.result});
+        });
+    },
     formView: (req, res) => {
         res.render("project/version/form", {menu : ["Project", ""]});
     },
@@ -132,7 +144,7 @@ exports.VersionController = {
 
 exports.TaskController = {
     listView: (req, res) => {
-        res.render("project/task/list", {menu : ["Project", "Task 목록"]})
+        res.render("project/task/list", {menu : ["프로젝트", "일감목록"]})
     },
     list: (req, res) => {
         common.dbOpen({"path": common.config.db.project, "param": []})
@@ -150,15 +162,48 @@ exports.TaskController = {
         res.render("project/task/form", {menu : ["Project", ""]});
     },
     save: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "param": []})
+        common.dbOpen({"path": common.config.db.project, "param": [
+            req.body.parentIdx,
+            req.body.projectIdx,
+            req.body.title,
+            req.body.description,
+            req.body.type,
+            req.body.status,
+            req.body.start_time,
+            req.body.finish_time,
+            req.body.priority,
+            req.body.manager,
+            req.body.progress,
+            req.body.versionIdx
+        ]})
         .then(projectDB.taskService.save)
         .then(common.dbClose)
         .then((result) => {
-            res.send({result: result.err, idx: result.result});
+            if (result.err) {
+                //TODO 에러 처리
+                console.log(result.err)
+            } else {
+                res.redirect("/project/task");
+            }
+            //res.send({result: result.err, idx: result.result});
         });
     },
     update: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "param": []})
+        common.dbOpen({"path": common.config.db.project, "param": [
+            req.body.parentIdx,
+            req.body.projectIdx,
+            req.body.title,
+            req.body.description,
+            req.body.type,
+            req.body.status,
+            req.body.start_time,
+            req.body.finish_time,
+            req.body.priority,
+            req.body.manager,
+            req.body.progress,
+            req.body.versionIdx,
+            req.body.idx
+        ]})
         .then(projectDB.taskService.update)
         .then(common.dbClose)
         .then((result) => {

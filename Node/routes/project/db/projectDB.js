@@ -65,6 +65,9 @@ exports.versionService = {
     findByIdx: (data) => {
         return returnOneDataFunc(data, sql_version.findByIdx);
     },
+    findByProjectIdx: (data) => {
+        return returnDataFunc(data, sql_version.findByProjectIdx);
+    },
     save: (data) => {
         return notReturnDataFunc(data, sql_version.save);
     },

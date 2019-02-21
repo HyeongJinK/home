@@ -4,10 +4,10 @@
                     <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
                     <header>
                             <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                            <h2>프로젝트 관리</h2>
+                            <h2>버전 관리</h2>
         
                             <div class="widget-toolbar">
-                                <a href="/project/form" id="writeBtn" class="btn btn-primary">프로젝트 추가</a>
+                                <a href="/project/version/form" id="writeBtn" class="btn btn-primary">버전 추가</a>
                             </div>
                     </header>
                     <div>
@@ -30,31 +30,46 @@
     
         $(document).ready(function () {
         $("#menu-project").addClass("active open");
-        $("#menu-project-project").addClass("active");
+        $("#menu-project-version").addClass("active");
     });
     
         jQuery("#jqgrid").jqGrid({
-            url: "/project/list",
+            url: "/project/version/list",
             datatype : "json",
             height : 'auto',
-            colNames : ['idx', 'title', 'description', 'view_mode'],
+            colNames : ['idx', 'projectidx', 'title', 'descrtiption', 'start_time', 'finish_time', 'create_date'],
             colModel : [{
                 name : 'idx',
                 index : 'idx',
             }, {
+                name: 'projectIdx',
+                index: 'projectIdx',
+                hidden: true,
+                editrules: {edithidden: true},
+                editable: true,
+            }, {
                 name: 'title',
                 index: 'title',
-                editable: true,
+                editable: true
             }, {
                 name: 'description',
                 index: 'description',
                 hidden: true,
                 editrules: {edithidden: true},
                 editable: true,
+                edittype: 'textarea'
             }, {
-                name: 'view_mode',
-                index: 'view_mode',
+                name : 'start_time',
+                index : 'start_time',
                 editable: true,
+            }, {
+                name : 'finish_time',
+                index : 'finish_time',
+                editable: true,
+            }, {
+                name : 'create_date',
+                index : 'create_date',
+                editable: false,
             }],
             rowNum : 10,
             rowList : [10, 20, 30],
@@ -65,7 +80,7 @@
             sortorder : "desc",
             gridComplete : function() {
             },
-            caption : "Project",
+            caption : "Task",
             autowidth : true,
     
         });

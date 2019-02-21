@@ -35,26 +35,26 @@
     </div>
 </section>
 <script>
-    $(document).ready(function () {
-        $("#menu-board").addClass("active open");
-        $("#menu-board-content").addClass("active");
+$(document).ready(function () {
+    $("#menu-board").addClass("active open");
+    $("#menu-board-content").addClass("active");
 
-        function tablePrint() {
-            $.getJSON('/board/content/list', {}, function (data) {
-                $("#trformTable").html("")
-                data.list.forEach(element => {
-                    let $tr = $("<tr></tr>");
-                    $tr.append($("<td></td>").text(element.idx));
-                    $tr.append($("<td></td>").text(element.title));
-                    $tr.append($("<td></td>").text(element.createDate));
-                    $tr.append($("<td></td>").text(element.modifyDate));
-                    $tr.click(() => {
-                        location.href="/board/content/read/"+element.idx;
-                    });
-                    $("#trformTable").append($tr);
+    function tablePrint() {
+        $.getJSON('/board/content/list', {}, function (data) {
+            $("#trformTable").html("")
+            data.list.forEach(element => {
+                let $tr = $("<tr></tr>");
+                $tr.append($("<td></td>").text(element.idx));
+                $tr.append($("<td></td>").text(element.title));
+                $tr.append($("<td></td>").text(element.createDate));
+                $tr.append($("<td></td>").text(element.modifyDate));
+                $tr.click(() => {
+                    location.href="/board/content/read/"+element.idx;
                 });
+                $("#trformTable").append($tr);
             });
-        }
-        tablePrint();
-    });
+        });
+    }
+    tablePrint();
+});
 </script>
