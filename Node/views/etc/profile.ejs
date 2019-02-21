@@ -111,48 +111,233 @@
         <div class="widget-body">
 
             <div class="panel-group smart-accordion-default" id="accordion">
+                
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Ev </a></h4>
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_0"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+                            MP-IOS </a>
+                        </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
+                    <div id="collapse_0" class="panel-collapse collapse">
                         <div class="panel-body no-padding">
                             <table class="table table-bordered table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>Column name</th>
-                                        <th>Column name</th>
-                                        <th>Column name</th>
-                                        <th>Column name</th>
+                                        <th>사용 언어</th>
+                                        <th>Swift, Objective-C</th>
+                                        <th>툴</th>
+                                        <th>Xcode</th>
+                                    </tr>
+                                    <tr>
+                                        <th>참여인원</th>
+                                        <th>1</th>
+                                        <th>기한</th>
+                                        <th>2018년 4월 ~</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Row 1</td>
-                                        <td>Row 2</td>
-                                        <td>Row 3</td>
-                                        <td>Row 4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Row 1</td>
-                                        <td>Row 2</td>
-                                        <td>Row 3</td>
-                                        <td>Row 4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Row 1</td>
-                                        <td>Row 2</td>
-                                        <td>Row 3</td>
-                                        <td>Row 4</td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
+<pre>
+EstgamesCommon(공통적으로 사용되는 기능) 
+
+* env, region 동적설정 
+* processShow 
+- StartAPI에서 내려주는 창 열리는 순서에 따라 권한, 이용약관, 배너창 보여주기 
+* 권한 
+- systemContractShowOrDismiss 권한창이 나와야 하는 국가인지 확인하는 함수 
+* 이용약관 
+- 전부 동의시 더 이상 나오지 않게 구현(SharedPreferences) 
+* 배너 
+- 웹뷰&이미지 타입에 따른 배너 보여주기 
+* 웹뷰 : StartAPI에서 제공하는 URL을 웹뷰에서 보여주기 
+- 공지사항 
+- FAQ, 문의하기 
+* 국가정보 
+- StartAPI에서 제공하는 국가 정보 리턴 
+* 언어정보 
+- 기기 언어정보 리턴 
+
+
+UserSevice(로그인, SNS 계정연동)) 
+
+* 팝업 dismiss 버그 수정, 메인스레드에서 팝업이 열릴 수 있게 구현 
+* 게임시작하기, 토큰생성(start) 
+* SNS계정연동(goToLogin) 
+- 계정연동충돌 팝업창 UI 구현 
+- AuthUIConfiguration을 매개변수로 넘기는 함수 구현 
+* 각각의 함수 콜백 
+* 게임서버API호출, 게임캐릭터 정보 보여주기
+        
+
+2018년 7월 ~
+
+GameAgent 추가 
+- 점검유무, 시간, 공지사항 URL을 알려준다. 
+
+캐릭터 관련 API 수정 
+- 에러메시지 
+- 콜백 함수 
+
+로컬라이징 수정 
+- 로컬라이징 관련 파일을 추가했던 거에서 SDK에서 로컬라이징 파일을 갖고 있게 수정 
+
+region 값에 따라 유저 로그인 정보 따로 관리 
+
+팝업 UI 수정 
+
+2.0버전 개발중 
+- Congnito 제거 
+- 구글, 페이스북 로그인 버튼 추가 
+- Alamofire 제거            
+</pre>
                         </div>
                     </div>
                 </div>
+
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Collapsible Group Item #2 </a></h4>
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_1"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+                            MP-AOS </a>
+                        </h4>
+                    </div>
+                    <div id="collapse_1" class="panel-collapse collapse">
+                        <div class="panel-body no-padding">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>사용 언어</th>
+                                        <th>Java, Kotlin</th>
+                                        <th>툴</th>
+                                        <th>Android Studio</th>
+                                    </tr>
+                                    <tr>
+                                        <th>참여인원</th>
+                                        <th>1</th>
+                                        <th>기한</th>
+                                        <th>2018년 4월 ~</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+<pre>
+EstgamesCommon(공통적으로 사용되는 기능) 
+
+* processShow 
+- StartAPI에서 내려주는 창 열리는 순서에 따라 권한, 이용약관, 배너창 보여주기 
+* 권한 
+- systemContractShowOrDismiss 권한창이 나와야 하는 국가인지 확인하는 함수 
+* 이용약관 
+- 전부 동의시 더 이상 나오지 않게 구현(SharedPreferences) 
+* 배너 
+* 웹뷰 : StartAPI에서 제공하는 URL을 웹뷰에서 보여주기 
+- 공지사항 
+- FAQ, 문의하기 
+* 국가정보 
+- StartAPI에서 제공하는 국가 정보 리턴 
+* 언어정보 
+- 기기 언어정보 리턴 
+
+
+UserSevice(로그인, SNS 계정연동)) 
+
+* 팝업 dismiss 버그 수정, 메인스레드에서 팝업이 열릴 수 있게 구현 
+* 게임시작하기, 토큰생성(start) 
+* SNS계정연동(goToLogin) 
+- 계정연동충돌 팝업창 UI 구현 
+- AuthUIConfiguration을 매개변수로 넘기는 함수 구현 
+* 각각의 함수 콜백               
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_2"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+                            이스트 게임즈 채용 관리자 </a>
+                        </h4>
+                    </div>
+                    <div id="collapse_2" class="panel-collapse collapse">
+                        <div class="panel-body no-padding">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>사용 언어</th>
+                                        <th>Java, JSP, JavaScript</th>
+                                        <th>프레임워크</th>
+                                        <th>Spring, Angular</th>
+                                        <th>툴</th>
+                                        <th>intellij</th>
+                                    </tr>
+                                    <tr>
+                                        <th>참여인원</th>
+                                        <th>1</th>
+                                        <th>기한</th>
+                                        <th>2017년 10월 ~ 2017년 12월</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+<pre>
+              
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse_2"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+                            ### </a>
+                        </h4>
+                    </div>
+                    <div id="collapse_2" class="panel-collapse collapse">
+                        <div class="panel-body no-padding">
+                            <table class="table table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>사용 언어</th>
+                                        <th>Java, JSP, JavaScript</th>
+                                        <th>프레임워크</th>
+                                        <th>Spring, Angular</th>
+                                        <th>툴</th>
+                                        <th>intellij</th>
+                                    </tr>
+                                    <tr>
+                                        <th>참여인원</th>
+                                        <th>1</th>
+                                        <th>기한</th>
+                                        <th>####년 ##월 ~ ####년 ##월</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
+<pre>
+                
+</pre>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Cabal2-Event </a></h4>
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <div class="panel-body">
@@ -193,6 +378,10 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Collapsible Group Item #3 </a></h4>
@@ -203,6 +392,10 @@
                         </div>
                     </div>
                 </div>
+
+
+
+
             </div>
 
         </div>
