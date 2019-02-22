@@ -9,7 +9,7 @@
             <button class="close" data-dismiss="alert">
                     ×
             </button>
-            <h1 class="semi-bold">프로젝트 등록</h1>
+            <h1 class="semi-bold">일감 편집</h1>
         <!-- <p> 
             프로젝트 등록
         </p> -->
@@ -26,7 +26,7 @@
             <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
-                    <h2>Project</h2>
+                    <h2>일감</h2>
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -35,7 +35,7 @@
                         <form id="checkout-form" class="smart-form" novalidate="novalidate" method="post" action="/project/task/form">
                             <input type="hidden" name="idx" <% if (row){%>value="<%= row.idx %>" <%}%>>
                             <header>
-                                폼제목
+                                
                             </header>
 
                             <fieldset>
@@ -60,7 +60,7 @@
                                 <section>
                                     <label class="label">제목</label>
                                     <label class="input">
-                                        <input type="text" name="title" placeholder="제목" class="input-xs" <% if (row){%>value="<%= row.title %>" <%}%>>
+                                        <input type="text" name="title" placeholder="제목" class="input-lg" <% if (row){%>value="<%= row.title %>" <%}%>>
                                     </label>
                                 </section>
                                 <div class="row">
@@ -130,12 +130,12 @@
                                 <div class="row">
                                     <section class="col col-6">
 										<label class="input"> <i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="start_date" id="startdate" placeholder="시작시간" <% if (row){%>value="<%= row.start_date %>" <%}%>>
+											<input type="text" name="start_time" id="startdate" placeholder="시작시간" <% if (row){%>value="<%= row.start_time %>" <%}%>>
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="finish_date" id="finishdate" placeholder="완료기한" <% if (row){%>value="<%= row.finish_date %>" <%}%>>
+											<input type="text" name="finish_time" id="finishdate" placeholder="완료기한" <% if (row){%>value="<%= row.finish_time %>" <%}%>>
 										</label>
 									</section>
                                 </div>
@@ -144,17 +144,16 @@
                                         <label class="label">설명</label>
                                         <label class="input">
                                             <div id="editSection"></div>
-                                            <input type="hidden" name="description" id='ides'>
                                         </label>
                                     </section>
                             </fieldset>
 
                             <footer>
                                 <button type="submit" class="btn btn-primary">
-                                    Submit
+                                    등록
                                 </button>
                                 <button type="button" class="btn btn-default" onclick="window.history.back();">
-                                    Back
+                                    뒤로
                                 </button>
                             </footer>
                         </form>
@@ -175,7 +174,48 @@
 <script src="/javascripts/showdown/showdown.min.js"></script>
 
 <script>
+function selectSelectedCheck(n, check) {
+    $("select[name="+ n +"] option").each((i, val) => {
+        if ($(val).val() == check) {
+            $(val).attr("selected", true)
+        }
+    });
+}
+
+function versionSelectDraw(vidx, sel) {
+    $.ajax({
+        method: "get",
+        url: "/project/version/listByProductIdx",
+        data: {
+            projectIdx: vidx
+        }
+    }).done((versions) => {
+        $("#versionIdx")
+            .html("")
+            .append($('<option>', {
+                value: 0,
+                text: "선택하기"
+            }))
+        versions.rows.forEach((version)=> {
+            let $option = $('<option>', { value: version.idx, text: version.title });
+            if (sel && version.idx == sel) {
+                $($option).attr("selected", true);
+            }
+            $("#versionIdx").append($option); 
+        });
+    }).fail((jqXHR1, textStatus1) => {
+        alert("error = "+textStatus1)
+    });
+}
+
 $(document).ready(function() {
+    let editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '300px'
+    });
+
     <% if (row) {%>
         let projectIdx = <%=row.projectIdx%>;
         let type = <%=row.type%>;
@@ -184,26 +224,13 @@ $(document).ready(function() {
         let progress = <%=row.progress%>;
         let versionIdx = <%=row.versionIdx%>;
         let description = "<%=row.description%>";
-        $("#checkout-form").attr("method", "put");
-        // $("select[name='type'] option").each((i) => {
-        //     console.log($(this).val())
-        //     if ($(this).val() == type) {
-        //         console.log(type);
-        //     }
-        // });
-    <%}%>;
-
-
-    let editor = new tui.Editor({
-        el: document.querySelector('#editSection'),
-        initialEditType: 'markdown',
-        previewStyle: 'vertical',
-        height: '300px'
-    });
-
-    if (description) {
+       
+        selectSelectedCheck('type', type);
+        selectSelectedCheck('status', status);
+        selectSelectedCheck('priority', priority);
+        selectSelectedCheck('progress', progress);
         editor.setValue(description);
-    }
+    <%}%>;
 
     $.ajax({
         method: "get",
@@ -212,7 +239,8 @@ $(document).ready(function() {
         projects.rows.forEach((project)=> {
             let $option = $('<option>', { value: project.idx, text: project.title });
             if (projectIdx && projectIdx == project.idx) {
-                $($option).attr("selected", "selected")
+                $($option).attr("selected", true);
+                versionSelectDraw(projectIdx, versionIdx);
             }
             $("#projectIdx").append($option);   
         });
@@ -221,28 +249,7 @@ $(document).ready(function() {
     });
 
     $("#projectIdx").on("change", (e) => {
-        $.ajax({
-            method: "get",
-            url: "/project/version/listByProductIdx",
-            data: {
-                projectIdx: $(this).val()
-            }
-        }).done((versions) => {
-            $("#versionIdx")
-                .html("")
-                .append($('<option>', {
-                    value: 0,
-                    text: "선택하기"
-                }))
-            versions.rows.forEach((version)=> {
-                $("#versionIdx").append($('<option>', {
-                    value: version.idx,
-                    text: version.title
-                }));
-            });
-        }).fail((jqXHR1, textStatus1) => {
-            alert("error = "+textStatus1)
-        });
+        versionSelectDraw($("#projectIdx").val());
     });
 
     let errorClass = 'invalid';
@@ -262,10 +269,10 @@ $(document).ready(function() {
 
     // Rules for form validation
         rules: {
-            project: {
+            projectIdx: {
                 required: false
             },
-            version: {
+            versionIdx: {
                 required: false
             },
             title: {
@@ -277,10 +284,10 @@ $(document).ready(function() {
             status: {
                 required: true
             },
-            startdate: {
+            start_time: {
                 required: false
             },
-            finishdate: {
+            finish_time: {
                 required: false
             },
             priority: {
@@ -325,8 +332,35 @@ $(document).ready(function() {
             error.insertAfter(element.parent());
         },
         submitHandler: function() {
-            $("#ides").val(editor.getValue());
-            return true;
+            let method = "put"
+            if ($("input[name='idx']").val() == "") {
+                method = "post"
+            }
+
+            $.ajax({
+                method: method,
+                url: "/project/task/form",
+                data: {
+                    idx: $("input[name='idx']").val()
+                    , parentIdx: 0
+                    , projectIdx: $("select[name='projectIdx'] option:selected").val()
+                    , title: $("input[name='title']").val()
+                    , description: editor.getValue()
+                    , type: $("select[name='type'] option:selected").val()
+                    , status: $("select[name='status'] option:selected").val()
+                    , start_time: $("input[name='start_time']").val()
+                    , finish_time: $("input[name='finish_time']").val()
+                    , priority: $("select[name='priority'] option:selected").val()
+                    , manager: $("input[name='manager']").val()
+                    , progress: $("select[name='progress'] option:selected").val()
+                    , versionIdx: $("select[name='versionIdx'] option:selected").val()
+                }  
+            }).done((projects) => {
+                location.href="/project/task"
+            }).fail((jqXHR, textStatus) => {
+                alert("error = "+textStatus)
+            });
+            return false;
         }
     });
 

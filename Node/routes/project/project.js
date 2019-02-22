@@ -93,7 +93,7 @@ exports.VersionController = {
         });
     },
     formView: (req, res) => {
-        res.render("project/version/form", {menu : ["Project", ""]});
+        res.render("project/version/form", {menu : ["Project", "일감 편집"]});
     },
     save: (req, res) => {
         common.dbOpen({"path": common.config.db.project, "param": [
@@ -160,7 +160,7 @@ exports.TaskController = {
     },
     formView: (req, res) => {
         let idx = req.query.idx;
-        console.log("idx = " + idx)
+        
         if (idx) {
             common.dbOpen({"path": common.config.db.project, "param": [idx]})
             .then(projectDB.taskService.findByIdx)
@@ -170,10 +170,10 @@ exports.TaskController = {
                     console.log(result.err);
                 }
 
-                res.render("project/task/form", {menu : ["Project", ""], row: result.result});
+                res.render("project/task/form", {menu : ["프로젝트", "일감 수정"], row: result.result});
             });
         } else {
-            res.render("project/task/form", {menu : ["Project", ""], row: null});
+            res.render("project/task/form", {menu : ["프로젝트", "일감 등록"], row: null});
         }
     },
     save: (req, res) => {
@@ -194,13 +194,13 @@ exports.TaskController = {
         .then(projectDB.taskService.save)
         .then(common.dbClose)
         .then((result) => {
+            console.log(result)
             if (result.err) {
                 //TODO 에러 처리
                 console.log(result.err)
             } else {
-                res.redirect("/project/task");
+                res.send({result: result.err, idx: result.result});
             }
-            //res.send({result: result.err, idx: result.result});
         });
     },
     update: (req, res) => {
