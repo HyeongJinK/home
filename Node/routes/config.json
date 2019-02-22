@@ -7,6 +7,7 @@
             , "board" : "db/board.db"
             , "project" : "db/todo.db"
             , "log" : "db/log.db"
+            , "profile" : "db/profile.db"
         }
         , "port" : 8080
     }

@@ -1,31 +1,51 @@
 exports.sql = {
     findByAll : `
     SELECT
-        *
+        parent.*
+        , child.title as childTitle
+        , child.description as childDescription
+        , child.parentIdx as childParentIdx
+        , child.tableData as childTableData
     FROM
-        checkList`
+        (SELECT
+            *
+        FROM
+            career
+        WHERE
+            parentIdx = 0) AS parent
+    LEFT JOIN 
+        (SELECT
+            *
+        FROM
+            career
+        WHERE
+            parentIdx != 0) AS child
+    ON parent.idx = child.parentIdx `
     , findByIdx: `
     SELECT
         *
     FROM
-        checkList
+        career
     WHERE
         idx = ?`
     , save: `
-    INSERT INTO checkList
-        (taskIdx, title)
-        VALUES (?, ?)`
+    INSERT INTO career
+        (parentIdx, title, description, orderNum, tableData)
+        VALUES (?, ?, ?, ?, ?)`
     , update: `
     UPDATE
-        checkList
+        career
     SET
         title = ?
+        , description = ?
+        , orderNum = ?
+        , tableData = ?
     WHERE
         idx = ?`
     , delete: `
     DELETE
     FROM
-        checkList
+        career
     WHERE
         idx = ?`
 }
