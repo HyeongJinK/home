@@ -55,7 +55,7 @@ exports.ProjectController = {
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "param": [req.params.idx]})
+        common.dbOpen({"path": common.config.db.project, "param": [req.query.idx]})
         .then(projectDB.projectService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
@@ -81,7 +81,7 @@ exports.VersionController = {
         });
     },
     listByProjectIdx: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "param": [req.params.projectIdx]})
+        common.dbOpen({"path": common.config.db.project, "param": [req.query.projectIdx]})
         .then(projectDB.versionService.findByProjectIdx)
         .then(common.dbClose)
         .then((result) => {
@@ -133,7 +133,7 @@ exports.VersionController = {
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "param": [req.params.idx]})
+        common.dbOpen({"path": common.config.db.project, "param": [req.query.idx]})
         .then(projectDB.versionService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
@@ -156,10 +156,25 @@ exports.TaskController = {
             }
 
             res.send({rows : result.result, page: 1, total: 1, records: result.result.length});
-        })
+        });
     },
     formView: (req, res) => {
-        res.render("project/task/form", {menu : ["Project", ""]});
+        let idx = req.query.idx;
+        console.log("idx = " + idx)
+        if (idx) {
+            common.dbOpen({"path": common.config.db.project, "param": [idx]})
+            .then(projectDB.taskService.findByIdx)
+            .then(common.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
+
+                res.render("project/task/form", {menu : ["Project", ""], row: result.result});
+            });
+        } else {
+            res.render("project/task/form", {menu : ["Project", ""], row: null});
+        }
     },
     save: (req, res) => {
         common.dbOpen({"path": common.config.db.project, "param": [
@@ -219,7 +234,7 @@ exports.TaskController = {
         });
     },
     readView: (req, res) => {
-        let idx = req.params.idx;
+        let idx = req.query.idx;
 
         common.dbOpen({"path": common.config.db.project, "param": [idx]})
         .then(projectDB.taskService.findByIdx)

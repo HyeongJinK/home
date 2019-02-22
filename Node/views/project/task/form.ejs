@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
 <div class="row">
     <div class="col-sm-12">
         <div class="well">
@@ -28,6 +33,7 @@
                     </div>
                     <div class="widget-body no-padding">
                         <form id="checkout-form" class="smart-form" novalidate="novalidate" method="post" action="/project/task/form">
+                            <input type="hidden" name="idx" <% if (row){%>value="<%= row.idx %>" <%}%>>
                             <header>
                                 폼제목
                             </header>
@@ -54,7 +60,7 @@
                                 <section>
                                     <label class="label">제목</label>
                                     <label class="input">
-                                        <input type="text" name="title" placeholder="제목" class="input-xs">
+                                        <input type="text" name="title" placeholder="제목" class="input-xs" <% if (row){%>value="<%= row.title %>" <%}%>>
                                     </label>
                                 </section>
                                 <div class="row">
@@ -65,7 +71,7 @@
                                                 <option value="0" selected="" disabled="">선택하기</option>
                                                 <option value="1">기능</option>
                                                 <option value="2">버그</option>
-                                                <option value="3">개선</option>
+                                                <option value="4">개선</option>
                                             </select> <i></i>
                                         </label>
                                     </section>
@@ -98,7 +104,7 @@
                                     <section class="col col-6">
                                         <label class="label">담당자</label>
                                         <label class="input">
-                                            <input type="text" name="manager" class="input-sm">
+                                            <input type="text" name="manager" class="input-sm" <% if (row){%>value="<%= row.manager %>" <%}%>>
                                         </label>
                                     </section>
                                     <section class="col col-6">
@@ -124,12 +130,12 @@
                                 <div class="row">
                                     <section class="col col-6">
 										<label class="input"> <i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="start_date" id="startdate" placeholder="시작시간">
+											<input type="text" name="start_date" id="startdate" placeholder="시작시간" <% if (row){%>value="<%= row.start_date %>" <%}%>>
 										</label>
 									</section>
 									<section class="col col-6">
 										<label class="input"> <i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="finish_date" id="finishdate" placeholder="완료기한">
+											<input type="text" name="finish_date" id="finishdate" placeholder="완료기한" <% if (row){%>value="<%= row.finish_date %>" <%}%>>
 										</label>
 									</section>
                                 </div>
@@ -137,7 +143,8 @@
                                 <section>
                                         <label class="label">설명</label>
                                         <label class="input">
-                                            <input type="text" name="description" class="input-sm">
+                                            <div id="editSection"></div>
+                                            <input type="hidden" name="description" id='ides'>
                                         </label>
                                     </section>
                             </fieldset>
@@ -158,17 +165,56 @@
     </div>
 </section>
 
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/codemirror/lib/codemirror.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+
 <script>
 $(document).ready(function() {
+    <% if (row) {%>
+        let projectIdx = <%=row.projectIdx%>;
+        let type = <%=row.type%>;
+        let status = <%=row.status%>;
+        let priority = <%=row.priority%>;
+        let progress = <%=row.progress%>;
+        let versionIdx = <%=row.versionIdx%>;
+        let description = "<%=row.description%>";
+        $("#checkout-form").attr("method", "put");
+        // $("select[name='type'] option").each((i) => {
+        //     console.log($(this).val())
+        //     if ($(this).val() == type) {
+        //         console.log(type);
+        //     }
+        // });
+    <%}%>;
+
+
+    let editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '300px'
+    });
+
+    if (description) {
+        editor.setValue(description);
+    }
+
     $.ajax({
         method: "get",
         url: "/project/list",  
     }).done((projects) => {
         projects.rows.forEach((project)=> {
-            $("#projectIdx").append($('<option>', {
-                value: project.idx,
-                text: project.title
-            }));
+            let $option = $('<option>', { value: project.idx, text: project.title });
+            if (projectIdx && projectIdx == project.idx) {
+                $($option).attr("selected", "selected")
+            }
+            $("#projectIdx").append($option);   
         });
     }).fail((jqXHR, textStatus) => {
         alert("error = "+textStatus)
@@ -225,9 +271,6 @@ $(document).ready(function() {
             title: {
                 required: true
             },
-            description: {
-                required: true
-            },
             type: {
                 required: true
             },
@@ -262,9 +305,6 @@ $(document).ready(function() {
             title: {
                 required: 'Please enter your last name'
             },
-            description: {
-                required: 'Please enter your email address'
-            },
             type: {
                 required: 'Please enter your phone number'
             },
@@ -285,7 +325,7 @@ $(document).ready(function() {
             error.insertAfter(element.parent());
         },
         submitHandler: function() {
-            console.log("submit")
+            $("#ides").val(editor.getValue());
             return true;
         }
     });

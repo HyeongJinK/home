@@ -33,7 +33,7 @@ $(document).ready(function() {
     $("#menu-project-task").addClass("active");
 });
 
-    jQuery("#jqgrid").jqGrid({
+    $("#jqgrid").jqGrid({
         url: "/project/task/list",
         datatype : "json",
         height : 'auto',
@@ -110,14 +110,19 @@ $(document).ready(function() {
         autowidth : true,
 
     });
-    jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid"
-    , { edit : true, add : true, del : true }
-    , {}
-    , {beforeShowForm: (e) => {
-        
-        location.href="/project/task/form";
-        return false;
-    }});
+    $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
+        , { edit : true, add : true, del : true }
+            , {beforeInitData: () => {
+                location.href="/project/task/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
+                return false;
+            }
+        }
+        , {beforeInitData: (e) => {
+                location.href="/project/task/form";
+                return false;
+            }
+        }
+    );
 
     $('.navtable .ui-pg-button').tooltip({
         container : 'body'
