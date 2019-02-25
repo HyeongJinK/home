@@ -18,7 +18,7 @@ exports.ProjectController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.result, page: page, total: 1, records: result.result.length});
+            res.send({rows : result.findByAll, page: page, total: 1, records: result.findByAll.length});
         });
     },
     formView: (req, res) => {
@@ -62,7 +62,7 @@ exports.ProjectController = {
         .then(projectDB.projectService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/project/read", {menu : ["Project", ""], row: result.result});
+            res.render("project/project/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }
@@ -80,7 +80,7 @@ exports.VersionController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.result, page: 1, total: 1, records: result.result.length});
+            res.send({rows : result.findByAll, page: 1, total: 1, records: result.findByAll.length});
         });
     },
     listByProjectIdx: (req, res) => {
@@ -92,7 +92,7 @@ exports.VersionController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.result});
+            res.send({rows : result.findByProjectIdx});
         });
     },
     formView: (req, res) => {
@@ -140,7 +140,7 @@ exports.VersionController = {
         .then(projectDB.versionService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/version/read", {menu : ["Project", ""], row: result.result});
+            res.render("project/version/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }
@@ -155,13 +155,15 @@ exports.TaskController = {
 
         common.dbOpen({"path": common.config.db.project, "findByAllParam": [(page-1)*rows, page*rows]})
         .then(projectDB.taskService.findByAll)
+        .then(projectDB.taskService.count)
         .then(common.dbClose)
         .then((result) => {
+            console.log(result)
             if (result.err) {
                 console.log(result.err);
             }
-
-            res.send({rows : result.findByAll, page: page, total: 1, records: result.findByAll.length});
+            
+            res.send({rows : result.findByAll, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.findByAll.length});
         });
     },
     formView: (req, res) => {
@@ -245,7 +247,7 @@ exports.TaskController = {
         .then(projectDB.taskService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/task/read", {menu : ["Project", ""], row: result.result});
+            res.render("project/task/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }

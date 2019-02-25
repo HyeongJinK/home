@@ -87,6 +87,9 @@ exports.taskService = {
     findByIdx: (data) => {
         return returnOneDataFunc(data, sql_task.findByIdx, "findByIdx");
     },
+    count: (data) => {
+        return returnOneDataFunc(data, sql_task.count, "count");
+    },
     save: (data) => {
         return notReturnDataFunc(data, sql_task.save, "save");
     },

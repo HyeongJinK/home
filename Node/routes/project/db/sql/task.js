@@ -13,6 +13,11 @@ exports.sql = {
             task
         WHERE
             idx = ?`
+    , count: `
+        SELECT
+            count(*) as total
+        FROM
+            task`
     , save: `
         INSERT INTO task 
             (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, versionIdx, create_date)
