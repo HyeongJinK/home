@@ -168,10 +168,6 @@ exports.TaskController = {
     },
     formView: (req, res) => {
         let idx = req.query.idx;
-<<<<<<< HEAD
-        
-=======
->>>>>>> 536a4371d6466b32161ae16f38e8e93ecdad4efd
         if (idx) {
             common.dbOpen({"path": common.config.db.project, "findByIdxParam": [idx]})
             .then(projectDB.taskService.findByIdx)

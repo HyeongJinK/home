@@ -1,6 +1,5 @@
 exports.sql = {
     findByAll : `
-<<<<<<< HEAD
     SELECT
         ta.idx as idx
         , ta.title
@@ -25,15 +24,8 @@ exports.sql = {
         on ta.priority = pri.idx
     left join version as ve
         on ta.versionIdx = ve.idx
-    ORDER BY idx DESC`
-=======
-        SELECT
-            *
-        FROM
-            task
-        ORDER BY idx DESC
-        LIMIT ?, ?`
->>>>>>> 536a4371d6466b32161ae16f38e8e93ecdad4efd
+    ORDER BY idx DESC
+    LIMIT ?, ?`
     , findByIdx: `
         SELECT
             *
