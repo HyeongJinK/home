@@ -4,7 +4,8 @@ exports.sql = {
             *
         FROM
             task
-        ORDER BY idx DESC`
+        ORDER BY idx DESC
+        LIMIT ?, ?`
     , findByIdx: `
         SELECT
             *

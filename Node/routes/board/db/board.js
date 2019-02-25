@@ -1,26 +1,22 @@
-// const sqlite3 = require('sqlite3').verbose();
-// const boardQuery = require('./boardContent.json');
+const sql_board = require('./sql/board').sql;
+const template = require('../../DBPromiseTemplate')
 
-// const bookDBPath = global.gConfig.db
 
-exports.findByAll = (db, callBack) => {
-    db.all("SELECT * FROM board", [], (err, rows) => {
-        callBack(rows);
-    });
-};
 
-exports.save = (db, callBack) => {
-    db.run("INSERT INTO board (boardIdx, title, content, createDate, modifyDate, hidden) VALUES (?,?,?,CURRENT_TIMESTAMP,null,?)"
-    , data
-    , (err) => {
-        callBack(err);
-    }); 
-};
-
-exports.delete = (db, boardIdx, callBack) => {
-    db.run("DELETE FROM board WHERE boardIdx = ?"
-    , [boardIdx]
-    , (err) => {
-        callBack(err);
-    });
+exports.BoardService = {
+    findByAll: (data) => {
+        return template.returnDataFunc(data, sql_board.findByAll);
+    },
+    findByIdx: (data) => {
+        return template.returnOneDataFunc(data, sql_board.findByIdx);
+    },
+    save: (data) => {
+        return template.notReturnDataFunc(data, sql_board.save);
+    },
+    update: (data) => {
+        return template.notReturnDataFunc(data, sql_board.update);
+    },
+    delete: (data) => {
+        return template.notReturnDataFunc(data, sql_board.delete);
+    }
 }

@@ -17,8 +17,9 @@ exports.dbRun = (path, func) => {
 
 exports.dbOpen = (data) => {
     let db = new sqlite3.Database(data.path);
+    data.db = db
     return new Promise((resolve, reject) => {
-        resolve({"db" :db, "param": data.param})
+        resolve(data)
     });
 }
 
@@ -27,7 +28,7 @@ exports.dbClose = (data) => {
         data.db.close();
     
     return new Promise((resolve, reject) => {
-        resolve({"err" : data.err, "result" : data.result});
+        resolve(data);
     });
 }
 

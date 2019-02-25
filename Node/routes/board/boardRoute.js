@@ -4,20 +4,22 @@ const board = require("./board");
 
 console.info("Board Route...");
 
-router.get("/", board.list);
+router.get("/", board.BoardController.listView);
+router.route("/form")
+.get(board.BoardController.formView)
+.post(board.BoardController.save)
+.put(board.BoardController.update)
+.delete(board.BoardController.delete)
 
-router.get("/content", board.contentList);
 
-router.get("/content/read/:idx", board.contentRead);
-
+router.get("/content", board.BoardContentController.listView);
+router.get("/content/read/:idx", board.BoardContentController.readView);
 router.route("/content/form")
-.get(board.contentForm)
-.post(board.contentInsert)
-.put(board.contentUpdate)
-.delete(board.contentDelete);
-
-router.get("/content/list", board.getContentList);
-
-router.get("/content/:idx", board.getContent);
+.get(board.BoardContentController.formView)
+.post(board.BoardContentController.save)
+.put(board.BoardContentController.update)
+.delete(board.BoardContentController.delete);
+router.get("/content/list", board.BoardContentController.list);
+router.get("/content/:idx", board.BoardContentController.read);
 
 module.exports = router;
