@@ -1,5 +1,5 @@
 const common = require("../../common.js");
-const query = require('./json/boardContent.json')[common.config.dbType];
+const query = require('./sql/boardContent.json')[common.config.dbType];
 
 
 exports.findByAll = (data, callBack) => {

@@ -7,93 +7,97 @@ const sql_type = require('./sql/type').sql;
 const sql_status = require('./sql/status').sql;
 const sql_priority = require('./sql/priority').sql;
 
-function returnDataFunc(data, sql) {
+function returnDataFunc(data, sql, resultStr) {
     return new Promise((resolve, reject) => {
         data.db.all(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err, result) => {
-                resolve({"db" : data.db, err, result});
+                data[resultStr] = result
+                resolve(data);
         });
     });
 }
 
-function returnOneDataFunc(data, sql) {
+function returnOneDataFunc(data, sql, resultStr) {
     return new Promise((resolve, reject) => {
         data.db.get(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err, result) => {
-                resolve({"db" : data.db, err, result});
+                data[resultStr] = result
+                resolve(data);
         });
     });
 }
 
-function notReturnDataFunc(data, sql) {
+function notReturnDataFunc(data, sql, resultStr) {
     return new Promise((resolve, reject) => {
         data.db.run(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err) => {
                 if (this.lastID)
-                    resolve({"db" : data.db, err, result: this.lastID});
-                else
-                    resolve({"db" : data.db, err});
+                    data["lastID"] = this.lastID;
+                resolve(data);
         });
     });
 }
 
 exports.projectService = {
     findByAll: (data) => {
-        return returnDataFunc(data, sql_project.findByAll);
+        return returnDataFunc(data, sql_project.findByAll, "findByAll");
     },
     findByIdx: (data) => {
-        return returnOneDataFunc(data, sql_project.findByIdx);
+        return returnOneDataFunc(data, sql_project.findByIdx, "findByIdx");
     },
     save: (data) => {
-        return notReturnDataFunc(data, sql_project.save);
+        return notReturnDataFunc(data, sql_project.save, "save");
     },
     update: (data) => {
-        return notReturnDataFunc(data, sql_project.update);
+        return notReturnDataFunc(data, sql_project.update, "update");
     },
     delete: (data) => {
-        return notReturnDataFunc(data, sql_project.delete);
+        return notReturnDataFunc(data, sql_project.delete, "delete");
     }
 }
 
 exports.versionService = {
     findByAll: (data) => {
-        return returnDataFunc(data, sql_version.findByAll);
+        return returnDataFunc(data, sql_version.findByAll, "findByAll");
     },
     findByIdx: (data) => {
-        return returnOneDataFunc(data, sql_version.findByIdx);
+        return returnOneDataFunc(data, sql_version.findByIdx, "findByIdx");
     },
     findByProjectIdx: (data) => {
-        return returnDataFunc(data, sql_version.findByProjectIdx);
+        return returnDataFunc(data, sql_version.findByProjectIdx, "findByProjectIdx");
     },
     save: (data) => {
-        return notReturnDataFunc(data, sql_version.save);
+        return notReturnDataFunc(data, sql_version.save, "save");
     },
     update: (data) => {
-        return notReturnDataFunc(data, sql_version.update);
+        return notReturnDataFunc(data, sql_version.update, "update");
     },
     delete: (data) => {
-        return notReturnDataFunc(data, sql_version.delete);
+        return notReturnDataFunc(data, sql_version.delete, "delete");
     }
 }
 
 exports.taskService = {
     findByAll: (data) => {
-        return returnDataFunc(data, sql_task.findByAll);
+        return returnDataFunc(data, sql_task.findByAll, "findByAll");
     },
     findByIdx: (data) => {
-        return returnOneDataFunc(data, sql_task.findByIdx);
+        return returnOneDataFunc(data, sql_task.findByIdx, "findByIdx");
+    },
+    count: (data) => {
+        return returnOneDataFunc(data, sql_task.count, "count");
     },
     save: (data) => {
-        return notReturnDataFunc(data, sql_task.save);
+        return notReturnDataFunc(data, sql_task.save, "save");
     },
     update: (data) => {
-        return notReturnDataFunc(data, sql_task.update);
+        return notReturnDataFunc(data, sql_task.update, "update");
     },
     delete: (data) => {
-        return notReturnDataFunc(data, sql_task.delete);
+        return notReturnDataFunc(data, sql_task.delete, "delete");
     },
 };
 /**

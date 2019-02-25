@@ -1,5 +1,6 @@
 exports.sql = {
     findByAll : `
+<<<<<<< HEAD
     SELECT
         ta.idx as idx
         , ta.title
@@ -25,6 +26,14 @@ exports.sql = {
     left join version as ve
         on ta.versionIdx = ve.idx
     ORDER BY idx DESC`
+=======
+        SELECT
+            *
+        FROM
+            task
+        ORDER BY idx DESC
+        LIMIT ?, ?`
+>>>>>>> 536a4371d6466b32161ae16f38e8e93ecdad4efd
     , findByIdx: `
         SELECT
             *
@@ -32,6 +41,11 @@ exports.sql = {
             task
         WHERE
             idx = ?`
+    , count: `
+        SELECT
+            count(*) as total
+        FROM
+            task`
     , save: `
         INSERT INTO task 
             (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, versionIdx, create_date)
