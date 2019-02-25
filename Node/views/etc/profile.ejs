@@ -107,12 +107,21 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-12 col-lg-6">
-        <div class="widget-body">
-            <div class="panel-group smart-accordion-default" id="accordion">
+    <article class="col-sm-12 col-md-12 col-lg-12">
+        <div class="jarviswidget jarviswidget-color-blueLight" id="wid-id-10" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false" data-widget-custombutton="false" data-widget-sortable="false">
+            <header>
+                    <span class="widget-icon"> <i class="fa fa-list-alt"></i> </span>
+                    <h2>경력사항</h2>
+            </header>
+        
+            <div>
+                <div class="widget-body no-padding">
+                    <div class="panel-group smart-accordion-default" id="accordion">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </article>
 </div>
 
 
@@ -126,6 +135,13 @@
         <div class="panel-body no-padding"></div>
     </div>
 </div>
+
+<div class="tabs-left">
+        <ul class="nav nav-tabs tabs-left" id="demo-pill-nav">
+        </ul>
+        <div class="tab-content">
+        </div>
+    </div>
 <div>
 
 
@@ -136,13 +152,33 @@ $(document).ready(function() {
         url: "/profile/list",  
     }).done((careers) => {
         let $clone = $("#carees_template").clone();
+        let $tabClone = $(".tabs-left").clone();
         careers.rows.forEach((career) => {
-            let $template = $($clone).clone()
+            if (career.childIdx) {
+                if ($("#carees_"+career.idx).length == 1) {//부모가 있을 경우
+                    let $tabTemplate = $("#carees_"+career.idx);
+                    $($tabTemplate).find("#demo-pill-nav").append($("<li>").append($("<a>").attr("href", "#tab-r"+career.childIdx).attr("data-toggle", "tab").text(career.childTitle)));
+                    $($tabTemplate).find(".tab-content").append($("<div>").addClass("tab-pane").attr("id", "tab-r"+career.childIdx).append($("<pre>").text(career.childDescription)));
+                } else {
+                    let $template = $($clone).clone();
+                    $($template).attr("id", "carees_"+career.idx);
+                    $($template).find(".career_title").attr("href", "#collapse_"+career.idx).append(career.title);
+                    $($template).find(".panel-collapse").attr("id", "collapse_"+career.idx);
+                    $("#accordion").append($template);
 
-            $($template).find(".career_title").attr("href", "#collapse_"+career.idx).append(career.title);
-            $($template).find(".panel-collapse").attr("id", "collapse_"+career.idx);
-            $($template).find(".panel-body").append($("<pre>").text(career.description));
-            $("#accordion").append($template);
+                    let $tabTemplate = $tabClone.clone();
+                    $($tabTemplate).find("#demo-pill-nav").append($("<li>").addClass("active").append($("<a>").attr("href", "#tab-r"+career.childIdx).attr("data-toggle", "tab").text(career.childTitle)));
+                    $($tabTemplate).find(".tab-content").append($("<div>").addClass("tab-pane active").attr("id", "tab-r"+career.childIdx).append($("<pre>").text(career.childDescription)));
+                    $("#carees_"+career.idx).find(".panel-body").append($tabTemplate);
+                }
+            } else {
+                let $template = $($clone).clone()
+                $($template).attr("id", "carees_"+career.idx);
+                $($template).find(".career_title").attr("href", "#collapse_"+career.idx).append(career.title);
+                $($template).find(".panel-collapse").attr("id", "collapse_"+career.idx);
+                $($template).find(".panel-body").append($("<pre>").text(career.description));
+                $("#accordion").append($template);
+            }
         });
     }).fail((jqXHR, textStatus) => {
         alert("error = "+textStatus)

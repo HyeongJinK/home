@@ -157,8 +157,7 @@ exports.TaskController = {
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
         .then(common.dbClose)
-        .then((result) => {
-            console.log(result)
+        .then((result) => {        
             if (result.err) {
                 console.log(result.err);
             }

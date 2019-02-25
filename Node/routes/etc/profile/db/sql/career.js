@@ -4,8 +4,9 @@ exports.sql = {
         parent.*
         , child.title as childTitle
         , child.description as childDescription
-        , child.parentIdx as childParentIdx
+        , child.idx as childIdx
         , child.tableData as childTableData
+        , child.orderNum as childOrderNum
     FROM
         (SELECT
             *
@@ -20,7 +21,8 @@ exports.sql = {
             career
         WHERE
             parentIdx != 0) AS child
-    ON parent.idx = child.parentIdx `
+    ON parent.idx = child.parentIdx 
+    ORDER BY parent.orderNum desc, child.orderNum desc`
     , findByIdx: `
     SELECT
         *
