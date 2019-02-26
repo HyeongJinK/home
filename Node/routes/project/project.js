@@ -18,7 +18,7 @@ exports.ProjectController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.findByAll, page: page, total: 1, records: result.findByAll.length});
+            res.send({rows : result.projects, page: page, total: 1, records: result.projects.length});
         });
     },
     formView: (req, res) => {
@@ -80,7 +80,7 @@ exports.VersionController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.findByAll, page: 1, total: 1, records: result.findByAll.length});
+            res.send({rows : result.versions, page: 1, total: 1, records: result.versions.length});
         });
     },
     listByProjectIdx: (req, res) => {
@@ -92,11 +92,11 @@ exports.VersionController = {
                 console.log(result.err);
             }
 
-            res.send({rows : result.findByProjectIdx});
+            res.send({rows : result.versions});
         });
     },
     formView: (req, res) => {
-        res.render("project/version/form", {menu : ["Project", "일감 편집"]});
+        res.render("project/version/form", {menu : ["Project", ""]});
     },
     save: (req, res) => {
         common.dbOpen({"path": common.config.db.project, "saveParam": [
@@ -157,12 +157,13 @@ exports.TaskController = {
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
         .then(common.dbClose)
-        .then((result) => {        
+        .then((result) => {
+            console.log(result)
             if (result.err) {
                 console.log(result.err);
             }
             
-            res.send({rows : result.findByAll, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.findByAll.length});
+            res.send({rows : result.tasks, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.tasks.length});
         });
     },
     formView: (req, res) => {
@@ -176,10 +177,10 @@ exports.TaskController = {
                     console.log(result.err);
                 }
 
-                res.render("project/task/form", {menu : ["프로젝트", "일감 수정"], row: result.result});
+                res.render("project/task/form", {menu : ["Project", ""], row: result.result});
             });
         } else {
-            res.render("project/task/form", {menu : ["프로젝트", "일감 등록"], row: null});
+            res.render("project/task/form", {menu : ["Project", ""], row: null});
         }
     },
     save: (req, res) => {
@@ -200,13 +201,13 @@ exports.TaskController = {
         .then(projectDB.taskService.save)
         .then(common.dbClose)
         .then((result) => {
-            console.log(result)
             if (result.err) {
                 //TODO 에러 처리
                 console.log(result.err)
             } else {
-                res.send({result: result.err, idx: result.result});
+                res.redirect("/project/task");
             }
+            //res.send({result: result.err, idx: result.result});
         });
     },
     update: (req, res) => {
@@ -246,7 +247,7 @@ exports.TaskController = {
         .then(projectDB.taskService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/task/read", {menu : ["Project", ""], row: result.findByIdx});
+            res.render("project/task/read", {menu : ["Project", ""], row: result.task});
         });
     },
 }

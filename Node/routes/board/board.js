@@ -13,16 +13,59 @@ exports.BoardController = {
         res.render("board/board/form", {menu : ["게시판", "게시판 편집"]});
     },
     list: (req, res) => {
-
+        let page = req.query.page;
+        
+        common.dbOpen({"path": common.config.db.board, "findByAllParam": []})
+        .then(boardDB.BoardService.findByAll)
+        .then(common.dbClose)
+        .then((result) => {
+            if (result.err) {
+                console.log(result.err);
+            }
+            
+            res.send({rows : result.boards, page: page, total: 1, records: result.boards.length});
+        });
     },
-    save: (req, res) => {
+    edit: (req, res) => {
+        let oper = req.body.oper;
+        let idx = req.body.id;
+        let title = req.body.title;
+        let hidden = req.body.hidden;
 
-    },
-    update: (req, res) => {
+        if (oper == "add") {
+            common.dbOpen({"path": common.config.db.board, "saveParam": [title, hidden]})
+            .then(boardDB.BoardService.save)
+            .then(common.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
 
-    },
-    delete: (req, res) => {
+                res.send({result: result.err})
+            });
+        } else if(oper == "edit") {
+            common.dbOpen({"path": common.config.db.board, "updateParam": [title, hidden, idx]})
+            .then(boardDB.BoardService.update)
+            .then(common.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
 
+                res.send({result: result.err})
+            });
+        } else {
+            common.dbOpen({"path": common.config.db.board, "deleteParam": [idx]})
+            .then(boardDB.BoardService.delete)
+            .then(common.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
+
+                res.send({result: result.err})
+            });
+        }
     }
 }
 
@@ -84,7 +127,7 @@ exports.BoardContentController = {
                 console.log(err);
             }
     
-            res.send({"list" : rows});
+            res.send({"rows" : rows});
         });
     },
     read: (req, res) => {

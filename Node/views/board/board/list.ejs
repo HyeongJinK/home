@@ -7,54 +7,101 @@
                     <h2>게시판</h2>
 
                     <div class="widget-toolbar">
-                        <a href="/board/content/form" id="writeBtn" class="btn btn-primary">글쓰기</a>
                     </div>
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">
                     </div>
-                    <div class="widget-body">                        
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>번호</th>
-                                        <th>제목</th>
-                                        <th>만든날짜</th>
-                                        <th>수정날짜</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="trformTable">
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="widget-body">  
+                        <table id="jqgrid"></table>
+                        <div id="pjqgrid"></div>
                     </div>
                 </div>
             </div>
         </article>
     </div>
 </section>
+
+<script src="/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
 <script>
 $(document).ready(function () {
+    pageSetUp();
     $("#menu-board").addClass("active open");
     $("#menu-board-content").addClass("active");
 
-    function tablePrint() {
-        $.getJSON('/board/content/list', {}, function (data) {
-            $("#trformTable").html("")
-            data.list.forEach(element => {
-                let $tr = $("<tr></tr>");
-                $tr.append($("<td></td>").text(element.idx));
-                $tr.append($("<td></td>").text(element.title));
-                $tr.append($("<td></td>").text(element.createDate));
-                $tr.append($("<td></td>").text(element.modifyDate));
-                $tr.click(() => {
-                    location.href="/board/content/read/"+element.idx;
-                });
-                $("#trformTable").append($tr);
-            });
-        });
-    }
-    tablePrint();
+    $("#jqgrid").jqGrid({
+        url: "/board/list",
+        editurl: '/board/form',
+        datatype: "json",
+        height: 'auto',
+        colNames: ['idx', '주제', "뷰모드"],
+        colModel: [{
+            name: 'boardIdx',
+            index: 'boardIdx',
+            hidden: true,
+        }, {
+            name: 'title',
+            index: 'title',
+            editable: true
+        }, {
+            name: 'hidden',
+            index: 'hidden',
+            editable: true
+        }],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        pager: '#pjqgrid',
+        sortname: 'boardIdx',
+        toolbarfilter: true,
+        viewrecords: true,
+        sortorder: "desc",
+        gridComplete: function() {
+        },
+        caption: "게시판",
+        autowidth: true,
+
+    });
+    $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
+        , { edit: true, add: true, del: true });
+
+    $('.navtable .ui-pg-button').tooltip({
+        container: 'body'
+    });
+
+    
+
+    // remove classes
+    $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+    $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+    $(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+    $(".ui-jqgrid-pager").removeClass("ui-state-default");
+    $(".ui-jqgrid").removeClass("ui-widget-content");
+
+    // add classes
+    $(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+    $(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+    $(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+    $(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+    $(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+    $(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+    $(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+    $(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+    $(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+    $(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+    $(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+    $(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+    $(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+    $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
 });
 </script>

@@ -5,6 +5,11 @@ exports.sql = {
         FROM
             project
         ORDER BY idx DESC`
+    , count: `
+        SELECT
+            count(*) as total
+        FROM
+            project`
     , save: `
         INSERT INTO task
             (title, description, view_mode)

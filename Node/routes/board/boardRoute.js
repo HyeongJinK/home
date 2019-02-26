@@ -5,11 +5,10 @@ const board = require("./board");
 console.info("Board Route...");
 
 router.get("/", board.BoardController.listView);
+router.get("/list", board.BoardController.list);
 router.route("/form")
 .get(board.BoardController.formView)
-.post(board.BoardController.save)
-.put(board.BoardController.update)
-.delete(board.BoardController.delete)
+.post(board.BoardController.edit)
 
 
 router.get("/content", board.BoardContentController.listView);

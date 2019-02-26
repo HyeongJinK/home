@@ -1,32 +1,33 @@
-exports.returnDataFunc = (data, sql) => {
+exports.returnDataFunc = (data, sql, resultStr) => {
     return new Promise((resolve, reject) => {
         data.db.all(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err, result) => {
-                resolve({"db" : data.db, err, result});
+                data[resultStr] = result
+                resolve(data);
         });
     });
 }
 
-exports.returnOneDataFunc = (data, sql) => {
+exports.returnOneDataFunc = (data, sql, resultStr) => {
     return new Promise((resolve, reject) => {
         data.db.get(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err, result) => {
-                resolve({"db" : data.db, err, result});
+                data[resultStr] = result
+                resolve(data);
         });
     });
 }
 
-exports.notReturnDataFunc = (data, sql) => {
+exports.notReturnDataFunc = (data, sql, resultStr) => {
     return new Promise((resolve, reject) => {
         data.db.run(sql
-            , data.param
+            , data[resultStr+"Param"]
             , (err) => {
                 if (this.lastID)
-                    resolve({"db" : data.db, err, result: this.lastID});
-                else
-                    resolve({"db" : data.db, err});
+                    data["lastID"] = this.lastID;
+                resolve(data);
         });
     });
 }
