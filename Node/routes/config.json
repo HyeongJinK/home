@@ -1,14 +1,15 @@
 {
     "development": {
-        "dbType" : "sqlite"
+        "dbType": "sqlite"
         , "db": {
-            "book" : "db/books.db"
-            , "user" : "db/users.db"
-            , "board" : "db/board.db"
-            , "project" : "db/todo.db"
-            , "log" : "db/log.db"
-            , "profile" : "db/profile.db"
+            "book": "db/books.db"
+            , "user": "db/users.db"
+            , "board": "db/board.db"
+            , "project": "db/todo.db"
+            , "log": "db/log.db"
+            , "profile": "db/profile.db"
+            , "file": "db/file.db"
         }
-        , "port" : 8080
+        , "port": 80
     }
 }

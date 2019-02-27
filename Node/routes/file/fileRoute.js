@@ -4,6 +4,9 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
+const common = require("../common.js");
+const fileDB = require("./db/fileDB");
+
 
 let upload = multer({
     storage: multer.diskStorage({
@@ -22,17 +25,31 @@ router.get('/', function(req, res, next) {
     res.render('file/list', { menu: ['파일관리', '리스트'] });
 });
 
+router.get('/list', (req, res) => {
+    common.dbOpen({"path": common.config.db.file, "findByAllParam": [parseInt((page-1)*rows), parseInt(page*rows)]})
+        .then(fileDB.FileService.findByAll)
+        .then(common.dbClose)
+        .then((result) => {
+            if (result.err) {
+                console.log(result.err);
+            }
+            
+            res.send({rows : result.files, page: page, total: 1, records: result.files.length});
+        });
+});
+
 router.post('/create', upload.single("imgFile"), function(req, res, next) {
     let file = req.file
-    console.log(file);
-    let result = {
-        originaName : file.originalname,
-        size: file.size,
-        extension: file.mimetype,
-        filename: file.filename
-    }
 
-    res.send({result: result})
+    common.dbOpen({"path": common.config.db.file, "saveParam": [file.filename
+    , file.originalname
+    , file.mimetype
+    , file.size]})
+    .then(fileDB.FileService.save)
+    .then(common.dbClose)
+    .then((result) => {
+        res.redirect("/file");
+    });
 });
 
 router.post('/creates', upload.array("imgFile"), function(req, res, next) {
@@ -42,6 +59,5 @@ router.post('/creates', upload.array("imgFile"), function(req, res, next) {
 
     res.send({result: "result"})
 });
-
 
 module.exports = router;

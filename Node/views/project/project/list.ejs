@@ -35,12 +35,13 @@
     
         jQuery("#jqgrid").jqGrid({
             url: "/project/list",
-            datatype : "json",
-            height : 'auto',
-            colNames : ['idx', 'title', 'description', 'view_mode'],
-            colModel : [{
-                name : 'idx',
-                index : 'idx',
+            datatype: "json",
+            height: 'auto',
+            colNames: ['idx', 'title', 'description', 'view_mode'],
+            colModel: [{
+                name: 'idx',
+                index: 'idx',
+                hidden: true
             }, {
                 name: 'title',
                 index: 'title',
@@ -55,28 +56,30 @@
                 name: 'view_mode',
                 index: 'view_mode',
                 editable: true,
+                edittype: 'select',
+                editoptions: {value: "OPEN:OPEN;CLOSE:CLOSE;ADMIN:ADMIN"}
             }],
-            rowNum : 10,
-            rowList : [10, 20, 30],
-            pager : '#pjqgrid',
-            sortname : 'idx',
-            toolbarfilter : true,
-            viewrecords : true,
-            sortorder : "desc",
-            gridComplete : function() {
+            rowNum: 10,
+            rowList: [10, 20, 30],
+            pager: '#pjqgrid',
+            sortname: 'idx',
+            toolbarfilter: true,
+            viewrecords: true,
+            sortorder: "desc",
+            gridComplete: function() {
             },
-            caption : "Project",
-            autowidth : true,
+            caption: "Project",
+            autowidth: true,
     
         });
         jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
-            edit : true,
-            add : true,
-            del : true
+            edit: true,
+            add: true,
+            del: true
         });
     
         $('.navtable .ui-pg-button').tooltip({
-            container : 'body'
+            container: 'body'
         });
     
         
