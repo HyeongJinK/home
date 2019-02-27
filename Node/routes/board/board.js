@@ -1,7 +1,7 @@
 const showdown = require('showdown') 
 const converter = new showdown.Converter();
 const common = require("../common.js");
-const boardDB = require('./db/board');
+const boardDB = require('./db/boardDB');
 const boardContentDB = require('./db/boardContent');
 
 

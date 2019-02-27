@@ -67,6 +67,29 @@ exports.taskService = {
         return db_template.notReturnDataFunc(data, sql_task.delete, "delete");
     },
 };
+
+exports.settingService= {
+    getStatus: (data) => {
+        return db_template.returnDataFunc(data, sql_status.findByAll, "status");
+    },
+    getType: (data) => {
+        return db_template.returnDataFunc(data, sql_type.findByAll, "type");
+    },
+    getPriority: (data) => {
+        return db_template.returnDataFunc(data, sql_priority.findByAll, "policy")
+    },
+}
+
+
+
+
+
+
+
+
+
+
+
 /**
  * checkList
  */

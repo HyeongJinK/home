@@ -3,14 +3,18 @@ exports.sql = {
         SELECT
             *
         FROM
-            checkList`
+            checkList
+        ORDER BY idx DESC`
     , findByTaskIdx: `
         SELECT
-            *
+            clc.*
         FROM
-            checkList
+            checkList AS cl
+        LEFT JOIN
+            checkListColum AS clc
+        ON cl.idx = clc.checkListIdx
         WHERE
-            taskIdx = ?`
+            cl.taskIdx = 1`
     , save: `
         INSERT INTO checkList
             (taskIdx, title)

@@ -42,7 +42,7 @@ $(document).ready(function () {
     function tablePrint() {
         $.getJSON('/board/content/list', {}, function (data) {
             $("#trformTable").html("")
-            data.list.forEach(element => {
+            data.rows.forEach(element => {
                 let $tr = $("<tr></tr>");
                 $tr.append($("<td></td>").text(element.idx));
                 $tr.append($("<td></td>").text(element.title));
