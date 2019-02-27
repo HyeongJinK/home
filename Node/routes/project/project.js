@@ -153,12 +153,11 @@ exports.TaskController = {
         let page = req.query.page;
         let rows = req.query.rows;
 
-        common.dbOpen({"path": common.config.db.project, "findByAllParam": [(page-1)*rows, page*rows]})
+        common.dbOpen({"path": common.config.db.project, "findByAllParam": [parseInt((page-1)*rows), parseInt(page*rows)]})
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
         .then(common.dbClose)
         .then((result) => {
-            console.log(result)
             if (result.err) {
                 console.log(result.err);
             }

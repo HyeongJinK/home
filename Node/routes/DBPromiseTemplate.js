@@ -3,6 +3,8 @@ exports.returnDataFunc = (data, sql, resultStr) => {
         data.db.all(sql
             , data[resultStr+"Param"]
             , (err, result) => {
+                console.log(err)
+                console.log("result = "+result)
                 data[resultStr] = result
                 resolve(data);
         });
