@@ -60,10 +60,10 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use((req, res, next) => {
-  res.locals.user = null;
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.user = null;
+//   next();
+// });
 //라우팅 설정
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
