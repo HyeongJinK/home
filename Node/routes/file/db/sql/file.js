@@ -5,8 +5,14 @@ exports.sql = {
     FROM
         file
     ORDER BY idx DESC`,
+    count:`
+    SELECT
+        count(*)
+    FROM
+        file`,
     save: `
     INSERT INTO file
-            (taskIdx, title)
-            VALUES (?, ?)`
+        (originalName, fileName, description, extension, size)
+    VALUES
+        (?, ?, ?, ?, ?)`
 }

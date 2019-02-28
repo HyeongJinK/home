@@ -1,4 +1,53 @@
-<form action="file/creates" method="POST" enctype="multipart/form-data">
-    <input type="file" name="imgFile">
-    <input type="submit" value="submit">
-</form>
+<section id="widget-grid" class="">
+    <div class="row">
+        <div class="superbox col-sm-12">
+        </div>    
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+                <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>파일 관리</h2>
+
+                        <div class="widget-toolbar">
+                            
+                        </div>
+                </header>
+                <div>
+                        <form action="file/create" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="imgFile">
+                            <input type="text" name="description">
+                            <input type="submit" value="submit">
+                        </form>
+                    <div class="widget-body">  
+                        <table id="jqgrid"></table>
+                        <div id="pjqgrid"></div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<script src="/js/plugin/superbox/superbox.min.js"></script>
+<script>
+$(document).ready(function() {
+    pageSetUp();
+
+    $("#menu-file").addClass("active open");
+    $("#menu-file-file").addClass("active");
+    
+    $.getJSON('/file/list', {}, function (data) {
+        $(data.rows).each(function (index) {
+            let $div = $("<div>").addClass("superbox-list");
+            let $img = $("<img>").addClass("superbox-img")
+                .attr("src", "/upload/"+this.fileName)
+                .attr("data-img", "/upload/"+this.fileName)
+                .attr("alt", this.description)
+                .attr("title", this.originalName)
+            $($div).append($img);
+            $('.superbox').append($div);
+        });
+        $('.superbox').SuperBox();
+    });
+})
+</script>

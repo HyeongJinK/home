@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/list', (req, res) => {
-    common.dbOpen({"path": common.config.db.file, "findByAllParam": [parseInt((page-1)*rows), parseInt(page*rows)]})
+    common.dbOpen({"path": common.config.db.file, "findByAllParam": []})
         .then(fileDB.FileService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -34,15 +34,16 @@ router.get('/list', (req, res) => {
                 console.log(result.err);
             }
             
-            res.send({rows : result.files, page: page, total: 1, records: result.files.length});
+            res.send({rows : result.files, page: 1, total: 1, records: result.files.length});
         });
 });
 
 router.post('/create', upload.single("imgFile"), function(req, res, next) {
-    let file = req.file
-
-    common.dbOpen({"path": common.config.db.file, "saveParam": [file.filename
-    , file.originalname
+    let file = req.file;
+    let description = req.body.description;
+    common.dbOpen({"path": common.config.db.file, "saveParam": [file.originalname
+    , file.filename
+    , description
     , file.mimetype
     , file.size]})
     .then(fileDB.FileService.save)
