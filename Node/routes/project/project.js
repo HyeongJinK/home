@@ -162,7 +162,6 @@ exports.TaskController = {
             if (result.err) {
                 console.log(result.err);
             }
-            console.log(result)
             res.send({rows : result.tasks, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.tasks.length});
         });
     },
@@ -177,10 +176,10 @@ exports.TaskController = {
                     console.log(result.err);
                 }
 
-                res.render("project/task/form", {menu : ["Project", ""], row: result.result});
+                res.render("project/task/form", {menu : ["Project", "일감 편집"], row: result.task});
             });
         } else {
-            res.render("project/task/form", {menu : ["Project", ""], row: null});
+            res.render("project/task/form", {menu : ["Project", "일감 편집"], row: null});
         }
     },
     save: (req, res) => {
