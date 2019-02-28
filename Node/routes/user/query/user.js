@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-const bookDBPath = 'db/books.db';
+const bookDBPath = 'db/user.db';
 
 exports.findByAll = (callBack) => {
     let db = new sqlite3.Database(bookDBPath);
