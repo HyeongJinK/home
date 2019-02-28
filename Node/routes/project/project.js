@@ -10,7 +10,7 @@ exports.ProjectController = {
         let page = req.query.page;
         let rows = req.query.rows;
          
-        common.dbOpen({"path": common.config.db.project, "projects": []})
+        common.dbOpen({"path": common.config.db.project, "projectsParam": []})
         .then(projectDB.projectService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -88,7 +88,7 @@ exports.VersionController = {
         res.render("project/version/list", {menu : ["Project", "Version 목록"]})
     },
     list: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "versions": []})
+        common.dbOpen({"path": common.config.db.project, "versionsParam": []})
         .then(projectDB.versionService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -100,14 +100,14 @@ exports.VersionController = {
         });
     },
     listByProjectIdx: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "versions": [req.query.projectIdx]})
+        common.dbOpen({"path": common.config.db.project, "versionsParam": [req.query.projectIdx]})
         .then(projectDB.versionService.findByProjectIdx)
         .then(common.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
             }
-
+            console.log(result)
             res.send({rows : result.versions});
         });
     },
@@ -152,7 +152,7 @@ exports.VersionController = {
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "version": [req.query.idx]})
+        common.dbOpen({"path": common.config.db.project, "versionParam": [req.query.idx]})
         .then(projectDB.versionService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
