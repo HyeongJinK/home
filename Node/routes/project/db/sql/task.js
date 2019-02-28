@@ -25,7 +25,8 @@ exports.sql = {
     left join version as ve
         on ta.versionIdx = ve.idx
     ORDER BY idx DESC
-    LIMIT ?, ?`
+    LIMIT ?, ?
+    `
     , findByIdx: `
         SELECT
             *

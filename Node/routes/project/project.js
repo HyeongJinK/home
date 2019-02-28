@@ -152,8 +152,9 @@ exports.TaskController = {
     list: (req, res) => {
         let page = req.query.page;
         let rows = req.query.rows;
-
-        common.dbOpen({"path": common.config.db.project, "findByAllParam": [parseInt((page-1)*rows), parseInt(page*rows)]})
+        let start = parseInt((page-1)*rows);
+        let finish = parseInt(page*rows)
+        common.dbOpen({"path": common.config.db.project, "tasksParam": [0, 10]})
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
         .then(common.dbClose)
@@ -161,14 +162,14 @@ exports.TaskController = {
             if (result.err) {
                 console.log(result.err);
             }
-            
+            console.log(result)
             res.send({rows : result.tasks, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.tasks.length});
         });
     },
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            common.dbOpen({"path": common.config.db.project, "findByIdxParam": [idx]})
+            common.dbOpen({"path": common.config.db.project, "taskParam": [idx]})
             .then(projectDB.taskService.findByIdx)
             .then(common.dbClose)
             .then((result) => {
