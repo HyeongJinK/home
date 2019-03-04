@@ -1,5 +1,5 @@
 const sql_career = require('./sql/career').sql;
-const template = require('../../DBPromiseTemplate')
+const template = require('../../../db/template')
 
 
 exports.CareerService = {

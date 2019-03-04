@@ -18,8 +18,6 @@ const systemDB = require('./routes/system/db');
 const usersRouter = require('./routes/user/user');
 const packBookListRouter = require('./routes/packBook/pack');
 const packkoListRouter = require('./routes/packBook/packko');
-const mdRouter = require('./routes/md/md');
-const wikiRouter = require('./routes/wiki/wiki');
 const boardRouter = require('./routes/board/boardRoute');
 const projectRouter = require('./routes/project/projectRoute');
 const fileRouter = require("./routes/file/fileRoute");
@@ -29,8 +27,6 @@ const templateRouter = require('./routes/template');
 //스케쥴
 require('./routes/packBook/schedule').translateSchedules();
 
-
-//
 const app = express();
 
 // view engine setup
@@ -47,7 +43,7 @@ app.use(cookieParser());
 app.use('/upload', express.static('uploads'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-//로그인 설정 속도가 느려져서 일단 제거
+//로그인 설정
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: false })); // 세션 활성화
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
@@ -60,10 +56,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-// app.use((req, res, next) => {
-//   res.locals.user = null;
-//   next();
-// });
+
 //라우팅 설정
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
@@ -71,8 +64,6 @@ app.use('/core', systemDB);
 app.use('/user', usersRouter);
 app.use('/pack', packBookListRouter);
 app.use('/packko', packkoListRouter);
-app.use('/wiki', wikiRouter);
-app.use('/md', mdRouter);
 app.use('/board', boardRouter);
 app.use('/project', projectRouter);
 app.use('/file', fileRouter);

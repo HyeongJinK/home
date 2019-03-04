@@ -6,7 +6,7 @@ const sql_checkListColum = require('./sql/checkListColum').sql;
 const sql_type = require('./sql/type').sql;
 const sql_status = require('./sql/status').sql;
 const sql_priority = require('./sql/priority').sql;
-const db_template = require('../../DBPromiseTemplate')
+const db_template = require('../../db/template')
 
 exports.projectService = {
     findByAll: (data) => {

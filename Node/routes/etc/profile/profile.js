@@ -1,4 +1,4 @@
-const common = require("../../common.js");
+const common = require("../../db/connect.js");
 const profileDB = require('./db/profileDB');
 
 exports.view = (req, res, next) => {

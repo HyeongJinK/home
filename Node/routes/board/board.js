@@ -1,6 +1,6 @@
 const showdown = require('showdown') 
 const converter = new showdown.Converter();
-const common = require("../common.js");
+const common = require("../db/connect.js");
 const boardDB = require('./db/boardDB');
 
 function undefinedCheck(data, def) {

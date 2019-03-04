@@ -1,6 +1,6 @@
 const sql_board = require('./sql/board').sql;
 const sql_boardContent = require('./sql/boardContent').sql;
-const template = require('../../DBPromiseTemplate')
+const template = require('../../db/template')
 
 
 

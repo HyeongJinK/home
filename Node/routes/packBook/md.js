@@ -1,3 +1,4 @@
+// html을 마크다운으로 파싱
 var express = require('express');
 var cheerio = require("cheerio"); 
 var sqlite3 = require('sqlite3').verbose();

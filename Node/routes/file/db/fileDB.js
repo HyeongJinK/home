@@ -1,5 +1,5 @@
 const sql_file = require("./sql/file").sql;
-const db_template = require('../../DBPromiseTemplate')
+const db_template = require('../../db/template')
 
 exports.FileService = {
     findByAll: (data) => {

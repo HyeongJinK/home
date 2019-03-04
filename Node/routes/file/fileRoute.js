@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
-const common = require("../common.js");
+const common = require("../db/connect.js");
 const fileDB = require("./db/fileDB");
 
 
