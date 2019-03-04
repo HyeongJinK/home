@@ -223,13 +223,12 @@ $(document).ready(function() {
         let priority = <%=row.priority%>;
         let progress = <%=row.progress%>;
         let versionIdx = <%=row.versionIdx%>;
-        let description = "<%=row.description%>";
        
         selectSelectedCheck('type', type);
         selectSelectedCheck('status', status);
         selectSelectedCheck('priority', priority);
         selectSelectedCheck('progress', progress);
-        editor.setValue(description);
+        editor.setValue(`<%=row.description%>`);
     <%}%>;
 
     $.ajax({

@@ -10,7 +10,7 @@ exports.ProjectController = {
         let page = req.query.page;
         let rows = req.query.rows;
          
-        common.dbOpen({"path": common.config.db.project, "findByAllParam": []})
+        common.dbOpen({"path": common.config.db.project, "projectsParam": []})
         .then(projectDB.projectService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -22,7 +22,21 @@ exports.ProjectController = {
         });
     },
     formView: (req, res) => {
-        res.render("project/project/form", {menu : ["Project", ""]});
+        let idx = req.query.idx;
+        if (idx) {
+            common.dbOpen({"path": common.config.db.project, "projectParam": [idx]})
+            .then(projectDB.projectService.findByIdx)
+            .then(common.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
+
+                res.render("project/project/form", {menu : ["프로젝트", "프로젝트 편집"], row: result.project});
+            });
+        } else {
+            res.render("project/project/form", {menu : ["프로젝트", "프로젝트 편집"], row: null});
+        }
     },
     save: (req, res) => {
         common.dbOpen({"path": common.config.db.project, "saveParam": [
@@ -37,6 +51,7 @@ exports.ProjectController = {
         });
     },
     update: (req, res) => {
+        console.log(req.body)
         common.dbOpen({"path": common.config.db.project, "updateParam": [
             req.body.title,
             req.body.description,
@@ -46,6 +61,7 @@ exports.ProjectController = {
         .then(projectDB.projectService.update)
         .then(common.dbClose)
         .then((result) => {
+            
             res.send({result: result.err, idx: req.body.idx});
         });
     },
@@ -58,11 +74,11 @@ exports.ProjectController = {
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "findByIdxParam": [req.query.idx]})
+        common.dbOpen({"path": common.config.db.project, "프로젝트": [req.query.idx]})
         .then(projectDB.projectService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/project/read", {menu : ["Project", ""], row: result.findByIdx});
+            res.render("project/project/read", {menu : ["Project", ""], row: result.project});
         });
     },
 }
@@ -72,7 +88,7 @@ exports.VersionController = {
         res.render("project/version/list", {menu : ["Project", "Version 목록"]})
     },
     list: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "findByAllParam": []})
+        common.dbOpen({"path": common.config.db.project, "versionsParam": []})
         .then(projectDB.versionService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -84,14 +100,14 @@ exports.VersionController = {
         });
     },
     listByProjectIdx: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "findByProjectIdxParam": [req.query.projectIdx]})
+        common.dbOpen({"path": common.config.db.project, "versionsParam": [req.query.projectIdx]})
         .then(projectDB.versionService.findByProjectIdx)
         .then(common.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
             }
-
+            console.log(result)
             res.send({rows : result.versions});
         });
     },
@@ -136,11 +152,11 @@ exports.VersionController = {
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "findByIdxParam": [req.query.idx]})
+        common.dbOpen({"path": common.config.db.project, "versionParam": [req.query.idx]})
         .then(projectDB.versionService.findByIdx)
         .then(common.dbClose)
         .then((result) => {
-            res.render("project/version/read", {menu : ["Project", ""], row: result.findByIdx});
+            res.render("project/version/read", {menu : ["Project", ""], row: result.version});
         });
     },
 }
@@ -152,8 +168,9 @@ exports.TaskController = {
     list: (req, res) => {
         let page = req.query.page;
         let rows = req.query.rows;
-
-        common.dbOpen({"path": common.config.db.project, "findByAllParam": [parseInt((page-1)*rows), parseInt(page*rows)]})
+        let start = parseInt((page-1)*rows);
+        let finish = parseInt(page*rows)
+        common.dbOpen({"path": common.config.db.project, "tasksParam": [0, 10]})
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
         .then(common.dbClose)
@@ -161,14 +178,13 @@ exports.TaskController = {
             if (result.err) {
                 console.log(result.err);
             }
-            
             res.send({rows : result.tasks, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.tasks.length});
         });
     },
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            common.dbOpen({"path": common.config.db.project, "findByIdxParam": [idx]})
+            common.dbOpen({"path": common.config.db.project, "taskParam": [idx]})
             .then(projectDB.taskService.findByIdx)
             .then(common.dbClose)
             .then((result) => {
@@ -176,10 +192,10 @@ exports.TaskController = {
                     console.log(result.err);
                 }
 
-                res.render("project/task/form", {menu : ["Project", ""], row: result.result});
+                res.render("project/task/form", {menu : ["Project", "일감 편집"], row: result.task});
             });
         } else {
-            res.render("project/task/form", {menu : ["Project", ""], row: null});
+            res.render("project/task/form", {menu : ["Project", "일감 편집"], row: null});
         }
     },
     save: (req, res) => {

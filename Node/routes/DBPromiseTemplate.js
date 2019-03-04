@@ -29,8 +29,13 @@ exports.notReturnDataFunc = (data, sql, resultStr) => {
         data.db.run(sql
             , data[resultStr+"Param"]
             , (err) => {
+<<<<<<< HEAD
                 if (err) 
                     data[err] = err
+=======
+                if (err)
+                    console.log(err)
+>>>>>>> aed5bd849b561be891fc88fdac9e33b14facc750
                 if (this.lastID)
                     data["lastID"] = this.lastID;
                 resolve(data);

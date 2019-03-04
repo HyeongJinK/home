@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="well">
+            <button class="close" data-dismiss="alert">
+                    ×
+            </button>
+            <h1 class="semi-bold">프로젝트 편집</h1>
+        </div>
+    </div>
+</div>
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>프로젝트</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <form id="checkout-form" class="smart-form" novalidate="novalidate" method="post" action="/project/form">
+                            <input type="hidden" name="idx" <% if (row){%>value="<%= row.idx %>" <%}%>>
+                            <header>
+                                
+                            </header>
+
+                            <fieldset>
+                                <section>
+                                    <label class="label">제목</label>
+                                    <label class="input">
+                                        <input type="text" name="title" placeholder="제목" class="input-lg" <% if (row){%>value="<%= row.title %>" <%}%>>
+                                    </label>
+                                </section>
+                                <div class="row">
+                                    <section class="col col-12">
+                                        <label class="label">뷰모드</label>
+                                        <label class="select">
+                                            <select name="view_mode">
+                                                <option value="0" selected="" disabled="">선택하기</option>
+                                                <option value="OPEN">열림</option>
+                                                <option value="CLOSE">닫힘</option>
+                                                <option value="ADMIN">관리자</option>
+                                            </select> <i></i>
+                                        </label>
+                                    </section>
+                                </div>
+                                
+                                
+                                <section>
+                                    <label class="label">설명</label>
+                                    <label class="input">
+                                        <div id="editSection"></div>
+                                    </label>
+                                </section>
+                            </fieldset>
+
+                            <footer>
+                                <button type="submit" class="btn btn-primary">
+                                    등록
+                                </button>
+                                <button type="button" class="btn btn-default" onclick="window.history.back();">
+                                    뒤로
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/codemirror/lib/codemirror.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+
+<script>
+function selectSelectedCheck(n, check) {
+    $("select[name="+ n +"] option").each((i, val) => {
+        if ($(val).val() == check) {
+            $(val).attr("selected", true)
+        }
+    });
+}
+
+$(document).ready(function() {
+    let editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '300px'
+    });
+
+    <% if (row) {%>
+        let view_mode = `<%=row.view_mode%>`;
+       
+        selectSelectedCheck('view_mode', view_mode);
+        editor.setValue(`<%=row.description%>`);
+    <%}%>;
+
+
+    let errorClass = 'invalid';
+    let errorElement = 'em';
+    
+    let $checkoutForm = $('#checkout-form').validate({
+        errorClass		: errorClass,
+        errorElement	: errorElement,
+        highlight: function(element) {
+            $(element).parent().removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+        },
+        unhighlight: function(element) {
+            $(element).parent().removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+        },
+        rules: {
+            title: {
+                required: true
+            },
+            view_mode: {
+                required: true
+            }
+        },
+        messages: {
+            title: {
+                required: '제목을 입력해주세요'
+            },
+            view_mode: {
+                required: '선택해 주세요'
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent());
+        },
+        submitHandler: function() {
+            let method = "put"
+            if ($("input[name='idx']").val() == "") {
+                method = "post"
+            }
+
+            $.ajax({
+                method: method,
+                url: "/project/form",
+                data: {
+                    idx: $("input[name='idx']").val()
+                    , view_mode: $("select[name='view_mode'] option:selected").val()
+                    , title: $("input[name='title']").val()
+                    , description: editor.getValue()
+                }  
+            }).done((projects) => {
+                location.href="/project"
+            }).fail((jqXHR, textStatus) => {
+                alert("error = "+textStatus)
+            });
+            return false;
+        }
+    });
+});
+</script>
