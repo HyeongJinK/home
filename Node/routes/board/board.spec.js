@@ -10,16 +10,21 @@ describe("게시판 Mock", function() {
         res = httpMocks.createResponse();
     });
 
-    describe("Board List", function() {
-        it("statusCode 200", function() {
-            board.list(req, res);
+    describe("Board", function() {
+        it("List View StatusCode 200", function() {
+            board.BoardController.listView(req, res);
+            res.statusCode.should.be.equal(200);
+        });
+
+        it("Form View StatusCode 200", () => {
+            board.BoardController.formView(req, res);
             res.statusCode.should.be.equal(200);
         });
     });
 
-    describe("Content List", function() {
-        it("statusCode 200", function() {
-            board.list(req, res);
+    describe("BoardContent", function() {
+        it("List View StatusCode 200", function() {
+            board.BoardContentController.listView(req, res);
             res.statusCode.should.be.equal(200);
         });
     });

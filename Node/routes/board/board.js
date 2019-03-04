@@ -1,6 +1,6 @@
 const showdown = require('showdown') 
 const converter = new showdown.Converter();
-const common = require("../db/connect.js");
+const connect = require("../db/connect.js");
 const boardDB = require('./db/boardDB');
 
 function undefinedCheck(data, def) {
@@ -20,9 +20,9 @@ exports.BoardController = {
     list: (req, res) => {
         let page = req.query.page;
         
-        common.dbOpen({"path": common.config.db.board, "findByAllParam": []})
+        connect.dbOpen({"path": connect.config.db.board, "findByAllParam": []})
         .then(boardDB.BoardService.findByAll)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -38,9 +38,9 @@ exports.BoardController = {
         let hidden = req.body.hidden;
 
         if (oper == "add") {
-            common.dbOpen({"path": common.config.db.board, "saveParam": [title, hidden]})
+            connect.dbOpen({"path": connect.config.db.board, "saveParam": [title, hidden]})
             .then(boardDB.BoardService.save)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
@@ -49,9 +49,9 @@ exports.BoardController = {
                 res.send({result: result.err})
             });
         } else if(oper == "edit") {
-            common.dbOpen({"path": common.config.db.board, "updateParam": [title, hidden, idx]})
+            connect.dbOpen({"path": connect.config.db.board, "updateParam": [title, hidden, idx]})
             .then(boardDB.BoardService.update)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
@@ -60,9 +60,9 @@ exports.BoardController = {
                 res.send({result: result.err})
             });
         } else {
-            common.dbOpen({"path": common.config.db.board, "deleteParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.board, "deleteParam": [idx]})
             .then(boardDB.BoardService.delete)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
@@ -81,9 +81,9 @@ exports.BoardContentController = {
     readView: (req, res) => {
         let idx = req.params.idx;
     
-        common.dbOpen({"path": common.config.db.board, "findByIdxParam": [idx]})
+        connect.dbOpen({"path": connect.config.db.board, "findByIdxParam": [idx]})
         .then(boardDB.BoardContentService.findByIdx)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             result.findByIdx.content = converter.makeHtml(result.findByIdx.content);
             res.render('board/content/read', {menu: ['게시판', '내용',], "row" : result.findByIdx }) 
@@ -96,26 +96,26 @@ exports.BoardContentController = {
             idx = 0;
             res.render('board/content/form', {menu: ['게시판', '편집'], idx: idx , row: null})
         } else {
-            common.dbOpen({"path": common.config.db.board, "findByIdxParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.board, "findByIdxParam": [idx]})
             .then(boardDB.BoardContentService.findByIdx)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.render('board/content/form', {menu: ['게시판', '편집'], idx: idx, row: result.findByIdx })
             });
         } 
     },
     save: (req, res) => { 
-        common.dbOpen({"path": common.config.db.board, "saveParam": [1, req.body.title, req.body.content/*, Date()*/, 0]})
+        connect.dbOpen({"path": connect.config.db.board, "saveParam": [1, req.body.title, req.body.content/*, Date()*/, 0]})
             .then(boardDB.BoardContentService.save)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.send({"result" : result.err, "idx" : result.lastID});
         });
     },
     update: (req, res) => {
-        common.dbOpen({"path": common.config.db.board, "updateParam": [req.body.title, req.body.content, req.body.idx]})
+        connect.dbOpen({"path": connect.config.db.board, "updateParam": [req.body.title, req.body.content, req.body.idx]})
             .then(boardDB.BoardContentService.update)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.send({"result" : result.err, "idx" : req.body.idx});
         });
@@ -123,9 +123,9 @@ exports.BoardContentController = {
     delete: (req, res) => {
         let idx = req.body.idx;
     
-        common.dbOpen({"path": common.config.db.board, "deleteParam": [idx]})
+        connect.dbOpen({"path": connect.config.db.board, "deleteParam": [idx]})
             .then(boardDB.BoardContentService.delete)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.send({"result" : result.err});
         });
@@ -139,9 +139,9 @@ exports.BoardContentController = {
         start = undefinedCheck(start, "0");
         rows = undefinedCheck(rows, "10");
         
-        common.dbOpen({"path": common.config.db.board, "findbyBoardIdxParam": [boardIdx, start, rows]})
+        connect.dbOpen({"path": connect.config.db.board, "findbyBoardIdxParam": [boardIdx, start, rows]})
             .then(boardDB.BoardContentService.findbyBoardIdx)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.send({"rows" : result.findbyBoardIdx});
         });
@@ -149,9 +149,9 @@ exports.BoardContentController = {
     read: (req, res) => {
         let idx = req.query.idx;
     
-        common.dbOpen({"path": common.config.db.board, "findByIdxParam": [idx]})
+        connect.dbOpen({"path": connect.config.db.board, "findByIdxParam": [idx]})
             .then(boardDB.BoardContentService.findByIdx)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 res.send({"rows" : result.findByIdx});
         });

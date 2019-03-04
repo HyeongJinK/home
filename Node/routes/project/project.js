@@ -1,6 +1,12 @@
-const common = require("../db/connect.js");
+const connect = require("../db/connect.js");
 const projectDB = require('./db/projectDB');
 
+function undefinedValueByDefaultValueEnter(data, def) {
+    if (data == undefined)
+        return def;
+    else
+        return data;
+}
 
 exports.ProjectController = {
     listView: (req, res) => {
@@ -10,9 +16,9 @@ exports.ProjectController = {
         let page = req.query.page;
         let rows = req.query.rows;
          
-        common.dbOpen({"path": common.config.db.project, "projectsParam": []})
+        connect.dbOpen({"path": connect.config.db.project, "projectsParam": []})
         .then(projectDB.projectService.findByAll)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -24,9 +30,9 @@ exports.ProjectController = {
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            common.dbOpen({"path": common.config.db.project, "projectParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.project, "projectParam": [idx]})
             .then(projectDB.projectService.findByIdx)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
@@ -39,44 +45,44 @@ exports.ProjectController = {
         }
     },
     save: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "saveParam": [
+        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
             req.body.title,
             req.body.description,
             req.body.view_mode
         ]})
         .then(projectDB.projectService.save)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err, idx: result.result});
         });
     },
     update: (req, res) => {
         console.log(req.body)
-        common.dbOpen({"path": common.config.db.project, "updateParam": [
+        connect.dbOpen({"path": connect.config.db.project, "updateParam": [
             req.body.title,
             req.body.description,
             req.body.view_mode,
             req.body.idx
         ]})
         .then(projectDB.projectService.update)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             
             res.send({result: result.err, idx: req.body.idx});
         });
     },
     delete: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "deleteParam": [req.body.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "deleteParam": [req.body.idx]})
         .then(projectDB.projectService.delete)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err});
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "프로젝트": [req.query.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "프로젝트": [req.query.idx]})
         .then(projectDB.projectService.findByIdx)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.render("project/project/read", {menu : ["Project", ""], row: result.project});
         });
@@ -88,9 +94,9 @@ exports.VersionController = {
         res.render("project/version/list", {menu : ["Project", "Version 목록"]})
     },
     list: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "versionsParam": []})
+        connect.dbOpen({"path": connect.config.db.project, "versionsParam": []})
         .then(projectDB.versionService.findByAll)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -100,9 +106,9 @@ exports.VersionController = {
         });
     },
     listByProjectIdx: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "versionsParam": [req.query.projectIdx]})
+        connect.dbOpen({"path": connect.config.db.project, "versionsParam": [req.query.projectIdx]})
         .then(projectDB.versionService.findByProjectIdx)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -115,7 +121,7 @@ exports.VersionController = {
         res.render("project/version/form", {menu : ["Project", ""]});
     },
     save: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "saveParam": [
+        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
             req.body.projectIdx,
             req.body.title,
             req.body.description,
@@ -123,13 +129,13 @@ exports.VersionController = {
             req.body.finish_date
         ]})
         .then(projectDB.versionService.save)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err, idx: result.result});
         });
     },
     update: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "updateParam": [
+        connect.dbOpen({"path": connect.config.db.project, "updateParam": [
             req.body.projectIdx,
             req.body.title,
             req.body.description,
@@ -138,23 +144,23 @@ exports.VersionController = {
             req.body.idx
         ]})
         .then(projectDB.versionService.update)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err, idx: req.body.idx});
         });
     },
     delete: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "deleteParam": [req.body.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "deleteParam": [req.body.idx]})
         .then(projectDB.versionService.delete)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err});
         });
     },
     readView: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "versionParam": [req.query.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "versionParam": [req.query.idx]})
         .then(projectDB.versionService.findByIdx)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.render("project/version/read", {menu : ["Project", ""], row: result.version});
         });
@@ -166,14 +172,14 @@ exports.TaskController = {
         res.render("project/task/list", {menu : ["프로젝트", "일감목록"]})
     },
     list: (req, res) => {
-        let page = req.query.page;
-        let rows = req.query.rows;
+        let page = undefinedValueByDefaultValueEnter(req.query.page, 1);
+        let rows = undefinedValueByDefaultValueEnter(req.query.rows, 10);
         let start = parseInt((page-1)*rows);
         let finish = parseInt(page*rows)
-        common.dbOpen({"path": common.config.db.project, "tasksParam": [0, 10]})
+        connect.dbOpen({"path": connect.config.db.project, "tasksParam": [start, finish]})
         .then(projectDB.taskService.findByAll)
         .then(projectDB.taskService.count)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -184,9 +190,9 @@ exports.TaskController = {
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            common.dbOpen({"path": common.config.db.project, "taskParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.project, "taskParam": [idx]})
             .then(projectDB.taskService.findByIdx)
-            .then(common.dbClose)
+            .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
@@ -199,7 +205,7 @@ exports.TaskController = {
         }
     },
     save: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "saveParam": [
+        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
             req.body.parentIdx,
             req.body.projectIdx,
             req.body.title,
@@ -214,7 +220,7 @@ exports.TaskController = {
             req.body.versionIdx
         ]})
         .then(projectDB.taskService.save)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 //TODO 에러 처리
@@ -226,7 +232,7 @@ exports.TaskController = {
         });
     },
     update: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "updateParam": [
+        connect.dbOpen({"path": connect.config.db.project, "updateParam": [
             req.body.parentIdx,
             req.body.projectIdx,
             req.body.title,
@@ -242,15 +248,15 @@ exports.TaskController = {
             req.body.idx
         ]})
         .then(projectDB.taskService.update)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err, idx: req.body.idx});
         });
     },
     delete: (req, res) => {
-        common.dbOpen({"path": common.config.db.project, "deleteParam": [req.body.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "deleteParam": [req.body.idx]})
         .then(projectDB.taskService.delete)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.send({result: result.err});
         });
@@ -258,9 +264,9 @@ exports.TaskController = {
     readView: (req, res) => {
         let idx = req.query.idx;
 
-        common.dbOpen({"path": common.config.db.project, "findByIdxParam": [idx]})
+        connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [idx]})
         .then(projectDB.taskService.findByIdx)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             res.render("project/task/read", {menu : ["Project", ""], row: result.task});
         });

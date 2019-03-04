@@ -1,1 +1,1 @@
-const board = require("./board");
+const board = require("./boardDB");

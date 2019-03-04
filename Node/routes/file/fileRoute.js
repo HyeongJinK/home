@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
-const common = require("../db/connect.js");
+const connect = require("../db/connect.js");
 const fileDB = require("./db/fileDB");
 
 
@@ -26,9 +26,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/list', (req, res) => {
-    common.dbOpen({"path": common.config.db.file, "findByAllParam": []})
+    connect.dbOpen({"path": connect.config.db.file, "findByAllParam": []})
         .then(fileDB.FileService.findByAll)
-        .then(common.dbClose)
+        .then(connect.dbClose)
         .then((result) => {
             if (result.err) {
                 console.log(result.err);
@@ -41,13 +41,13 @@ router.get('/list', (req, res) => {
 router.post('/create', upload.single("imgFile"), function(req, res, next) {
     let file = req.file;
     let description = req.body.description;
-    common.dbOpen({"path": common.config.db.file, "saveParam": [file.originalname
+    connect.dbOpen({"path": connect.config.db.file, "saveParam": [file.originalname
     , file.filename
     , description
     , file.mimetype
     , file.size]})
     .then(fileDB.FileService.save)
-    .then(common.dbClose)
+    .then(connect.dbClose)
     .then((result) => {
         res.redirect("/file");
     });
