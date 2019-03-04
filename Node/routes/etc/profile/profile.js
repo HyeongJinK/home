@@ -7,7 +7,7 @@ exports.view = (req, res, next) => {
 }
 
 exports.list = (req, res) => {
-    common.dbOpen({"path": common.config.db.profile, "param": []})
+    common.dbOpen({"path": common.config.db.profile, "findByAllParam": []})
         .then(profileDB.CareerService.findByAll)
         .then(common.dbClose)
         .then((result) => {
@@ -15,6 +15,6 @@ exports.list = (req, res) => {
                 console.log(result.err);
             }
 
-            res.send({rows : result.result});
+            res.send({rows : result.findByAll});
         });
 }
