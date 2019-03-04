@@ -16,6 +16,8 @@ exports.returnOneDataFunc = (data, sql, resultStr) => {
         data.db.get(sql
             , data[resultStr+"Param"]
             , (err, result) => {
+                if (err) 
+                    data[err] = err
                 data[resultStr] = result
                 resolve(data);
         });
@@ -27,6 +29,8 @@ exports.notReturnDataFunc = (data, sql, resultStr) => {
         data.db.run(sql
             , data[resultStr+"Param"]
             , (err) => {
+                if (err) 
+                    data[err] = err
                 if (this.lastID)
                     data["lastID"] = this.lastID;
                 resolve(data);
