@@ -57,7 +57,6 @@ exports.ProjectController = {
         });
     },
     update: (req, res) => {
-        console.log(req.body)
         connect.dbOpen({"path": connect.config.db.project, "updateParam": [
             req.body.title,
             req.body.description,
@@ -113,7 +112,6 @@ exports.VersionController = {
             if (result.err) {
                 console.log(result.err);
             }
-            console.log(result)
             res.send({rows : result.versions});
         });
     },
@@ -185,6 +183,28 @@ exports.TaskController = {
                 console.log(result.err);
             }
             res.send({rows : result.tasks, page: page, total: parseInt((result.count.total - 1) / rows) + 1, records: result.tasks.length});
+        });
+    },
+    listByVersionIdx: (req, res) => {
+        let page = undefinedValueByDefaultValueEnter(req.query.page, 1);
+        let rows = undefinedValueByDefaultValueEnter(req.query.rows, 10);
+        let versionidx = req.query.versionIdx
+        let start = parseInt((page-1)*rows);
+        let finish = parseInt(page*rows)
+        connect.dbOpen({"path": connect.config.db.project
+            , "findByVersionIdxParam": [versionidx, start, finish]
+            , "countByVersionIdxParam": [versionidx]})
+        .then(projectDB.taskService.findByVersionIdx)
+        .then(projectDB.taskService.countByVersionIdx)
+        .then(connect.dbClose)
+        .then((result) => {
+            if (result.err) {
+                console.log(result.err);
+            }
+            res.send({rows : result.findByVersionIdx
+                , page: page
+                , total: parseInt((result.countByVersionIdx.total - 1) / rows) + 1
+                , records: result.findByVersionIdx.length});
         });
     },
     formView: (req, res) => {

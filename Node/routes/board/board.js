@@ -3,7 +3,7 @@ const converter = new showdown.Converter();
 const connect = require("../db/connect.js");
 const boardDB = require('./db/boardDB');
 
-function undefinedCheck(data, def) {
+function undefinedValueByDefaultValueEnter(data, def) {
     if (data == undefined)
         return def;
     else
@@ -18,8 +18,8 @@ exports.BoardController = {
         res.render("board/board/form", {menu : ["게시판", "게시판 편집"]});
     },
     list: (req, res) => {
-        let page = req.query.page;
-        
+        let page = undefinedValueByDefaultValueEnter(req.query.page, 1);
+
         connect.dbOpen({"path": connect.config.db.board, "findByAllParam": []})
         .then(boardDB.BoardService.findByAll)
         .then(connect.dbClose)
@@ -79,15 +79,20 @@ exports.BoardContentController = {
         res.render('board/content/list', {menu: ['게시판', '목록'] });
     },
     readView: (req, res) => {
-        let idx = req.params.idx;
-    
+        let idx = undefinedValueByDefaultValueEnter(req.params.idx, 0);
+        
         connect.dbOpen({"path": connect.config.db.board, "findByIdxParam": [idx]})
         .then(boardDB.BoardContentService.findByIdx)
         .then(connect.dbClose)
         .then((result) => {
-            result.findByIdx.content = converter.makeHtml(result.findByIdx.content);
-            res.render('board/content/read', {menu: ['게시판', '내용',], "row" : result.findByIdx }) 
+            if (result.findByIdx === undefined) {
+                res.render('board/content/list', {menu: ['게시판', '내용'], errorMessage: "잘못된 호출입니다."}) 
+            } else {
+                result.findByIdx.content = converter.makeHtml(result.findByIdx.content);
+                res.render('board/content/read', {menu: ['게시판', '내용',], "row" : result.findByIdx }) 
+            }
         });
+        
     },
     formView: (req, res) => {
         let idx = req.query.idx;
@@ -135,9 +140,9 @@ exports.BoardContentController = {
         let start = req.query.start;
         let rows = req.query.rows;
     
-        boardIdx = undefinedCheck(boardIdx, "1");
-        start = undefinedCheck(start, "0");
-        rows = undefinedCheck(rows, "10");
+        boardIdx = undefinedValueByDefaultValueEnter(boardIdx, "1");
+        start = undefinedValueByDefaultValueEnter(start, "0");
+        rows = undefinedValueByDefaultValueEnter(rows, "10");
         
         connect.dbOpen({"path": connect.config.db.board, "findbyBoardIdxParam": [boardIdx, start, rows]})
             .then(boardDB.BoardContentService.findbyBoardIdx)

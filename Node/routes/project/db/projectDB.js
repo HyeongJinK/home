@@ -57,6 +57,12 @@ exports.taskService = {
     count: (data) => {
         return db_template.returnOneDataFunc(data, sql_task.count, "count");
     },
+    findByVersionIdx: (data) => {
+        return db_template.returnDataFunc(data, sql_task.findByVersionIdx, "findByVersionIdx");
+    },
+    countByVersionIdx: (data) => {
+        return db_template.returnOneDataFunc(data, sql_task.countByVersionIdx, "countByVersionIdx");
+    },
     save: (data) => {
         return db_template.notReturnDataFunc(data, sql_task.save, "save");
     },

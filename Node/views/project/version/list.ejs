@@ -37,10 +37,11 @@
             url: "/project/version/list",
             datatype : "json",
             height : 'auto',
-            colNames : ['idx', 'projectidx', 'title', 'descrtiption', 'start_time', 'finish_time', 'create_date'],
+            colNames : ['idx', 'projectidx', '버전명', '설명', '시작시간', '마감시간', '생성일'],
             colModel : [{
                 name : 'idx',
                 index : 'idx',
+                hidden : true,
             }, {
                 name: 'projectIdx',
                 index: 'projectIdx',
@@ -82,7 +83,6 @@
             },
             caption : "Task",
             autowidth : true,
-    
         });
         jQuery("#jqgrid").jqGrid('navGrid', "#pjqgrid", {
             edit : true,

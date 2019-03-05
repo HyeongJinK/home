@@ -31,6 +31,7 @@ router.route("/version/form")
  */
 router.get("/task", project.TaskController.listView);
 router.get("/task/list", project.TaskController.list);
+router.get("/task/listByVersionIdx", project.TaskController.listByVersionIdx);
 router.get("/task/read", project.TaskController.readView);
 router.route("/task/form")
 .get(project.TaskController.formView)

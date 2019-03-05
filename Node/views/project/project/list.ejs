@@ -1,7 +1,7 @@
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="jarviswidget jarviswidget-color-blueDark" id="project-wid-id-0" data-widget-editbutton="false">
+                <div class="jarviswidget jarviswidget-color-blueDark" id="project-wid-id-2" data-widget-editbutton="false">
                 <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                         <h2>프로젝트 관리</h2>
@@ -14,6 +14,28 @@
                     <div class="widget-body">  
                         <table id="jqgrid"></table>
                         <div id="pjqgrid"></div>
+                    </div>
+                </div>
+                </div>
+        </article>
+    </div>
+</section>
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-blue" id="project-wid-id-1" data-widget-editbutton="false">
+                <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>일감</h2>
+    
+                        <div class="widget-toolbar">
+                        </div>
+                </header>
+                <div>
+                    <div class="widget-body">  
+                        <table id="jqgrid_task"></table>
+                        <div id="pjqgrid_task"></div>
                     </div>
                 </div>
                 </div>
@@ -37,25 +59,13 @@ $(document).ready(function() {
         height: 'auto',
         colNames: ['idx', 'title', 'description', 'view_mode'],
         colModel: [{
-            name: 'idx',
-            index: 'idx',
-            hidden: true
+            name: 'idx', index: 'idx', hidden: true, key: true,
         }, {
-            name: 'title',
-            index: 'title',
-            editable: true,
+            name: 'title', index: 'title',
         }, {
-            name: 'description',
-            index: 'description',
-            hidden: true,
-            editrules: {edithidden: true},
-            editable: true,
+            name: 'description', index: 'description', hidden: true,        
         }, {
-            name: 'view_mode',
-            index: 'view_mode',
-            editable: true,
-            edittype: 'select',
-            editoptions: {value: "OPEN:OPEN;CLOSE:CLOSE;ADMIN:ADMIN"}
+            name: 'view_mode', index: 'view_mode',
         }],
         rowNum: 10,
         rowList: [10, 20, 30],
@@ -64,11 +74,46 @@ $(document).ready(function() {
         toolbarfilter: true,
         viewrecords: true,
         sortorder: "desc",
-        gridComplete: function() {
-        },
         caption: "Project",
         autowidth: true,
-
+        subGrid : true,
+        subGridRowExpanded: function(subgrid_id, row_id) {
+            let subgrid_table_id, pager_id;
+            subgrid_table_id = subgrid_id+"_t";
+            pager_id = "p_"+subgrid_table_id
+            $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+pager_id+"' class='scroll'></div>");
+            $("#"+subgrid_table_id).jqGrid({
+                url:"/project/version/listByProductIdx?projectIdx="+row_id
+                , datatype: "json"
+                , colNames : ['idx', 'projectidx', '버전명', '설명', '시작시간', '마감시간', '생성일']
+                , colModel : [{
+                    name : 'idx', index : 'idx', hidden : true,
+                }, {
+                    name: 'projectIdx', index: 'projectIdx', hidden: true,
+                }, {
+                    name: 'title', index: 'title',
+                }, {
+                    name: 'description', index: 'description', hidden: true,
+                }, {
+                    name : 'start_time', index : 'start_time',
+                }, {
+                    name : 'finish_time', index : 'finish_time',
+                }, {
+                    name : 'create_date', index : 'create_date', hidden: true,
+                }]
+                , rowNum:10
+                , pager: pager_id
+                , sortname: 'idx'
+                , sortorder: "desc"
+                , height: 'auto'
+                , onSelectRow: function(ids) {
+                    $("#jqgrid_task").jqGrid('setGridParam'
+                    , {url:"/project/task/listByVersionIdx?versionIdx="+ids
+                        , datatype: "json"}).trigger('reloadGrid');
+                }
+            }); 
+                $("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false})
+        }        
     });
 
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
@@ -85,12 +130,65 @@ $(document).ready(function() {
         }
     );
 
+
+    $("#jqgrid_task").jqGrid({
+        url: "/project/task/listByVersionIdx",
+        datatype: "local",
+        height: 'auto',
+        colNames: ['idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
+        colModel: [{
+            name: 'idx', index: 'idx', hidden: true,
+        }, {
+            name: 'projectName', index: 'projectName', width: 80, hidden: true,
+        }, {
+            name: 'versionName', index: 'versionName', width: 70, hidden: true,
+        }, {
+            name: 'title', index: 'title', editable: true
+        }, {
+            name: 'typeName', index: 'typeName', width: 60,
+        }, {
+            name: 'priorityName', index: 'priorityName', width: 60,
+        }, {
+            name: 'statusName', index: 'statusName', width: 60,
+        }, {
+            name: 'start_time', index: 'start_time', width: 70,
+        }, {
+            name: 'finish_time', index: 'finish_time', width: 70,
+        }, {
+            name: 'manager', index: 'manager', hidden: true,
+        }, {
+            name: 'progress', index: 'progress', width: 60,
+        }],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        pager: '#pjqgrid_task',
+        sortname: 'idx',
+        toolbarfilter: true,
+        viewrecords: true,
+        sortorder: "desc",
+        gridComplete: function() {
+        },
+        caption: "일감",
+        autowidth: true,
+    });
+    $("#jqgrid_task").jqGrid('navGrid', "#pjqgrid_task"
+        , { edit: true, add: true, del: true }
+            , {beforeInitData: () => {
+                location.href="/project/task/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
+                return false;
+            }
+        }
+        , {beforeInitData: (e) => {
+                location.href="/project/task/form";
+                return false;
+            }
+        }
+    );
+
+
     $('.navtable .ui-pg-button').tooltip({
         container: 'body'
     });
-
-    
-
     // remove classes
     $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
     $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
@@ -122,10 +220,5 @@ $(document).ready(function() {
 
     $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
     $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
-
 })
-
-// $(window).on('resize.jqGrid', function() {
-//     $("#jqgrid").jqGrid('setGridWidth', $("#content").width());
-// });
 </script>
