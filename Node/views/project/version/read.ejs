@@ -29,12 +29,12 @@
 <script>
     $(document).ready(function() { 
         $("#menu-project").addClass("active open");
-        $("#menu-project-project").addClass("active");       
+        $("#menu-project-project").addClass("active");
         pageSetUp();
 
         $("#deleteBtn").click((e) => {
             $.ajax({
-                    url: "/project/task/form"
+                    url: "/project/version/form"
                     , method : "delete"
                     , data : {
                         idx : $("#idx").val()

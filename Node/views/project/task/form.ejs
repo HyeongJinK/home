@@ -209,6 +209,9 @@ function versionSelectDraw(vidx, sel) {
 }
 
 $(document).ready(function() {
+    $("#menu-project").addClass("active open");
+    $("#menu-project-project").addClass("active");
+    
     let editor = new tui.Editor({
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',

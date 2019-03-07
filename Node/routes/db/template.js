@@ -16,6 +16,8 @@ exports.returnOneDataFunc = (data, sql, resultStr) => {
         data.db.get(sql
             , data[resultStr+"Param"]
             , (err, result) => {
+                // console.log("err = " + err)
+                // console.log("result = " + result)
                 if (err) 
                     data[err] = err
                 data[resultStr] = result

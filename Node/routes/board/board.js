@@ -162,3 +162,38 @@ exports.BoardContentController = {
         });
     }
 }
+
+exports.JournalController = {
+    list: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.board, "findByAllParam": []})
+            .then(boardDB.JournalService.findByAll)
+            .then(connect.dbClose)
+            .then((result) => {
+                res.send({"rows" : result.findByAll});
+        });
+    },
+    save: (req, res) => { 
+        connect.dbOpen({"path": connect.config.db.board, "saveParam": [req.body.description]})
+            .then(boardDB.JournalService.save)
+            .then(connect.dbClose)
+            .then((result) => {
+                res.send({"result" : result.err, "idx" : result.lastID});
+        });
+    },
+    update: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.board, "updateParam": [req.body.description, req.body.idx]})
+            .then(boardDB.JournalService.update)
+            .then(connect.dbClose)
+            .then((result) => {
+                res.send({"result" : result.err, "idx" : req.body.idx});
+        });
+    },
+    delete: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.board, "deleteParam": [req.body.idx]})
+            .then(boardDB.JournalService.delete)
+            .then(connect.dbClose)
+            .then((result) => {
+                res.send({"result" : result.err});
+        });
+    },
+}

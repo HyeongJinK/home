@@ -24,6 +24,9 @@
 <script src="/js/plugin/jqgrid/grid.locale-en.min.js"></script>
 
 <script>
+function linkText(cellvalue, options, rowObject) {
+    return "<a herf='/project/task/read/"+rowObject.idx+"' class='linkText' data-idx='"+rowObject.idx+"'>"+cellvalue+"</a>";
+}
 $(document).ready(function() {
     pageSetUp();
 
@@ -34,11 +37,16 @@ $(document).ready(function() {
         url: "/project/task/list",
         datatype: "json",
         height: 'auto',
-        colNames: ['idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
+        colNames: ['내용보기', 'idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
         colModel: [{
+            name:'act',
+            index:'act',
+            width: 45
+        }, {
             name: 'idx',
             index: 'idx',
             hidden: true,
+            key: true,
         }, {
             name: 'projectName',
             index: 'projectName',
@@ -50,7 +58,8 @@ $(document).ready(function() {
         }, {
             name: 'title',
             index: 'title',
-            editable: true
+            editable: true,
+            formatter:linkText,
         }, {
             name: 'typeName',
             index: 'typeName',
@@ -103,7 +112,15 @@ $(document).ready(function() {
         },
         caption: "Task",
         autowidth: true,
+        gridComplete: function() {
+            let ids = $("#jqgrid").jqGrid('getDataIDs');
 
+            for (let i = 0; i < ids.length; i++) {
+                let cl = ids[i];
+                re = "<a href='/project/task/read/"+ids[i]+"'>내용보기</a>"
+                $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
+            }
+        },
     });
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
         , { edit: true, add: true, del: true }
@@ -156,6 +173,5 @@ $(document).ready(function() {
 
     $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
     $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
-
 });
 </script>

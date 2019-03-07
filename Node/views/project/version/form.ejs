@@ -1,0 +1,218 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="well">
+            <button class="close" data-dismiss="alert">
+                    ×
+            </button>
+            <h1 class="semi-bold">버전 편집</h1>
+        </div>
+    </div>
+</div>
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-0" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>버전</h2>
+                </header>
+                <div>
+                    <div class="jarviswidget-editbox">
+                    </div>
+                    <div class="widget-body no-padding">
+                        <form id="checkout-form" class="smart-form" novalidate="novalidate" method="post" action="/project/task/form">
+                            <input type="hidden" name="idx" <% if (row){%>value="<%= row.idx %>" <%}%>>                            
+                            <header>
+                                
+                            </header>
+
+                            <fieldset>
+                                <div class="row">
+                                    <section class="col col-12">
+                                        <label class="label">프로젝트</label>
+                                        <label class="select">
+                                            <select name="projectIdx" id="projectIdx" class="input-lg">
+                                                <option value="0" selected="" disabled="">선택하기</option>
+                                            </select> <i></i> 
+                                        </label>
+                                    </section>
+                                </div>
+                                <section>
+                                    <label class="label">제목</label>
+                                    <label class="input">
+                                        <input type="text" name="title" placeholder="제목" class="input-lg" <% if (row){%>value="<%= row.title %>" <%}%>>
+                                    </label>
+                                </section>
+                                
+                                <div class="row">
+                                    <section class="col col-6">
+										<label class="input"> <i class="icon-append fa fa-calendar"></i>
+											<input type="text" name="start_date" id="startdate" placeholder="시작시간" <% if (row){%>value="<%= row.start_date %>" <%}%>>
+										</label>
+									</section>
+									<section class="col col-6">
+										<label class="input"> <i class="icon-append fa fa-calendar"></i>
+											<input type="text" name="finish_date" id="finishdate" placeholder="완료기한" <% if (row){%>value="<%= row.finish_date %>" <%}%>>
+										</label>
+									</section>
+                                </div>
+                                
+                                <section>
+                                        <label class="label">설명</label>
+                                        <label class="input">
+                                            <div id="editSection"></div>
+                                        </label>
+                                    </section>
+                            </fieldset>
+
+                            <footer>
+                                <button type="submit" class="btn btn-primary">
+                                    등록
+                                </button>
+                                <button type="button" class="btn btn-default" onclick="window.history.back();">
+                                    뒤로
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>
+
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/codemirror/lib/codemirror.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $("#menu-project").addClass("active open");
+    $("#menu-project-project").addClass("active");
+    
+    let editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '300px'
+    });
+
+    <% if (row) {%>
+        let projectIdx = <%=row.projectIdx%>;
+    
+        editor.setValue(`<%=row.description%>`);
+    <%}%>;
+
+    $.ajax({
+        method: "get",
+        url: "/project/list",  
+    }).done((projects) => {
+        projects.rows.forEach((project)=> {
+            let $option = $('<option>', { value: project.idx, text: project.title });
+            if (projectIdx && projectIdx == project.idx) {
+                $($option).attr("selected", true);
+            }
+            $("#projectIdx").append($option);   
+        });
+    }).fail((jqXHR, textStatus) => {
+        alert("error = "+textStatus)
+    });
+
+    let errorClass = 'invalid';
+    let errorElement = 'em';
+    
+    let $checkoutForm = $('#checkout-form').validate({
+        errorClass		: errorClass,
+        errorElement	: errorElement,
+        highlight: function(element) {
+            $(element).parent().removeClass('state-success').addClass("state-error");
+            $(element).removeClass('valid');
+        },
+        unhighlight: function(element) {
+            $(element).parent().removeClass("state-error").addClass('state-success');
+            $(element).addClass('valid');
+        },
+
+    // Rules for form validation
+        rules: {
+            projectIdx: {
+                required: false
+            },
+            title: {
+                required: true
+            },
+            start_date: {
+                required: false
+            },
+            finish_date: {
+                required: false
+            }
+        },
+
+        // Messages for form validation
+        messages: {
+            title: {
+                required: 'Please enter your last name'
+            }
+        },
+
+        // Do not change code below
+        errorPlacement: function(error, element) {
+            error.insertAfter(element.parent());
+        },
+        submitHandler: function() {
+            let method = "put"
+            if ($("input[name='idx']").val() == "") {
+                method = "post"
+            }
+
+            $.ajax({
+                method: method,
+                url: "/project/version/form",
+                data: {
+                    idx: $("input[name='idx']").val()
+                    , projectIdx: $("select[name='projectIdx'] option:selected").val()
+                    , title: $("input[name='title']").val()
+                    , description: editor.getValue()
+                    , start_date: $("input[name='start_date']").val()
+                    , finish_date: $("input[name='finish_date']").val()
+                }  
+            }).done((projects) => {
+                location.href="/project"
+            }).fail((jqXHR, textStatus) => {
+                alert("error = "+textStatus)
+            });
+            return false;
+        }
+    });
+
+    $('#startdate').datepicker({
+        dateFormat: 'yy.mm.dd',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        onSelect: function(selectedDate) {
+            $('#finishdate').datepicker('option', 'minDate', selectedDate);
+        }
+    });
+    
+    $('#finishdate').datepicker({
+        dateFormat: 'yy.mm.dd',
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        onSelect: function(selectedDate) {
+            $('#startdate').datepicker('option', 'maxDate', selectedDate);
+        }
+    });
+});
+</script>

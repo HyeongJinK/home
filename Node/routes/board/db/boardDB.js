@@ -1,6 +1,7 @@
 const sql_board = require('./sql/board').sql;
 const sql_boardContent = require('./sql/boardContent').sql;
-const template = require('../../db/template')
+const sql_journal = require('./sql/journal').sql;
+const template = require('../../db/template');
 
 
 
@@ -46,5 +47,23 @@ exports.BoardContentService = {
     },
     delete: (data) => {
         return template.notReturnDataFunc(data, sql_boardContent.delete, "delete");
+    }
+}
+
+exports.JournalService = {
+    findByAll: (data) => {
+        return template.returnDataFunc(data, sql_journal.findByAll, "findByAll");
+    },
+    findByIdx: (data) => {
+        return template.returnOneDataFunc(data, sql_journal.findByIdx, "findByIdx");
+    },
+    save: (data) => {
+        return template.notReturnDataFunc(data, sql_journal.save, "save");
+    },
+    update: (data) => {
+        return template.notReturnDataFunc(data, sql_journal.update, "update");
+    },
+    delete: (data) => {
+        return template.notReturnDataFunc(data, sql_journal.delete, "delete");
     }
 }

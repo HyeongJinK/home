@@ -57,8 +57,8 @@ $(document).ready(function() {
         url: "/project/list",
         datatype: "json",
         height: 'auto',
-        colNames: ['idx', 'title', 'description', 'view_mode'],
-        colModel: [{
+        colNames: ['내용보기', 'idx', 'title', 'description', 'view_mode'],
+        colModel: [{name:'act', index:'act', width: 45}, {
             name: 'idx', index: 'idx', hidden: true, key: true,
         }, {
             name: 'title', index: 'title',
@@ -76,6 +76,15 @@ $(document).ready(function() {
         sortorder: "desc",
         caption: "Project",
         autowidth: true,
+        gridComplete: function() {
+            let ids = $("#jqgrid").jqGrid('getDataIDs');
+
+            for (let i = 0; i < ids.length; i++) {
+                let cl = ids[i];
+                re = "<a href='/project/read/"+ids[i]+"'>내용보기</a>"
+                $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
+            }
+        },
         subGrid : true,
         subGridRowExpanded: function(subgrid_id, row_id) {
             let subgrid_table_id, pager_id;
@@ -85,8 +94,8 @@ $(document).ready(function() {
             $("#"+subgrid_table_id).jqGrid({
                 url:"/project/version/listByProductIdx?projectIdx="+row_id
                 , datatype: "json"
-                , colNames : ['idx', 'projectidx', '버전명', '설명', '시작시간', '마감시간', '생성일']
-                , colModel : [{
+                , colNames : ['내용보기', 'idx', 'projectidx', '버전명', '설명', '시작시간', '마감시간', '생성일']
+                , colModel : [{name:'act', index:'act', width: 45}, {
                     name : 'idx', index : 'idx', hidden : true,
                 }, {
                     name: 'projectIdx', index: 'projectIdx', hidden: true,
@@ -95,9 +104,9 @@ $(document).ready(function() {
                 }, {
                     name: 'description', index: 'description', hidden: true,
                 }, {
-                    name : 'start_time', index : 'start_time',
+                    name : 'start_date', index : 'start_date',
                 }, {
-                    name : 'finish_time', index : 'finish_time',
+                    name : 'finish_date', index : 'finish_date',
                 }, {
                     name : 'create_date', index : 'create_date', hidden: true,
                 }]
@@ -110,15 +119,35 @@ $(document).ready(function() {
                     $("#jqgrid_task").jqGrid('setGridParam'
                     , {url:"/project/task/listByVersionIdx?versionIdx="+ids
                         , datatype: "json"}).trigger('reloadGrid');
-                }
+                },
+                gridComplete: function() {
+                    let ids = $("#"+subgrid_table_id).jqGrid('getDataIDs');
+
+                    for (let i = 0; i < ids.length; i++) {
+                        let cl = ids[i];
+                        re = "<a href='/project/version/read/"+ids[i]+"'>내용보기</a>"
+                        $("#"+subgrid_table_id).jqGrid('setRowData', ids[i], {act:re});
+                    }
+                },
             }); 
-                $("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,{edit:false,add:false,del:false})
+                $("#"+subgrid_table_id).jqGrid('navGrid'
+                ,"#"+pager_id
+                    , {edit:true,add:true,del:false}
+                    , {beforeInitData: (e) => {
+                            location.href="/project/version/form?idx="+$("#"+subgrid_table_id).jqGrid('getRowData', $("#"+subgrid_table_id).jqGrid('getGridParam', 'selrow')).idx;
+                        }
+                    }
+                    , {beforeInitData: (e) => {
+                            location.href="/project/version/form"
+                            return false;
+                        }
+                    });
         }        
     });
 
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
-        , { edit: true, add: true, del: true }
-            , {beforeInitData: () => {
+        , { edit: true, add: true, del: false }
+        , {beforeInitData: () => {
                 location.href="/project/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
                 return false;
             }
@@ -135,8 +164,8 @@ $(document).ready(function() {
         url: "/project/task/listByVersionIdx",
         datatype: "local",
         height: 'auto',
-        colNames: ['idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
-        colModel: [{
+        colNames: ['내용보기', 'idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
+        colModel: [{name:'act', index:'act', width: 45}, {
             name: 'idx', index: 'idx', hidden: true,
         }, {
             name: 'projectName', index: 'projectName', width: 80, hidden: true,
@@ -170,10 +199,19 @@ $(document).ready(function() {
         },
         caption: "일감",
         autowidth: true,
+        gridComplete: function() {
+            let ids = $("#jqgrid_task").jqGrid('getDataIDs');
+
+            for (let i = 0; i < ids.length; i++) {
+                let cl = ids[i];
+                re = "<a href='/project/task/read/"+ids[i]+"'>내용보기</a>"
+                $("#jqgrid_task").jqGrid('setRowData', ids[i], {act:re});
+            }
+        },
     });
     $("#jqgrid_task").jqGrid('navGrid', "#pjqgrid_task"
         , { edit: true, add: true, del: true }
-            , {beforeInitData: () => {
+        , {beforeInitData: () => {
                 location.href="/project/task/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
                 return false;
             }

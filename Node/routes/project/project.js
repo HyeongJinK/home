@@ -1,5 +1,7 @@
 const connect = require("../db/connect.js");
 const projectDB = require('./db/projectDB');
+const showdown = require('showdown') 
+const converter = new showdown.Converter();
 
 function undefinedValueByDefaultValueEnter(data, def) {
     if (data == undefined)
@@ -79,11 +81,12 @@ exports.ProjectController = {
         });
     },
     readView: (req, res) => {
-        connect.dbOpen({"path": connect.config.db.project, "프로젝트": [req.query.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [req.params.idx]})
         .then(projectDB.projectService.findByIdx)
         .then(connect.dbClose)
         .then((result) => {
-            res.render("project/project/read", {menu : ["Project", ""], row: result.project});
+            result.findByIdx.description = converter.makeHtml(result.findByIdx.description);
+            res.render("project/project/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }
@@ -116,7 +119,21 @@ exports.VersionController = {
         });
     },
     formView: (req, res) => {
-        res.render("project/version/form", {menu : ["Project", ""]});
+        let idx = req.query.idx;
+        if (idx) {
+            connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [idx]})
+            .then(projectDB.versionService.findByIdx)
+            .then(connect.dbClose)
+            .then((result) => {
+                if (result.err) {
+                    console.log(result.err);
+                }
+
+                res.render("project/version/form", {menu : ["프로젝트", "버전 편집"], row: result.findByIdx});
+            });
+        } else {
+            res.render("project/version/form", {menu : ["프로젝트", "버전 편집"], row: null});
+        }
     },
     save: (req, res) => {
         connect.dbOpen({"path": connect.config.db.project, "saveParam": [
@@ -156,11 +173,12 @@ exports.VersionController = {
         });
     },
     readView: (req, res) => {
-        connect.dbOpen({"path": connect.config.db.project, "versionParam": [req.query.idx]})
+        connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [req.params.idx]})
         .then(projectDB.versionService.findByIdx)
         .then(connect.dbClose)
         .then((result) => {
-            res.render("project/version/read", {menu : ["Project", ""], row: result.version});
+            result.findByIdx.description = converter.makeHtml(result.findByIdx.description);
+            res.render("project/version/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }
@@ -282,13 +300,12 @@ exports.TaskController = {
         });
     },
     readView: (req, res) => {
-        let idx = req.query.idx;
-
-        connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [idx]})
+        connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [req.params.idx]})
         .then(projectDB.taskService.findByIdx)
         .then(connect.dbClose)
         .then((result) => {
-            res.render("project/task/read", {menu : ["Project", ""], row: result.task});
+            result.findByIdx.description = converter.makeHtml(result.findByIdx.description);
+            res.render("project/task/read", {menu : ["Project", ""], row: result.findByIdx});
         });
     },
 }

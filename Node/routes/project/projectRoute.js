@@ -8,7 +8,7 @@ console.info("Project Route...");
  */
 router.get("/", project.ProjectController.listView);
 router.get("/list", project.ProjectController.list);
-router.get("/read", project.ProjectController.readView);
+router.get("/read/:idx", project.ProjectController.readView);
 router.route("/form")
 .get(project.ProjectController.formView)
 .post(project.ProjectController.save)
@@ -20,7 +20,7 @@ router.route("/form")
 router.get("/version", project.VersionController.listView);
 router.get("/version/list", project.VersionController.list);
 router.get("/version/listByProductIdx", project.VersionController.listByProjectIdx);
-router.get("/version/read", project.VersionController.readView);
+router.get("/version/read/:idx", project.VersionController.readView);
 router.route("/version/form")
 .get(project.VersionController.formView)
 .post(project.VersionController.save)
@@ -32,7 +32,7 @@ router.route("/version/form")
 router.get("/task", project.TaskController.listView);
 router.get("/task/list", project.TaskController.list);
 router.get("/task/listByVersionIdx", project.TaskController.listByVersionIdx);
-router.get("/task/read", project.TaskController.readView);
+router.get("/task/read/:idx", project.TaskController.readView);
 router.route("/task/form")
 .get(project.TaskController.formView)
 .post(project.TaskController.save)

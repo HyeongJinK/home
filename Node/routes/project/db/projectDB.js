@@ -13,7 +13,7 @@ exports.projectService = {
         return db_template.returnDataFunc(data, sql_project.findByAll, "projects");
     },
     findByIdx: (data) => {
-        return db_template.returnOneDataFunc(data, sql_project.findByIdx, "project");
+        return db_template.returnOneDataFunc(data, sql_project.findByIdx, "findByIdx");
     },
     save: (data) => {
         return db_template.notReturnDataFunc(data, sql_project.save, "save");
@@ -31,7 +31,7 @@ exports.versionService = {
         return db_template.returnDataFunc(data, sql_version.findByAll, "versions");
     },
     findByIdx: (data) => {
-        return db_template.returnOneDataFunc(data, sql_version.findByIdx, "version");
+        return db_template.returnOneDataFunc(data, sql_version.findByIdx, "findByIdx");
     },
     findByProjectIdx: (data) => {
         return db_template.returnDataFunc(data, sql_version.findByProjectIdx, "versions");
@@ -52,7 +52,7 @@ exports.taskService = {
         return db_template.returnDataFunc(data, sql_task.findByAll, "tasks");
     },
     findByIdx: (data) => {
-        return db_template.returnOneDataFunc(data, sql_task.findByIdx, "task");
+        return db_template.returnOneDataFunc(data, sql_task.findByIdx, "findByIdx");
     },
     count: (data) => {
         return db_template.returnOneDataFunc(data, sql_task.count, "count");
