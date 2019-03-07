@@ -169,6 +169,9 @@ exports.JournalController = {
             .then(boardDB.JournalService.findByAll)
             .then(connect.dbClose)
             .then((result) => {
+                result.findByAll.forEach(element => {
+                    element.description = converter.makeHtml(element.description);
+                });
                 res.send({"rows" : result.findByAll});
         });
     },

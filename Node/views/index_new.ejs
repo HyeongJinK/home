@@ -9,26 +9,9 @@
             <table class="table table-striped table-forum">
                 <tbody id ="journalTable">
                     <tr>
-                        <td class="text-center"><a href="/profile">&nbsp; <strong>주인장</strong></a> on <em>Jan 1, 2014 - 12:00am</em></td>
-                    </tr>
-                    <tr>
-                        <td>
-                        <p>
-
-                            Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-                        </p><h5>Forecast Pie</h5><span class="sparkline display-inline margin-bottom-10" data-sparkline-type="pie" data-sparkline-offset="90" data-sparkline-piesize="150px"> 33,20,10 </span>
-                        <p>
-                            Fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viv.
-                        </p><em>- John Doe
-                        <br>
-                        CEO, SmartAdmin</em>
-                        </td>
-                    </tr>
-                    
-                    <tr>
                         <td><div id="editSection"></div>
                             
-                        <button class="btn btn-primary margin-top-10">
+                        <button class="btn btn-primary margin-top-10" id="journalBt">
                             입력
                         </button>
                         </td>
@@ -37,25 +20,6 @@
             </table>
         </div>
     </div>
-</div>
-
-<div style="visibility: hidden;" >
-    <tr>
-        <td class="text-center"><a href="/profile">&nbsp; <strong>주인장</strong></a> on <em>Jan 1, 2014 - 12:00am</em></td>
-    </tr>
-    <tr>
-        <td>
-        <p>
-
-            Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-        </p><h5>Forecast Pie</h5><span class="sparkline display-inline margin-bottom-10" data-sparkline-type="pie" data-sparkline-offset="90" data-sparkline-piesize="150px"> 33,20,10 </span>
-        <p>
-            Fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viv.
-        </p><em>- John Doe
-        <br>
-        CEO, SmartAdmin</em>
-        </td>
-    </tr>
 </div>
 
 <script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
@@ -76,19 +40,56 @@ $(document).ready(function() {
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',
         previewStyle: 'vertical',
-        height: '300px'
+        height: '150px'
     });
 
     $.ajax({
         url:"/board/journal/list"
         , method: "get"
         ,success: (data) => {
-            console.log(data);
-            $("#journalTable")
+            data.rows.forEach(element => {
+                $("#journalTable")
+                    .append($("<tr>")
+                        .append($("<td>")
+                            .addClass("text-center")
+                            .append(($("<a>")
+                                .attr("href", "/profile")
+                                .append($("<strong>")
+                                    .text("주인장")
+                                    )
+                                )
+                            )
+                            .append($("<em>")
+                                .text("on "+element.createDate)
+                            )
+                        )
+                    )
+                    .append($("<tr>")
+                        .append($("<td>")
+                            .html(element.description)
+                        )
+                    )
+            });
         }
         , error: (err) => {
             alert("error = " +err);
         }
+    });
+
+    $("#journalBt").click(function() {
+        $.ajax({
+        url:"/board/journal/form"
+        , method: "post"
+        , data: {
+            description: editor.getValue()
+        }
+        ,success: (data) => {
+            location.reload();
+        }
+        , error: (err) => {
+            alert("error");
+        }
+    });
     });
 });
 </script>
