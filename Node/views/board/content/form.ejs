@@ -3,78 +3,78 @@
 <link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
 
-
-<!-- <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome.min.css">
-
-		
-		<link rel="stylesheet" type="text/css" media="screen" href="/css/production-plugins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="/css/production.min.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="/css/skins.min.css"> -->
-        
-
 <section id="widget-grid" class="">
 	<div class="row">
-		<article class="col-sm-12 col-md-12 col-lg-12">
-			<div class="jarviswidget jarviswidget-color-purple" id="wid-id-2" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">	
-				<header>
-					<span class="widget-icon"> <i class="fa fa-pencil"></i> </span>
-                    <h2>입력</h2>
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget" id="wid-id-20" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-sortable="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-edit"></i> </span>
+                    <h2>Plugins & Enhancers </h2>
                 </header>
+
                 <div>
-                        <div class="jarviswidget-editbox">
-                        </div>
-                        <div class="widget-body no-padding">
-                            <form id="checkout-form" class="smart-form" novalidate="novalidate">
-                                <fieldset>
-                                    <section>
-                                        <label class="label">제목</label>
-                                        <label class="input">
-                                            <i class="icon-append fa fa-tag"></i>
-                                            <input type="hidden" name="idx" id="idx" value="<%=idx%>">
-                                            <% if (row) {
-                                            %>
-                                            <input type="text" name="title" id="title" value="<%=row.title%>">
-                                            <%
-                                            } else {
-                                            %>
-                                            <input type="text" name="title" id="title">
-                                            <%
-                                            }
-                                            %>
-                                        </label>
-                                    </section>
-                                </fieldset>
-                                <fieldset>
-                                    <legend>
-                                        Tags
-                                    </legend>
-    
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label>태그</label>
-                                                <input class="form-control tagsinput" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput">
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-    
-                                </fieldset>
-                            </form>
-                            <div id="editSection"></div>
-                            <footer>
-                                <button type="button" class="btn btn-primary" id="btSubmit">
-                                    입력
-                                </button>
-                                <button type="button" class="btn btn-default" onclick="window.history.back();">
-                                    뒤로
-                                </button>
-                            </footer>
-                        </div>
+                    <div class="jarviswidget-editbox">
                     </div>
-			</div>
-		</article>
+
+                    <div class="widget-body">
+                        <form id="checkout-form" novalidate="novalidate">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label>제목</label>
+                                    <div class="input-group">
+                                        <input type="hidden" name="idx" id="idx" value="<%=idx%>">
+                                        <% if (row) {
+                                        %>
+                                        <input type="text" name="title" class="form-control" id="title" value="<%=row.title%>">
+                                        <%
+                                        } else {
+                                        %>
+                                        <input type="text" name="title" class="form-control" id="title">
+                                        <%
+                                        }
+                                        %>
+                                        <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                    </div>
+                                    <p class="note">
+                                        
+                                    </p>
+                                </div>
+                            </fieldset>
+
+
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Tag</label>
+                                            <input class="form-control tagsinput" value="테스트" data-role="tagsinput">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <div id="editSection"></div>
+                            </fieldset>
+                            
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-primary" id="btSubmit">
+                                            <i class="fa fa-save"></i>
+                                            입력
+                                        </button>
+                                        <button class="btn btn-default" type="button"  onclick="window.history.back();">
+                                            뒤로가기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </article>
 	</div>	
 </section>
 
@@ -99,7 +99,7 @@ $(document).ready(function() {
     });
 
     <% if (row) {%>
-        editor.setValue("<%=row.content%>");
+        editor.setValue(`<%=row.content%>`);
     <%}%>;
 
     $("#menu-board").addClass("active open");
@@ -117,7 +117,7 @@ $(document).ready(function() {
             , data : {
                 idx : $("#idx").val()
                 , title : $("#title").val()
-                , content: editor.getValue()
+                , content: editor.getValue().replace(/~~~/g, "```")
             }
             , success : (data) => {
                 location.href="/board/content/read/"+data.idx;

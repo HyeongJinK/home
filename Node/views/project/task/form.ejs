@@ -141,11 +141,11 @@
                                 </div>
                                 
                                 <section>
-                                        <label class="label">설명</label>
-                                        <label class="input">
-                                            <div id="editSection"></div>
-                                        </label>
-                                    </section>
+                                    <label class="label">설명</label>
+                                    <label class="input">
+                                        <div id="editSection"></div>
+                                    </label>
+                                </section>
                             </fieldset>
 
                             <footer>
@@ -209,9 +209,6 @@ function versionSelectDraw(vidx, sel) {
 }
 
 $(document).ready(function() {
-    $("#menu-project").addClass("active open");
-    $("#menu-project-project").addClass("active");
-    
     let editor = new tui.Editor({
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',

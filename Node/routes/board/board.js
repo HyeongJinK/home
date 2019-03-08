@@ -105,6 +105,7 @@ exports.BoardContentController = {
             .then(boardDB.BoardContentService.findByIdx)
             .then(connect.dbClose)
             .then((result) => {
+                result.findByIdx.content = result.findByIdx.content.replace(/```/g, "~~~")
                 res.render('board/content/form', {menu: ['게시판', '편집'], idx: idx, row: result.findByIdx })
             });
         } 
