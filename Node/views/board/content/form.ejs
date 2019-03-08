@@ -2,6 +2,17 @@
 <link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
 <link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
 <link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
+
+<!-- <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/font-awesome.min.css">
+
+		
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/production-plugins.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="/css/production.min.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/skins.min.css"> -->
+        
+
 <section id="widget-grid" class="">
 	<div class="row">
 		<article class="col-sm-12 col-md-12 col-lg-12">
@@ -34,6 +45,22 @@
                                         </label>
                                     </section>
                                 </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        Tags
+                                    </legend>
+    
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>태그</label>
+                                                <input class="form-control tagsinput" value="Amsterdam,Washington,Sydney,Beijing,Cairo" data-role="tagsinput">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+    
+                                </fieldset>
                             </form>
                             <div id="editSection"></div>
                             <footer>
@@ -59,9 +86,11 @@
 <script src="/javascripts/squire-rte/build/squire-raw.js"></script>
 <script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
 <script src="/javascripts/showdown/showdown.min.js"></script>
-
+<script src="/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js"></script>
 <script>
 $(document).ready(function() {
+    pageSetUp();
+
     let editor = new tui.Editor({
         el: document.querySelector('#editSection'),
         initialEditType: 'markdown',
@@ -70,8 +99,7 @@ $(document).ready(function() {
     });
 
     <% if (row) {%>
-        let content = "<%=row.content%>";
-        editor.setValue(content);
+        editor.setValue("<%=row.content%>");
     <%}%>;
 
     $("#menu-board").addClass("active open");
@@ -84,19 +112,19 @@ $(document).ready(function() {
             
         } 
         $.ajax({
-                url: "/board/content/form"
-                , method : method
-                , data : {
-                    idx : $("#idx").val()
-                    , title : $("#title").val()
-                    , content: editor.getValue()
-                }
-                , success : (data) => {
-                    location.href="/board/content/read/"+data.idx;
-                }
-                , error : (err) => {
-                    alert("error");
-                }
+            url: "/board/content/form"
+            , method : method
+            , data : {
+                idx : $("#idx").val()
+                , title : $("#title").val()
+                , content: editor.getValue()
+            }
+            , success : (data) => {
+                location.href="/board/content/read/"+data.idx;
+            }
+            , error : (err) => {
+                alert("error");
+            }
         });
     })
 })
