@@ -47,7 +47,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Tag</label>
-                                            <input class="form-control tagsinput" value="테스트" data-role="tagsinput">
+                                            <input class="form-control tagsinput" name="tags" value="" data-role="tagsinput">
                                         </div>
                                     </div>
                                 </div>
@@ -118,6 +118,7 @@ $(document).ready(function() {
                 idx : $("#idx").val()
                 , title : $("#title").val()
                 , content: editor.getValue().replace(/~~~/g, "```")
+                , tags : $("input[name='tags']").val()
             }
             , success : (data) => {
                 location.href="/board/content/read/"+data.idx;
