@@ -177,7 +177,7 @@
 function selectSelectedCheck(n, check) {
     $("select[name="+ n +"] option").each((i, val) => {
         if ($(val).val() == check) {
-            $(val).attr("selected", true)
+            $(val).prop("selected", true)
         }
     });
 }
