@@ -47,7 +47,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Tag</label>
-                                            <input class="form-control tagsinput" name="tags" value="" data-role="tagsinput">
+                                            <input class="form-control tagsinput" name="tags" data-role="tagsinput" <% if (row) { %> value="<%=row.tag%>" <% } %> >
                                         </div>
                                     </div>
                                 </div>

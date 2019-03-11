@@ -16,8 +16,6 @@ exports.returnOneDataFunc = (data, sql, resultStr) => {
         data.db.get(sql
             , data[resultStr+"Param"]
             , (err, result) => {
-                // console.log("err = " + err)
-                // console.log("result = " + result)
                 if (err) 
                     data[err] = err
                 data[resultStr] = result
@@ -30,11 +28,11 @@ exports.notReturnDataFunc = (data, sql, resultStr) => {
     return new Promise((resolve, reject) => {
         data.db.run(sql
             , data[resultStr+"Param"]
-            , (err) => {
+            , function (err) {
                 if (err) 
                     data[err] = err
                 if (this.lastID)
-                    data["lastID"] = this.lastID;
+                    data[resultStr+"lastID"] = this.lastID;
                 resolve(data);
         });
     });

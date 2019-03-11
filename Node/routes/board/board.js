@@ -110,17 +110,30 @@ exports.BoardContentController = {
             });
         } 
     },
-    save: (req, res) => { 
-        connect.dbOpen({"path": connect.config.db.board, "saveParam": [1, req.body.title, req.body.content/*, Date()*/, 0]})
+    save: (req, res) => {
+        connect.dbOpen({
+            path: connect.config.db.board
+            , saveParam: [1, req.body.title, req.body.content, 0]
+            , savesParam: req.body.tags.split(',')
+            })
             .then(boardDB.BoardContentService.save)
+            .then(boardDB.TagService.saves)
             .then(connect.dbClose)
             .then((result) => {
-                res.send({"result" : result.err, "idx" : result.lastID});
+                res.send({"result" : result.err, "idx" : result.savelastID});
         });
     },
     update: (req, res) => {
-        connect.dbOpen({"path": connect.config.db.board, "updateParam": [req.body.title, req.body.content, req.body.idx]})
+        connect.dbOpen({
+            path: connect.config.db.board
+            , updateParam: [req.body.title, req.body.content, req.body.idx]
+            , deleteParam: [req.body.idx]
+            , savesParam: req.body.tags.split(',')
+            , savelastID: req.body.idx
+            })
             .then(boardDB.BoardContentService.update)
+            .then(boardDB.TagService.delete)
+            .then(boardDB.TagService.saves)
             .then(connect.dbClose)
             .then((result) => {
                 res.send({"result" : result.err, "idx" : req.body.idx});
@@ -181,7 +194,7 @@ exports.JournalController = {
             .then(boardDB.JournalService.save)
             .then(connect.dbClose)
             .then((result) => {
-                res.send({"result" : result.err, "idx" : result.lastID});
+                res.send({"result" : result.err, "idx" : result.savelastID});
         });
     },
     update: (req, res) => {

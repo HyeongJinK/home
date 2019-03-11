@@ -16,11 +16,11 @@ exports.sql = {
     INSERT INTO tag
         (boardContentIdx, tag)
     VALUES
-        (?, ?)`
+        `
     , delete: `
     DELETE
     FROM
-        journal
+        tag
     WHERE
         boardContentIdx = ?`
 }

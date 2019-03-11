@@ -19,6 +19,15 @@
                     </div>
                     
                     <div class="widget-body">    
+                        <div class="widget-body-toolbar text-center">
+                            <% if (row.tag) { 
+                                row.tag.split(',').forEach((element)=> {%>
+                            <div class="badge bg-color-purple">
+                                <%=element%>
+                            </div>
+                            <%  });%>
+                            <%}%>
+                        </div>
                         <%- row.content %>
                     </div>
                 </div>

@@ -76,8 +76,12 @@ exports.TagService = {
     findByIdx: (data) => {
         return template.returnOneDataFunc(data, sql_tag.findByIdx, "findByIdx");
     },
-    save: (data) => {
-        return template.notReturnDataFunc(data, sql_tag.save, "save");
+    saves: (data) => {
+        let lastId = data.savelastID;
+        let tags = data["savesParam"];
+        let placeholders = tags.map((tag) => '('+lastId+', ?)').join(',');
+
+        return template.notReturnDataFunc(data, sql_tag.save + placeholders, "saves");
     },
     delete: (data) => {
         return template.notReturnDataFunc(data, sql_tag.delete, "delete");
