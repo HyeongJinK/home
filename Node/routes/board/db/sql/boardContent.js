@@ -2,7 +2,7 @@ exports.sql = {
     findByAll : `SELECT * FROM boardContent ORDER BY idx DESC LIMIT ?, ?`
     , findbyBoardIdx: `SELECT * FROM boardContent WHERE boardIdx = ? ORDER BY idx DESC LIMIT ?, ?`
     , findbyText: `select * from boardContent where title like %?% or content like %?% order by idx desc limit ?, ?`
-    , countByBoardIdx: `SELECT count(*) FROM boardContent WHERE idx = ?`
+    , countByBoardIdx: `SELECT count(*) as total FROM boardContent WHERE boardIdx = ?`
     , findByIdx: `
         SELECT
             bc.*

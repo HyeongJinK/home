@@ -37,25 +37,25 @@
 </section>
 
 <script>
-    $(document).ready(function() { 
-        $("#menu-board").addClass("active open");
-        $("#menu-board-content").addClass("active");       
-        pageSetUp();
+$(document).ready(function() { 
+    $("#menu-board").addClass("active open");
+    $("#menu-board-content").addClass("active");       
+    pageSetUp();
 
-        $("#deleteBtn").click((e) => {
-            $.ajax({
-                    url: "/board/content/form"
-                    , method : "delete"
-                    , data : {
-                        idx : $("#idx").val()
-                    }
-                    , success : (data) => {
-                        location.href="/board/content";
-                    }
-                    , error : (err) => {
-                        alert("error");
-                    }
-                });
-        });
+    $("#deleteBtn").click((e) => {
+        $.ajax({
+                url: "/board/content/form"
+                , method : "delete"
+                , data : {
+                    idx : $("#idx").val()
+                }
+                , success : (data) => {
+                    location.href="/board/content";
+                }
+                , error : (err) => {
+                    alert("error");
+                }
+            });
     });
+});
 </script>
