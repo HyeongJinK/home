@@ -55,7 +55,7 @@ exports.get = (req, res) => {
 exports.save = (req, res) => {
     contentDB.save([1, req.body.title, req.body.content/*, Date()*/, 0]
     , (err, lastId) => {
-        res.send({"result" : err, "idx" : lastId});
+        res.send({"result" : err, "idx" : savelastId});
     });
 }
 

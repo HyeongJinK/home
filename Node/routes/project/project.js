@@ -32,15 +32,14 @@ exports.ProjectController = {
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            connect.dbOpen({"path": connect.config.db.project, "projectParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [idx]})
             .then(projectDB.projectService.findByIdx)
             .then(connect.dbClose)
             .then((result) => {
                 if (result.err) {
                     console.log(result.err);
                 }
-
-                res.render("project/project/form", {menu : ["프로젝트", "프로젝트 편집"], row: result.project});
+                res.render("project/project/form", {menu : ["프로젝트", "프로젝트 편집"], row: result.findByIdx});
             });
         } else {
             res.render("project/project/form", {menu : ["프로젝트", "프로젝트 편집"], row: null});
@@ -228,7 +227,7 @@ exports.TaskController = {
     formView: (req, res) => {
         let idx = req.query.idx;
         if (idx) {
-            connect.dbOpen({"path": connect.config.db.project, "taskParam": [idx]})
+            connect.dbOpen({"path": connect.config.db.project, "findByIdxParam": [idx]})
             .then(projectDB.taskService.findByIdx)
             .then(connect.dbClose)
             .then((result) => {
@@ -236,7 +235,7 @@ exports.TaskController = {
                     console.log(result.err);
                 }
 
-                res.render("project/task/form", {menu : ["Project", "일감 편집"], row: result.task});
+                res.render("project/task/form", {menu : ["Project", "일감 편집"], row: result.findByIdx});
             });
         } else {
             res.render("project/task/form", {menu : ["Project", "일감 편집"], row: null});

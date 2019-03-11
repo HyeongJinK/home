@@ -212,7 +212,7 @@ $(document).ready(function() {
     $("#jqgrid_task").jqGrid('navGrid', "#pjqgrid_task"
         , { edit: true, add: true, del: true }
         , {beforeInitData: () => {
-                location.href="/project/task/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
+                location.href="/project/task/form?idx="+$("#jqgrid_task").jqGrid('getRowData', $("#jqgrid_task").jqGrid('getGridParam', 'selrow')).idx;
                 return false;
             }
         }
