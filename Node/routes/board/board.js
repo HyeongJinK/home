@@ -1,5 +1,7 @@
 const connect = require("../db/connect.js");
 const boardDB = require('./db/boardDB');
+const showdown = require('showdown') 
+const converter = new showdown.Converter();
 
 function undefinedValueByDefaultValueEnter(data, def) {
     if (data == undefined)
