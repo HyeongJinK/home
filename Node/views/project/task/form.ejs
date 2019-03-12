@@ -51,18 +51,26 @@
                                     <section class="col col-4">
                                         <label class="label">버전</label>
                                         <label class="select">
-                                            <select name="versionIdx" id="versionIdx">
+                                            <select name="versionIdx" id="versionIdx" class="input-lg">
                                                 <option value="0" selected="" disabled="">선택하기</option>
                                             </select> <i></i> 
                                         </label>
                                     </section>
                                 </div>
-                                <section>
-                                    <label class="label">제목</label>
-                                    <label class="input">
-                                        <input type="text" name="title" placeholder="제목" class="input-lg" <% if (row){%>value="<%= row.title %>" <%}%>>
-                                    </label>
-                                </section>
+                                <div class="row">
+                                    <section class="col col-8">
+                                        <label class="label">제목</label>
+                                        <label class="input">
+                                            <input type="text" name="title" placeholder="제목" class="input-lg" <% if (row){%>value="<%= row.title %>" <%}%>>
+                                        </label>
+                                    </section>
+                                    <section class="col col-4">
+                                        <label class="label">상위 프로젝트</label>
+                                        <label class="input">
+                                            <input type="text" name="parentIdx" placeholder="상위프로젝트" class="input-lg" <% if (row){%>value="<%= row.parentIdx %>" <%}%>>
+                                        </label>
+                                    </section>
+                                </div>
                                 <div class="row">
                                     <section class="col col-4">
                                         <label class="label">유형</label>
@@ -112,16 +120,16 @@
                                         <label class="select">
                                             <select name="progress">
                                                 <option value="0">0</option>
-                                                <option value="1">10</option>
-                                                <option value="2">20</option>
-                                                <option value="3">30</option>
-                                                <option value="4">40</option>
-                                                <option value="5">50</option>
-                                                <option value="6">60</option>
-                                                <option value="7">70</option>
-                                                <option value="8">80</option>
-                                                <option value="9">90</option>
-                                                <option value="10">100</option>
+                                                <option value="10">10</option>
+                                                <option value="20">20</option>
+                                                <option value="30">30</option>
+                                                <option value="40">40</option>
+                                                <option value="50">50</option>
+                                                <option value="60">60</option>
+                                                <option value="70">70</option>
+                                                <option value="80">80</option>
+                                                <option value="90">90</option>
+                                                <option value="100">100</option>
                                             </select> <i></i>
                                         </label>
                                     </section>
@@ -341,7 +349,7 @@ $(document).ready(function() {
                 url: "/project/task/form",
                 data: {
                     idx: $("input[name='idx']").val()
-                    , parentIdx: 0
+                    , parentIdx: $("input[name='parentIdx']").val()
                     , projectIdx: $("select[name='projectIdx'] option:selected").val()
                     , title: $("input[name='title']").val()
                     , description: editor.getValue()
@@ -355,7 +363,7 @@ $(document).ready(function() {
                     , versionIdx: $("select[name='versionIdx'] option:selected").val()
                 }  
             }).done((projects) => {
-                location.href="/project/task"
+                location.href="/project"
             }).fail((jqXHR, textStatus) => {
                 alert("error = "+textStatus)
             });

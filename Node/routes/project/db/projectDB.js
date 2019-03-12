@@ -47,7 +47,7 @@ exports.versionService = {
     }
 }
 
-exports.taskService = {
+let taskService = {
     findByAll: (data) => {
         return db_template.returnDataFunc(data, sql_task.findByAll, "tasks");
     },
@@ -60,19 +60,49 @@ exports.taskService = {
     findByVersionIdx: (data) => {
         return db_template.returnDataFunc(data, sql_task.findByVersionIdx, "findByVersionIdx");
     },
+    findByIdxParamParentIdx: (data) => {
+        data["findByIdxParamParentIdxParam"] = [data.saveParam[0]]
+        return db_template.returnOneDataFunc(data, sql_task.findByIdxParamParentIdx, "findByIdxParamParentIdx");
+    },
     countByVersionIdx: (data) => {
         return db_template.returnOneDataFunc(data, sql_task.countByVersionIdx, "countByVersionIdx");
     },
     save: (data) => {
-        return db_template.notReturnDataFunc(data, sql_task.save, "save");
+        console.log(data)
+        if (data.saveParam[0] === '0') {//부모가 없을 경우
+            return db_template.notReturnDataFunc(data, sql_task.save, "save")
+                .then(taskService.updateParentIdx);
+        } else {
+            data["findByIdxParamParentIdxParam"] = [data.saveParam[0]]
+            return db_template.returnOneDataFunc(data, sql_task.findByIdxParamParentIdx, "findByIdxParamParentIdx")
+                .then(taskService.updateGroupOrd)
+                .then((data) => {
+                    return new Promise((resolve, reject) => {
+                        data.saveParam[1] = data.findByIdxParamParentIdx.groupOrd + 1
+                        data.saveParam[2] = data.findByIdxParamParentIdx.depth + 1
+                        resolve(data);
+                    });
+                }).then((data) => {
+                    return db_template.notReturnDataFunc(data, sql_task.save, "save")
+                });
+        }
     },
     update: (data) => {
         return db_template.notReturnDataFunc(data, sql_task.update, "update");
+    },
+    updateParentIdx: (data) => {
+        data["updateParentIdxParam"] = [data.savelastID, data.savelastID]
+        return db_template.notReturnDataFunc(data, sql_task.updateParentIdx, "updateParentIdx");
+    },
+    updateGroupOrd: (data) => {
+        data["updateGroupOrdParam"] = [data.saveParam[0], data.findByIdxParamParentIdx.groupOrd];
+        return db_template.notReturnDataFunc(data, sql_task.updateGroupOrd, "updateGroupOrd");
     },
     delete: (data) => {
         return db_template.notReturnDataFunc(data, sql_task.delete, "delete");
     },
 };
+exports.taskService = taskService;
 
 exports.settingService= {
     getStatus: (data) => {

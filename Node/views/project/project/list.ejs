@@ -159,30 +159,40 @@ $(document).ready(function() {
         }
     );
 
+    function depthText(cellvalue, options, rowObject) {
+        let frontText = "";
+        
+        for (let i = 0 ; i < rowObject.depth; i++) {
+            frontText += ' <i class="fa-arrow-right fa"></i>'
+        }
+        return frontText + "  " + cellvalue;
+    }
 
     $("#jqgrid_task").jqGrid({
         url: "/project/task/listByVersionIdx",
         datatype: "local",
         height: 'auto',
-        colNames: ['내용보기', 'idx', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
-        colModel: [{name:'act', index:'act', width: 45}, {
-            name: 'idx', index: 'idx', hidden: true,
+        colNames: ['보기', '번호', 'depth', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
+        colModel: [{name:'act', index:'act', width: 25}, {
+            name: 'idx', index: 'idx', width: 25,
+        }, {
+            name: 'depth', index: 'depth', hidden: true,
         }, {
             name: 'projectName', index: 'projectName', width: 80, hidden: true,
         }, {
             name: 'versionName', index: 'versionName', width: 70, hidden: true,
         }, {
-            name: 'title', index: 'title', editable: true
+            name: 'title', index: 'title', editable: true, formatter:depthText,
         }, {
-            name: 'typeName', index: 'typeName', width: 60,
+            name: 'typeName', index: 'typeName', width: 40,
         }, {
-            name: 'priorityName', index: 'priorityName', width: 60,
+            name: 'priorityName', index: 'priorityName', width: 40,
         }, {
-            name: 'statusName', index: 'statusName', width: 60,
+            name: 'statusName', index: 'statusName', width: 40,
         }, {
-            name: 'start_time', index: 'start_time', width: 70,
+            name: 'start_time', index: 'start_time', width: 60,
         }, {
-            name: 'finish_time', index: 'finish_time', width: 70,
+            name: 'finish_time', index: 'finish_time', width: 60,
         }, {
             name: 'manager', index: 'manager', hidden: true,
         }, {
@@ -191,10 +201,10 @@ $(document).ready(function() {
         rowNum: 10,
         rowList: [10, 20, 30],
         pager: '#pjqgrid_task',
-        sortname: 'idx',
+        //sortname: 'idx',
         toolbarfilter: true,
         viewrecords: true,
-        sortorder: "desc",
+        //sortorder: "desc",
         gridComplete: function() {
         },
         caption: "일감",
@@ -204,7 +214,7 @@ $(document).ready(function() {
 
             for (let i = 0; i < ids.length; i++) {
                 let cl = ids[i];
-                re = "<a href='/project/task/read/"+ids[i]+"'>내용보기</a>"
+                re = "<a href='/project/task/read/"+ids[i]+"'>보기</a>"
                 $("#jqgrid_task").jqGrid('setRowData', ids[i], {act:re});
             }
         },

@@ -242,8 +242,11 @@ exports.TaskController = {
         }
     },
     save: (req, res) => {
+        //부모, 자식, 자식의 자식
         connect.dbOpen({"path": connect.config.db.project, "saveParam": [
             req.body.parentIdx,
+            1,
+            0,
             req.body.projectIdx,
             req.body.title,
             req.body.description,
@@ -262,10 +265,8 @@ exports.TaskController = {
             if (result.err) {
                 //TODO 에러 처리
                 console.log(result.err)
-            } else {
-                res.redirect("/project/task");
-            }
-            //res.send({result: result.err, idx: result.result});
+            } 
+            res.send({result: result.err, idx: result.savelastID});
         });
     },
     update: (req, res) => {

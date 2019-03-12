@@ -2,6 +2,7 @@ exports.sql = {
     findByAll : `
         SELECT
             ta.idx as idx
+            , ta.depth
             , ta.title
             , ta.start_time
             , ta.finish_time
@@ -24,7 +25,7 @@ exports.sql = {
             on ta.priority = pri.idx
         left join version as ve
             on ta.versionIdx = ve.idx
-        ORDER BY idx DESC
+        ORDER BY parentIdx DESC, groupOrd ASC
         LIMIT ?, ?
     `
     , findByIdx: `
@@ -42,6 +43,7 @@ exports.sql = {
     , findByVersionIdx: `
         SELECT
             ta.idx as idx
+            , ta.depth
             , ta.title
             , ta.start_time
             , ta.finish_time
@@ -65,9 +67,18 @@ exports.sql = {
         left join version as ve
             on ta.versionIdx = ve.idx
         WHERE ta.versionIdx = ?
-        ORDER BY idx DESC
+        ORDER BY parentIdx DESC, groupOrd ASC
         LIMIT ?, ?
     `
+    , findByIdxParamParentIdx: `
+        SELECT
+            parentIdx
+            , groupOrd
+            , depth
+        FROM
+            task
+        WHERE
+            idx = ?`
     , countByVersionIdx: `
         SELECT
             count(*) as total
@@ -77,8 +88,8 @@ exports.sql = {
             versionIdx = ?`
     , save: `
         INSERT INTO task 
-            (parentIdx, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, versionIdx, create_date)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'))`
+            (parentIdx, groupOrd, depth, projectIdx, title, description, type, status, start_time, finish_time, priority, manager, progress, versionIdx, create_date)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'))`
     , update: `
         UPDATE
             task 
@@ -97,6 +108,21 @@ exports.sql = {
             , versionIdx = ?
         WHERE
             idx = ?`
+    , updateParentIdx: `
+        UPDATE
+            task
+        SET
+            parentIdx = ?
+        WHERE
+            idx = ?`
+    , updateGroupOrd: `
+        UPDATE
+            task
+        SET
+            groupOrd = groupOrd + 1
+        WHERE
+            parentIdx = ? AND groupOrd > ?
+    `
     , delete: `
         DELETE FROM 
             task 

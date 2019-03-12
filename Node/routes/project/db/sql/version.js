@@ -18,7 +18,7 @@ exports.sql = {
         FROM
             version`
     , save: `
-        INSERT INTO task 
+        INSERT INTO version 
             (projectIdx, title, description, start_date, finish_date, create_date)
             VALUES (?,?,?,?,?,datetime('now','localtime'))`
     , update: `
