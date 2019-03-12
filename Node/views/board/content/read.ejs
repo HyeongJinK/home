@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -28,7 +31,8 @@
                             <%  });%>
                             <%}%>
                         </div>
-                        <%- row.content %>
+                        <div id="editSection"></div>
+                        <!-- <%- row.content %> -->
                     </div>
                 </div>
             </div>
@@ -36,11 +40,21 @@
     </div>
 </section>
 
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Viewer.js"></script>
+
 <script>
 $(document).ready(function() { 
     $("#menu-board").addClass("active open");
     $("#menu-board-content").addClass("active");       
     pageSetUp();
+
+    var editor = new tui.Editor({
+        el: document.querySelector('#editSection')
+        , initialValue: `<%- row.content %>`
+    });
 
     $("#deleteBtn").click((e) => {
         $.ajax({

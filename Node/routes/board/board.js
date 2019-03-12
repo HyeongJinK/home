@@ -1,5 +1,3 @@
-const showdown = require('showdown') 
-const converter = new showdown.Converter();
 const connect = require("../db/connect.js");
 const boardDB = require('./db/boardDB');
 
@@ -87,7 +85,8 @@ exports.BoardContentController = {
             if (result.findByIdx === undefined) {
                 res.render('board/content/list', {menu: ['게시판', '내용'], errorMessage: "잘못된 호출입니다."}) 
             } else {
-                result.findByIdx.content = converter.makeHtml(result.findByIdx.content);
+                //result.findByIdx.content = converter.makeHtml(result.findByIdx.content);
+                result.findByIdx.content = result.findByIdx.content.replace(/```/g, "~~~")
                 res.render('board/content/read', {menu: ['게시판', '내용',], row: result.findByIdx }) 
             }
         });

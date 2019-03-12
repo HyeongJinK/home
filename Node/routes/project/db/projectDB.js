@@ -68,7 +68,6 @@ let taskService = {
         return db_template.returnOneDataFunc(data, sql_task.countByVersionIdx, "countByVersionIdx");
     },
     save: (data) => {
-        console.log(data)
         if (data.saveParam[0] === '0') {//부모가 없을 경우
             return db_template.notReturnDataFunc(data, sql_task.save, "save")
                 .then(taskService.updateParentIdx);
