@@ -186,6 +186,9 @@ exports.BoardContentController = {
 }
 
 exports.JournalController = {
+    listView: (req, res) => {
+        res.render('board/journal/list', {menu: ['일지', '목록'] });
+    },
     list: (req, res) => {
         connect.dbOpen({path: connect.config.db.board, findByAllParam: []})
             .then(boardDB.JournalService.findByAll)

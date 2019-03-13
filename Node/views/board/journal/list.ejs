@@ -29,12 +29,14 @@
 <script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
 <script src="/javascripts/squire-rte/build/squire-raw.js"></script>
 <script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
-<script src="/javascripts/edit/dist/tui-editor-Viewer.js"></script>
 <script src="/javascripts/showdown/showdown.min.js"></script>
 
 <script>
 $(document).ready(function() {
     //pageSetUp();
+    $("#menu-board").addClass("active open");
+    $("#menu-board-journal").addClass("active");
+
     $("#menu-main").addClass("active");
 
     let editor = new tui.Editor({
@@ -67,15 +69,10 @@ $(document).ready(function() {
                     )
                     .append($("<tr>")
                         .append($("<td>")
-                            .attr("id", "journal_"+element.idx)
-                            //.html(element.description)
+                            
+                            .html(element.description)
                         )
                     )
-
-                new tui.Editor({
-                    el: document.querySelector("#journal_"+element.idx)
-                    , initialValue : element.description
-                });
             });
         }
         , error: (err) => {

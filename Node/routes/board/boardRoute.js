@@ -21,6 +21,7 @@ router.route("/content/form")
 router.get("/content/list", board.BoardContentController.list);
 router.get("/content/:idx", board.BoardContentController.read);
 
+router.get("/journal", board.JournalController.listView);
 router.get("/journal/list", board.JournalController.list);
 router.post("/journal/form", board.JournalController.save);
 
