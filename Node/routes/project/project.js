@@ -310,6 +310,94 @@ exports.TaskController = {
     },
 }
 
+exports.CheckListController = {
+    listByTaskIdx: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
+            req.body.taskIdx
+            , req.body.title
+        ]})
+        .then(projectDB.checkSerivce.findByTaskIdx)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err, idx: result.savelastID});
+        })
+    },
+    save: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
+            req.body.taskIdx
+            , req.body.title
+        ]})
+        .then(projectDB.checkSerivce.save)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err, idx: result.savelastID});
+        })
+    },
+    update: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "updateParam": [
+            req.body.title
+            , req.body.idx
+        ]})
+        .then(projectDB.checkSerivce.update)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err, idx: req.body.idx});
+        })
+    },
+    delete: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project
+        , "deleteByCheckListIdxParam": [
+            req.body.idx
+        ]
+        , "deleteParam": [
+            req.body.idx
+        ]})
+        .then(projectDB.checkSerivce.deleteByCheckListIdx)
+        .then(projectDB.checkSerivce.delete)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err});
+        })
+    }
+}
+
+exports.CheckListColumController = {
+    save: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "saveColumnParam": [
+            req.body.checkListIdx
+            , req.body.title
+            , req.body.status
+        ]})
+        .then(projectDB.checkSerivce.saveColumn)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err, idx: result.savelastID});
+        })
+    },
+    update: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "updateColumnParam": [
+            req.body.title
+            , req.body.status
+            , req.body.idx
+        ]})
+        .then(projectDB.checkSerivce.updateColumn)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err, idx: req.body.idx});
+        })
+    },
+    delete: (req, res) => {
+        connect.dbOpen({"path": connect.config.db.project, "deleteParam": [
+            req.body.idx
+        ]})
+        .then(projectDB.checkSerivce.delete)
+        .then(connect.dbClose)
+        .then((result) => {
+            res.send({result: result.err});
+        })
+    }
+}
+
 exports.SettingController = {
 
 }

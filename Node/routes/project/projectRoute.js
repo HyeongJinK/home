@@ -38,5 +38,15 @@ router.route("/task/form")
 .post(project.TaskController.save)
 .put(project.TaskController.update)
 .delete(project.TaskController.delete);
+/**
+ * checkList
+ */
+router.get("/checkList/list", project.CheckListController.listByTaskIdx);
+router.post("/checkList/save", project.CheckListController.save);
+router.put("/checkList/update", project.CheckListController.update);
+router.delete("/checkList/delete", project.CheckListController.delete);
+router.post("/checkList/savecolumn", project.CheckListColumController.save);
+router.put("/checkList/updatecolumn", project.CheckListColumController.update);
+router.put("/checkList/deletecolumn", project.CheckListColumController.delete);
 
 module.exports = router;

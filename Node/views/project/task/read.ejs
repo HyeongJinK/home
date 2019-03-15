@@ -10,6 +10,7 @@
                     <h2 class="font-md"><strong><%= row.title %></strong></h2>
                     <div class="widget-toolbar">
                         <input type="hidden" id="idx" value="<%=row.idx%>">
+                        <a href="#" id="checkBtn" class="btn btn-danger">체크리스트 추가</a>
                         <a href="#" id="deleteBtn" class="btn btn-danger">삭제</a>
                     </div>			 
                 </header>
@@ -17,35 +18,163 @@
                     <div class="jarviswidget-editbox">   
                     </div>
                     
-                    <div class="widget-body">    
+                    <div class="widget-body smart-form" id="widget-body">
+                        <h5 class="todo-group-title">내용</h5>
                         <%- row.description %>
                     </div>
                 </div>
             </div>
         </article>
     </div>
+
+    <div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
+        <header>
+            <span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
+            <h2> ToDo's </h2>
+        </header>
+    
+        <div>
+            <div class="jarviswidget-editbox">
+                <div>
+                    <label>Title:</label>
+                    <input type="text" />
+                </div>
+            </div>
+    
+            <div class="widget-body no-padding smart-form">
+                <h5 class="todo-group-title"><i class="fa fa-warning"></i> Critical Tasks (<small class="num-of-tasks">1</small>)</h5>
+                <ul id="sortable1" class="todo">
+                    <li>
+                        <span class="handle"> <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i> </label> </span>
+                        <p>
+                            <strong>Ticket #17643</strong> - Hotfix for WebApp interface issue [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="text-muted">Sea deep blessed bearing under darkness from God air living isn't. </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+                <h5 class="todo-group-title"><i class="fa fa-exclamation"></i> Important Tasks (<small class="num-of-tasks">3</small>)</h5>
+                <ul id="sortable2" class="todo">
+                    <li>
+                        <span class="handle"> <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i> </label> </span>
+                        <p>
+                            <strong>Ticket #1347</strong> - Inbox email is being sent twice <small>(bug fix)</small> [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle"> <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i> </label> </span>
+                        <p>
+                            <strong>Ticket #1314</strong> - Call customer support re: Issue <a href="javascript:void(0);" class="font-xs">#6134</a><small>(code review)</small>
+                            <span class="date">Nov 22, 2013</span>
+                        </p>
+                    </li>
+                    <li>
+                        <span class="handle"> <label class="checkbox">
+                                <input type="checkbox" name="checkbox-inline">
+                                <i></i> </label> </span>
+                        <p>
+                            <strong>Ticket #17643</strong> - Hotfix for WebApp interface issue [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="text-muted">Sea deep blessed bearing under darkness from God air living isn't. </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+    
+                <h5 class="todo-group-title"><i class="fa fa-check"></i> Completed Tasks (<small class="num-of-tasks">1</small>)</h5>
+                <ul id="sortable3" class="todo">
+                    <li class="complete">
+                        <span class="handle" style="display:none"> <label class="checkbox state-disabled">
+                                <input type="checkbox" name="checkbox-inline" checked="checked" disabled="disabled">
+                                <i></i> </label> </span>
+                        <p>
+                            <strong>Ticket #17643</strong> - Hotfix for WebApp interface issue [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="text-muted">Sea deep blessed bearing under darkness from God air living isn't. </span>
+                            <span class="date">Jan 1, 2014</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
-    $(document).ready(function() { 
-        $("#menu-project").addClass("active open");
-        $("#menu-project-project").addClass("active");       
-        pageSetUp();
+$(document).ready(function() { 
+    $("#menu-project").addClass("active open");
+    $("#menu-project-project").addClass("active");       
+    pageSetUp();
 
-        $("#deleteBtn").click((e) => {
-            $.ajax({
-                    url: "/project/task/form"
-                    , method : "delete"
-                    , data : {
-                        idx : $("#idx").val()
-                    }
-                    , success : (data) => {
-                        location.href="/project";
-                    }
-                    , error : (err) => {
-                        alert("error");
-                    }
-                });
+    $("#deleteBtn").click((e) => {
+        $.ajax({
+            url: "/project/task/form"
+            , method : "delete"
+            , data : {
+                idx : $("#idx").val()
+            }
+            , success : (data) => {
+                location.href="/project";
+            }
+            , error : (err) => {
+                alert("error");
+            }
         });
     });
+    
+    let checkNum = 0;
+    $("#checkBtn").click((e) => {
+        checkNum += 1;
+        let temp = checkNum;
+        $("#widget-body").prepend($("<div id='check_"+checkNum+"'>").prepend($("<h5>")
+            .addClass("todo-group-title")
+            .append($("<label id='label_"+checkNum+"'>")
+                .addClass("input")
+                .append($("<input type='text' id='editCheck_"+checkNum+"' style='width:50%'>")
+                    .addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6")
+                )
+                .append("&nbsp;")
+                .append($("<a>")
+                    .append($("<i>")
+                        .addClass("fa fa-lg fa-plus")
+                    )
+                    .on("click", () => {//추가 버튼을 눌렀을 때
+                        let va= $("#editCheck_"+temp).val();
+                        $("#label_"+temp).remove();
+                        
+                        $("#check_"+temp+" h5").append(va);
+
+                        $("#check_"+temp)
+                            .append($("<ul id='checkcolumn_"+checkNum+"'>")
+                                .addClass("todo")
+                                .append($("<li>")
+                                    .append($("<span>")
+                                        .addClass("handle")
+                                        .append($("<label>")
+                                            .addClass("checkbox")
+                                            .append($("<input type='checkbox' name='test'>"))
+                                            .append($("<i>"))
+                                        )
+                                    )
+                                    .append($("<p>")
+                                        .append("test")
+                                    )
+                                )
+                            );
+                    })
+                )
+                .append("&nbsp;")
+                .append($("<a>")
+                    .append($("<i>")
+                        .addClass("fa fa-lg fa-minus")
+                    )
+                    .on("click", () => {//삭제 버튼을 눌렀을 때
+                        $("#check_"+temp).remove();
+                    })
+                )
+            )
+        ));
+    });
+});
 </script>

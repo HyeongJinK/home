@@ -2,7 +2,7 @@ const sql_project = require('./sql/project').sql;
 const sql_version = require('./sql/version').sql;
 const sql_task = require('./sql/task').sql;
 const sql_checkList = require('./sql/checkList').sql;
-const sql_checkListColum = require('./sql/checkListColum').sql;
+const sql_checkListColumn = require('./sql/checkListColumn').sql;
 const sql_type = require('./sql/type').sql;
 const sql_status = require('./sql/status').sql;
 const sql_priority = require('./sql/priority').sql;
@@ -103,7 +103,31 @@ let taskService = {
 };
 exports.taskService = taskService;
 
-exports.settingService= {
+exports.checkSerivce = {
+    findByTaskIdx: (data) => {
+        return db_template.returnDataFunc(data, sql_checkList.findByTaskIdx, "findByTaskIdx");
+    },
+    save: (data) => {
+        return db_template.notReturnDataFunc(data, sql_checkList.save, "save");
+    },
+    saveColumn: (data) => {
+        return db_template.notReturnDataFunc(data, sql_checkListColumn.save, "saveColumn")
+    },
+    update:(data) => {
+        return db_template.notReturnDataFunc(data, sql_checkList.update, "update")
+    },
+    updateColumn:(data) => {
+        return db_template.notReturnDataFunc(data, sql_checkListColumn.update, "updateColumn")
+    },
+    delete: (data) => {
+        return db_template.notReturnDataFunc(data, sql_checkList.delete, "delete")
+    },
+    deleteByCheckListIdx: (data) => {
+        return db_template.notReturnDataFunc(data, sql_checkListColumn.deleteByCheckListIdx, "deleteByTaskIdx")
+    }
+}
+
+exports.settingService = {
     getStatus: (data) => {
         return db_template.returnDataFunc(data, sql_status.findByAll, "status");
     },
