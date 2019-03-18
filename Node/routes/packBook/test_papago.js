@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 
-const bookDBPath = 'db/books.db';
+const bookDBPath = '../../db/books.db';
 
 
 const query = require('./module/query');
