@@ -3,7 +3,6 @@ var sqlite3 = require('sqlite3').verbose();
 const bookDBPath = 'db/books.db';
 
 
-const translate = require('./translate');
 const query = require('./module/query');
 const papago = require('./module/papago');
 
