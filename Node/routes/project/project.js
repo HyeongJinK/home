@@ -312,14 +312,13 @@ exports.TaskController = {
 
 exports.CheckListController = {
     listByTaskIdx: (req, res) => {
-        connect.dbOpen({"path": connect.config.db.project, "saveParam": [
-            req.body.taskIdx
-            , req.body.title
+        connect.dbOpen({"path": connect.config.db.project, "findByTaskIdxParam": [
+            req.query.taskIdx
         ]})
         .then(projectDB.checkSerivce.findByTaskIdx)
         .then(connect.dbClose)
         .then((result) => {
-            res.send({result: result.err, idx: result.savelastID});
+            res.send({rows: result.findByTaskIdx});
         })
     },
     save: (req, res) => {

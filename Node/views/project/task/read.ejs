@@ -19,7 +19,7 @@
                     </div>
                     <div class="smart-form" id="widget-body" style="height:100%"></div>
                     <div class="widget-body">
-                        <h5 class="todo-group-title">내용</h5>
+                        <h5 class="todo-group-title">----------------------------</h5>
                         <%- row.description %>
                     </div>
                 </div>
@@ -122,59 +122,91 @@ $(document).ready(function() {
             }
         });
     });
-    
-    let checkNum = 0;
-    $("#checkBtn").click((e) => {
-        checkNum += 1;
-        let temp = checkNum;
-        $("#widget-body").prepend($("<div id='check_"+checkNum+"'>").prepend($("<h5>")
-            .addClass("todo-group-title")
-            .append($("<label id='label_"+checkNum+"'>")
-                .addClass("input")
-                .append($("<input type='text' id='editCheck_"+checkNum+"' style='width:50%'>")
-                    .addClass("col-xs-6 col-sm-6 col-md-6 col-lg-6")
-                )
-                .append("&nbsp;")
-                .append($("<a>")
-                    .append($("<i>")
-                        .addClass("fa fa-lg fa-plus")
-                    )
-                    .on("click", () => {//추가 버튼을 눌렀을 때
-                        let va= $("#editCheck_"+temp).val();
-                        $("#label_"+temp).remove();
-                        
-                        $("#check_"+temp+" h5").append(va);
 
-                        $("#check_"+temp)
-                            .append($("<ul id='checkcolumn_"+checkNum+"'>")
-                                .addClass("todo")
-                                .append($("<li>")
-                                    .append($("<span>")
-                                        .addClass("handle")
-                                        .append($("<label>")
-                                            .addClass("checkbox")
-                                            .append($("<input type='checkbox' name='test'>"))
-                                            .append($("<i>"))
-                                        )
-                                    )
-                                    .append($("<p>")
-                                        .append("test")
-                                    )
-                                )
-                            );
-                    })
-                )
-                .append("&nbsp;")
-                .append($("<a>")
-                    .append($("<i>")
-                        .addClass("fa fa-lg fa-minus")
+    function checkListFirstDraw(element) {
+        $("#widget-body")
+        .prepend($("<div id='check_"+element.mainIdx+"'>")
+            .prepend($("<h5>")
+                .addClass("todo-group-title")
+                .text(element.mainTitle)
+            )
+            .append($("<ul>")
+                .addClass("todo")
+                .append($("<li id='li_input'>")
+                    .append($("<span>")
+                        .addClass("handle")
                     )
-                    .on("click", () => {//삭제 버튼을 눌렀을 때
-                        $("#check_"+temp).remove();
-                    })
+                    .append($("<p>")
+                        .append($("<input type='text'>"))
+                        .append("&nbsp;")
+                        .append($("<a href='#'>")
+                            .append($("<i>")
+                                .addClass("fa fa-lg fa-plus")
+                            )
+                            .on("click", () => {
+                                let liVal = $("div#check_"+element.mainIdx+" ul p input").val();
+                                $("div#check_"+element.mainIdx+" ul p input").val("");
+                                
+
+                                checkListColunmDraw({mainIdx: element.mainIdx
+                                    , subIdx: 1
+                                    , subTitle: liVal});
+                            })
+                        )
+                    )
                 )
             )
-        ));
+        )
+    }
+
+    function checkListColunmDraw(element) {
+        $("div#check_"+element.mainIdx+" ul")
+        .append($("<li id='li_"+element.mainIdx+"_"+element.subIdx+"'>")
+            .append($("<span>")
+                .addClass("handle")
+                .append($("<label>")
+                    .addClass("checkbox")
+                    .append($("<input type='checkbox'>"))
+                    .append($("<i>"))
+                )
+            )
+            .append($("<p>")
+                .text(element.subTitle)
+            )
+            .append("&nbsp;")
+            .append($("<a>")
+                .append($("<i>")
+                    .addClass("fa fa-lg fa-minus")
+                )
+            )
+        )
+    }
+
+    $.ajax({
+        url: "/project/checklist/list"
+        , method: "get"
+        , data: {
+            taskIdx: $("#idx").val()
+        }
+        , success: (data) => {
+            if (data.rows != null) {
+                checkListFirstDraw({mainIdx: data.rows[0].mainIdx
+                , mainTitle: data.rows[0].mainTitle})
+
+                data.rows.forEach(checkListColunmDraw);
+            }
+        }
+        , error: (err) => {
+            alert("체크리스트 목록 가져오기 에러");
+        }
+    });
+    
+    
+    $("#checkBtn").click((e) => {
+        if ($("#widget-body h5").length == 0) {
+            checkListFirstDraw({mainIdx: 0
+                , mainTitle: "체크리스"})
+        }
     });
 });
 </script>
