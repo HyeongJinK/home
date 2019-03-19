@@ -1,13 +1,13 @@
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>게시판</h2>
 
                     <div class="widget-toolbar">
-                        <a href="/board/content/form" id="writeBtn" class="btn btn-primary">글쓰기</a>
+                        <!-- <a href="/board/content/form" id="writeBtn" class="btn btn-primary">글쓰기</a> -->
                     </div>
                 </header>
                 <div>
@@ -15,27 +15,27 @@
                         <table id="jqgrid"></table>
                         <div id="pjqgrid"></div>
                     </div>
-                    <!-- <div class="jarviswidget-editbox">
-                    </div>
-                    <div class="widget-body">                        
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>번호</th>
-                                        <th>제목</th>
-                                        <th>만든날짜</th>
-                                        <th>수정날짜</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="trformTable">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </article>
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="readTemplate" style="display:none;">
+                <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>테스트</h2>
+        
+                        <div class="widget-toolbar"></div>
+                    </header>
+                    <div>
+                        <div class="widget-body">  
+                        내용
+                        </div>
+                    </div>
+                </div>
+        </article>
+    </div>
+    <div id="readTemplate" style="display:none;">
+        
     </div>
 </section>
 
@@ -44,6 +44,8 @@
 
 <script>
 $(document).ready(function () {
+    pageSetUp();
+
     $("#menu-board").addClass("active open");
     $("#menu-board-content").addClass("active");
 
@@ -145,27 +147,11 @@ $(document).ready(function () {
     $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
     $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
 
-
-
-
-
-
-    // function tablePrint() {
-    //     $.getJSON('/board/content/list', {}, function (data) {
-    //         $("#trformTable").html("")
-    //         data.rows.forEach(element => {
-    //             let $tr = $("<tr></tr>");
-    //             $tr.append($("<td></td>").text(element.idx));
-    //             $tr.append($("<td></td>").text(element.title));
-    //             $tr.append($("<td></td>").text(element.createDate));
-    //             $tr.append($("<td></td>").text(element.modifyDate));
-    //             $tr.click(() => {
-    //                 location.href="/board/content/read/"+element.idx;
-    //             });
-    //             $("#trformTable").append($tr);
-    //         });
-    //     });
-    // }
-    // tablePrint();
+    function read(idx) {
+        $("section#widget-grid div.row").append($("#readTemplate").clone().show())
+        //$("section#widget-grid div.row").append($("#readTemplate article").clone())
+        pageSetUp()
+    }
+    read(1)
 });
 </script>

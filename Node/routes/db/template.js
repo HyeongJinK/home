@@ -4,7 +4,7 @@ exports.returnDataFunc = (data, sql, resultStr) => {
             , data[resultStr+"Param"]
             , (err, result) => {
                 if (err) 
-                    data[err] = err
+                    data["err"] = err
                 data[resultStr] = result
                 resolve(data);
         });
@@ -17,7 +17,7 @@ exports.returnOneDataFunc = (data, sql, resultStr) => {
             , data[resultStr+"Param"]
             , (err, result) => {
                 if (err) 
-                    data[err] = err
+                    data["err"] = err
                 data[resultStr] = result
                 resolve(data);
         });
@@ -30,7 +30,7 @@ exports.notReturnDataFunc = (data, sql, resultStr) => {
             , data[resultStr+"Param"]
             , function (err) {
                 if (err) 
-                    data[err] = err
+                    data["err"] = err
                 if (this.lastID)
                     data[resultStr+"lastID"] = this.lastID;
                 resolve(data);

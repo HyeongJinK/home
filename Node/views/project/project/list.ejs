@@ -167,14 +167,18 @@ $(document).ready(function() {
         }
         return frontText + "  " + cellvalue;
     }
+    
+    function linkTask(cellvalue, options, rowObject) {
+        return "<a href='/project/task/read/"+rowObject.idx+"'>보기</a>";
+    }
 
     $("#jqgrid_task").jqGrid({
         url: "/project/task/listByVersionIdx",
         datatype: "local",
         height: 'auto',
         colNames: ['보기', '번호', 'depth', '프로젝트', '버전', '제목', '타입', '상태', '우선도', '시작일', '마감일', '담당자', '진척도'],
-        colModel: [{name:'act', index:'act', width: 25}, {
-            name: 'idx', index: 'idx', width: 25,
+        colModel: [{name:'act', index:'act', width: 25, formatter: linkTask}, {
+            name: 'idx', index: 'idx', width: 25, key:true,
         }, {
             name: 'depth', index: 'depth', hidden: true,
         }, {
@@ -209,15 +213,6 @@ $(document).ready(function() {
         },
         caption: "일감",
         autowidth: true,
-        gridComplete: function() {
-            let ids = $("#jqgrid_task").jqGrid('getDataIDs');
-
-            for (let i = 0; i < ids.length; i++) {
-                let cl = ids[i];
-                re = "<a href='/project/task/read/"+ids[i]+"'>보기</a>"
-                $("#jqgrid_task").jqGrid('setRowData', ids[i], {act:re});
-            }
-        },
     });
     $("#jqgrid_task").jqGrid('navGrid', "#pjqgrid_task"
         , { edit: true, add: true, del: true }

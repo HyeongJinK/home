@@ -15,7 +15,7 @@ exports.sql = {
         FROM
             checkList AS cl
         LEFT JOIN
-            checkListColum AS clc
+            checkListColumn AS clc
         ON cl.idx = clc.checkListIdx
         WHERE
             cl.taskIdx = ?`

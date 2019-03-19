@@ -370,7 +370,9 @@ exports.CheckListColumController = {
         .then(projectDB.checkSerivce.saveColumn)
         .then(connect.dbClose)
         .then((result) => {
-            res.send({result: result.err, idx: result.savelastID});
+            if (result.err)
+                console.log(result.err)
+            res.send({result: result.err, idx: result.saveColumnlastID});
         })
     },
     update: (req, res) => {
