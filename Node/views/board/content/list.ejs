@@ -31,11 +31,14 @@
 <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
         <header>
-            <div class="jarviswidget-ctrls" role="menu">   
-                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="Collapse">
+            <div class="jarviswidget-ctrls" role="menu">
+                <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn editBt" rel="tooltip" title="" data-placement="bottom" data-original-title="수정">
+                    <i class="fa fa-cog "></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="접기">
                     <i class="fa fa-minus "></i>
                 </a>  
-                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn delBt" rel="tooltip" title="" data-placement="bottom" data-original-title="Delete">
+                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn delBt" rel="tooltip" title="" data-placement="bottom" data-original-title="닫기">
                     <i class="fa fa-times"></i>
                 </a>
             </div>
@@ -191,6 +194,15 @@ $(document).ready(function () {
             $article.find("h2").text(data.title);
             $article.find("div.widget-body").attr("id", `content_${data.idx}`);
 
+           
+
+            $("section#widget-grid div#readRow").prepend($article)
+            
+            let viewer = new tui.Viewr({
+                el: document.querySelector(`#content_${data.idx}`)
+                , initialValue : data.content
+            });
+
             $article.find(".hideBt").click(() => {
                 $article.find(".hideBt i").toggleClass("fa-minus").toggleClass("fa-plus")
                 $article.find("div.content").slideToggle(200)
@@ -199,13 +211,20 @@ $(document).ready(function () {
             $article.find(".delBt").click(() => {
                 $article.remove();
             });
-
-            $("section#widget-grid div#readRow").prepend($article)
             
-            new tui.Viewr({
-                el: document.querySelector(`#content_${data.idx}`)
-                , initialValue : data.content
-            });
+            $article.find(".editBt").click(() => {
+                if ($article.find(".tui-editor-defaultUI").length == 0) {
+                    $article.find(".tui-editor-contents").hide();
+                    
+                    let editor = new tui.Editor({
+                        el: document.querySelector(`#content_${data.idx}`),
+                        initialEditType: 'markdown',
+                        previewStyle: 'vertical',
+                        height: '400px',
+                        initialValue: data.content
+                    });
+                }
+            });  
         } else {
             return;
         }
