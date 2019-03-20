@@ -51,7 +51,7 @@ $(document).ready(function() {
     $("#menu-board-content").addClass("active");       
     pageSetUp();
 
-    var editor = new tui.Editor({
+    var editor = new tui.Viewr({
         el: document.querySelector('#editSection')
         , initialValue: `<%- row.content %>`
     });
