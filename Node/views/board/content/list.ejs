@@ -33,7 +33,7 @@
         <header>
             <div class="jarviswidget-ctrls" role="menu">
                 <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn editBt" rel="tooltip" title="" data-placement="bottom" data-original-title="수정">
-                    <i class="fa fa-cog "></i>
+                    <i class="fa fa-pencil "></i>
                 </a>
                 <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="접기">
                     <i class="fa fa-minus "></i>
@@ -83,7 +83,7 @@ $(document).ready(function () {
         url: "/board/content/list",
         datatype: "json",
         height: 'auto',
-        colNames: ['내용보기', 'idx', '제목', '내용', '생성일', '수정일'],
+        colNames: ['내용보기', 'idx', '제목', '내용', '태그', '생성일', '수정일'],
         colModel: [{
             name:'act',
             index:'act',
@@ -102,6 +102,10 @@ $(document).ready(function () {
             name: 'content',
             index: 'content',
             hidden: true,
+            editable: true,
+        }, {
+            name: 'tag',
+            index: 'tag',
             editable: true,
         }, {
             name: 'createDate',
@@ -124,13 +128,6 @@ $(document).ready(function () {
         caption: "게시판",
         autowidth: true,
         gridComplete: function() {
-            // let ids = $("#jqgrid").jqGrid('getDataIDs');
-
-            // for (let i = 0; i < ids.length; i++) {
-            //     let cl = ids[i];
-            //     re = "<a href='/board/content/read/"+ids[i]+"'>내용보기</a>"
-            //     $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
-            // }
             $(".contentColumn").on("click", (e) => {
                 readDraw($("#jqgrid").jqGrid('getRowData', $(e.currentTarget).attr("data-idx")))
             });
@@ -190,7 +187,7 @@ $(document).ready(function () {
     function readDraw(data) {
         if ($("#readArticle_"+data.idx).length == 0) {
             let $article = $("#readTemplate article").clone()
-            $article.attr("id", "readArticle_"+data.idx)
+            $article.attr("id", "readArticle_"+data.idx).attr("data-idx", data.idx);
             $article.find("h2").text(data.title);
             $article.find("div.widget-body").attr("id", `content_${data.idx}`);
 
@@ -214,8 +211,6 @@ $(document).ready(function () {
             
             $article.find(".editBt").click(() => {
                 if ($article.find(".tui-editor-defaultUI").length == 0) {
-                    $article.find(".tui-editor-contents").hide();
-                    
                     let editor = new tui.Editor({
                         el: document.querySelector(`#content_${data.idx}`),
                         initialEditType: 'markdown',
@@ -223,6 +218,57 @@ $(document).ready(function () {
                         height: '400px',
                         initialValue: data.content
                     });
+                    $article.find(".tui-editor-contents").hide();
+
+                    $article.find("div.jarviswidget-ctrls")
+                    .prepend($("<a>")
+                        .addClass("button-icon jarviswidget-edit-btn cancelBt")
+                        .attr("rel", "tooltip")
+                        .attr("title", "")
+                        .attr("data-placement", "bottom")
+                        .attr("data-original-title", "닫기")
+                        .append($("<i>")
+                            .addClass("fa fa-ban")
+                        )
+                        .click(() => {
+                            $article.find(".tui-editor-defaultUI").remove()
+                            $article.find(".tui-editor-contents").show();
+                            $article.find(".cancelBt").remove();
+                            $article.find(".saveBt").remove();
+                        })
+                    )
+                    .prepend($("<a>")
+                        .addClass("button-icon jarviswidget-edit-btn saveBt")
+                        .attr("rel", "tooltip")
+                        .attr("title", "")
+                        .attr("data-placement", "bottom")
+                        .attr("data-original-title", "입력")
+                        .append($("<i>")
+                            .addClass("fa fa-save")
+                        )
+                        .click(() => {
+                            $.ajax({
+                                url: "/board/content/form"
+                                , method : "put"
+                                , data : {
+                                    idx : $article.attr("data-idx")
+                                    , title : $article.find("h2").text()
+                                    , content: editor.getValue()
+                                    , tags : ''//$("input[name='tags']").val()
+                                }
+                                , success : (data) => {
+                                    viewer.setvalue(editor.getValue());
+                                    $article.find(".tui-editor-defaultUI").remove();
+                                    $article.find(".tui-editor-contents").show();
+                                    $article.find(".cancelBt").remove();
+                                    $article.find(".saveBt").remove();
+                                }
+                                , error : (err) => {
+                                    alert("error");
+                                }
+                            });
+                        })
+                    )                    
                 }
             });  
         } else {
