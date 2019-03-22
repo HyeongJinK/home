@@ -2,8 +2,7 @@ $(document).ready(function () {
     pageSetUp();
 
     $("#menu-board").addClass("active open");
-    $("#menu-board-content").addClass("active");
-    
+    $("#menu-board-wiki").addClass("active");
 
     function contentColumn(cellvalue, options, rowObject) {
         return `<a href='javascript:void(0)' data-idx='${rowObject.idx}' class='contentColumn'>보기</a>`;  
@@ -37,6 +36,7 @@ $(document).ready(function () {
             name: 'tag',
             index: 'tag',
             editable: true,
+            hidden: true,
         }, {
             name: 'createDate',
             index: 'createDate',
@@ -146,6 +146,7 @@ $(document).ready(function () {
 
     function readDraw(data) {
         if ($("#readArticle_"+data.idx).length == 0) {
+
             let $article = $("#readTemplate article").clone()
             $article.attr("id", "readArticle_"+data.idx).attr("data-idx", data.idx);
             $article.find("h2").text(data.title);

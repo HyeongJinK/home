@@ -77,6 +77,9 @@ exports.BoardContentController = {
     listView: (req, res) => {
         res.render('board/content/list', {menu: ['게시판', '목록'] });
     },
+    wikiView: (req, res) => {
+        res.render('board/content/wiki', {menu: ['게시판', '목록'] });
+    },
     readView: (req, res) => {
         let idx = undefinedValueByDefaultValueEnter(req.params.idx, 0);
         

@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-0" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>게시판</h2>
+
+                    <div class="widget-toolbar"></div>
+                </header>
+                <div>
+                    <div class="widget-body">  
+                        <table id="jqgrid"></table>
+                        <div id="pjqgrid"></div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+    <div class="row" id="readRow"></div>
+</section>
+
+<div id="readTemplate" style="display:none;">
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+        <header>
+            <div class="jarviswidget-ctrls" role="menu">
+                <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn editBt" rel="tooltip" title="" data-placement="bottom" data-original-title="수정">
+                    <i class="fa fa-pencil "></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="접기">
+                    <i class="fa fa-minus "></i>
+                </a>  
+                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn delBt" rel="tooltip" title="" data-placement="bottom" data-original-title="닫기">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2 style="width:60%;">제목</h2>
+            <div class="widget-toolbar">
+            </div>
+        </header>
+        <div class="content">
+            <div class="widget-body">
+                <div class="widget-body-toolbar text-center">
+                </div>
+                <div class="contentView"></div>
+            </div>
+        </div>
+    </div>
+</article>
+</div>
+
+<script src="/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/codemirror/lib/codemirror.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Viewer.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+<script src="/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js"></script>
+<script src="/js/views/board/content/wiki.js"></script>

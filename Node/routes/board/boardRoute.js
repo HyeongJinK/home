@@ -12,6 +12,7 @@ router.route("/form")
 
 
 router.get("/content", board.BoardContentController.listView);
+router.get("/wiki", board.BoardContentController.wikiView);
 router.get("/content/read/:idx", board.BoardContentController.readView);
 router.route("/content/form")
 .get(board.BoardContentController.formView)

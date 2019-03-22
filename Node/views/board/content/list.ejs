@@ -1,8 +1,3 @@
-<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
-<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
-<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
-<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
-
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -11,7 +6,9 @@
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
                     <h2>게시판</h2>
 
-                    <div class="widget-toolbar"></div>
+                    <div class="widget-toolbar">
+                        <!-- <a href="/board/content/form" id="writeBtn" class="btn btn-primary">글쓰기</a> -->
+                    </div>
                 </header>
                 <div>
                     <div class="widget-body">  
@@ -24,49 +21,124 @@
     </div>
     <div class="row" id="readRow"></div>
 </section>
-
-<div id="readTemplate" style="display:none;">
-<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
-        <header>
-            <div class="jarviswidget-ctrls" role="menu">
-                <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn editBt" rel="tooltip" title="" data-placement="bottom" data-original-title="수정">
-                    <i class="fa fa-pencil "></i>
-                </a>
-                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="접기">
-                    <i class="fa fa-minus "></i>
-                </a>  
-                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn delBt" rel="tooltip" title="" data-placement="bottom" data-original-title="닫기">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-            <h2 style="width:60%;">테스트</h2>
-            <div class="widget-toolbar">
-            </div>
-        </header>
-        <div class="content">
-            <div class="widget-body">
-                <div class="widget-body-toolbar text-center">
-                </div>
-                <div class="contentView"></div>
-            </div>
-        </div>
-    </div>
-</article>
 </div>
 
 <script src="/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
 <script src="/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+<script>
+    
+$(document).ready(function () {
+    pageSetUp();
 
-<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
-<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
-<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
-<script src="/javascripts/codemirror/lib/codemirror.js"></script>
-<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
-<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
-<script src="/javascripts/edit/dist/tui-editor-Viewer.js"></script>
-<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
-<script src="/javascripts/showdown/showdown.min.js"></script>
-<script src="/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js"></script>
-<script src="/js/views/board/content/list.js"></script>
+    $("#menu-board").addClass("active open");
+    $("#menu-board-content").addClass("active");
+
+    function contentColumn(cellvalue, options, rowObject) {
+        return `<a href='/board/content/read/${rowObject.idx}' data-idx='${rowObject.idx}' class='contentColumn'>보기</a>`;  
+    }
+
+    $("#jqgrid").jqGrid({
+        url: "/board/content/list",
+        datatype: "json",
+        height: 'auto',
+        colNames: ['내용보기', 'idx', '제목', '내용', '생성일', '수정일'],
+        colModel: [{
+            name:'act',
+            index:'act',
+            width: 45,
+            formatter: contentColumn,
+        }, {
+            name: 'idx',
+            index: 'idx',
+            hidden: true,
+            key: true,
+        }, {
+            name: 'title',
+            index: 'title',
+            editable: true,
+        }, {
+            name: 'content',
+            index: 'content',
+            hidden: true,
+            editable: true,
+        }, {
+            name: 'createDate',
+            index: 'createDate',
+            editable: true,
+            width: 70,
+        }, {
+            name: 'modifyDate',
+            index: 'modifyDate',
+            editable: true,
+            width: 70,
+        }],
+        rowNum: 10,
+        rowList: [10, 20, 30],
+        pager: '#pjqgrid',
+        sortname: 'idx',
+        toolbarfilter: true,
+        viewrecords: true,
+        sortorder: "desc",
+        caption: "게시판",
+        autowidth: true,
+        // gridComplete: function() {
+        //     let ids = $("#jqgrid").jqGrid('getDataIDs');
+
+        //     for (let i = 0; i < ids.length; i++) {
+        //         let cl = ids[i];
+        //         re = "<a href='/board/content/read/"+ids[i]+"'>내용보기</a>"
+        //         $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
+        //     }
+        // },
+    });
+    $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
+        , { edit: true, add: true, del: true }
+            , {beforeInitData: () => {
+                location.href="/board/content/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
+                return false;
+            }
+        }
+        , {beforeInitData: (e) => {
+                location.href="/board/content/form";
+                return false;
+            }
+        }
+    );
+
+    $('.navtable .ui-pg-button').tooltip({
+        container: 'body'
+    });
+
+    // remove classes
+    $(".ui-jqgrid").removeClass("ui-widget ui-widget-content");
+    $(".ui-jqgrid-view").children().removeClass("ui-widget-header ui-state-default");
+    $(".ui-jqgrid-labels, .ui-search-toolbar").children().removeClass("ui-state-default ui-th-column ui-th-ltr");
+    $(".ui-jqgrid-pager").removeClass("ui-state-default");
+    $(".ui-jqgrid").removeClass("ui-widget-content");
+
+    // add classes
+    $(".ui-jqgrid-htable").addClass("table table-bordered table-hover");
+    $(".ui-jqgrid-btable").addClass("table table-bordered table-striped");
+
+    $(".ui-pg-div").removeClass().addClass("btn btn-sm btn-primary");
+    $(".ui-icon.ui-icon-plus").removeClass().addClass("fa fa-plus");
+    $(".ui-icon.ui-icon-pencil").removeClass().addClass("fa fa-pencil");
+    $(".ui-icon.ui-icon-trash").removeClass().addClass("fa fa-trash-o");
+    $(".ui-icon.ui-icon-search").removeClass().addClass("fa fa-search");
+    $(".ui-icon.ui-icon-refresh").removeClass().addClass("fa fa-refresh");
+    $(".ui-icon.ui-icon-disk").removeClass().addClass("fa fa-save").parent(".btn-primary").removeClass("btn-primary").addClass("btn-success");
+    $(".ui-icon.ui-icon-cancel").removeClass().addClass("fa fa-times").parent(".btn-primary").removeClass("btn-primary").addClass("btn-danger");
+
+    $(".ui-icon.ui-icon-seek-prev").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-prev").removeClass().addClass("fa fa-backward");
+
+    $(".ui-icon.ui-icon-seek-first").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-first").removeClass().addClass("fa fa-fast-backward");
+
+    $(".ui-icon.ui-icon-seek-next").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-next").removeClass().addClass("fa fa-forward");
+
+    $(".ui-icon.ui-icon-seek-end").wrap("<div class='btn btn-sm btn-default'></div>");
+    $(".ui-icon.ui-icon-seek-end").removeClass().addClass("fa fa-fast-forward");
+});
+</script>
