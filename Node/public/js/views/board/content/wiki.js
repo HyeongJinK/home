@@ -69,7 +69,7 @@ $(document).ready(function () {
         },
     });
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
-        , { edit: true, add: true, del: true }
+        , { edit: false, add: false, del: true }
             , {beforeInitData: () => {
                 location.href="/board/content/form?idx="+$("#jqgrid").jqGrid('getRowData', $("#jqgrid").jqGrid('getGridParam', 'selrow')).idx;
                 return false;
@@ -149,6 +149,117 @@ $(document).ready(function () {
         $article.find("h2 input").remove()
     }
 
+    $("#writeBtn").click(() => {
+        let data = {idx: 0, title: "", tag: "", content: ""}
+        let $article = $("#readTemplate article").clone()
+        $article.find("h2").text("");
+        $article.find("div.widget-body div.contentView").attr("id", `content_0`);
+
+        $("section#widget-grid div#readRow").prepend($article)
+        editDraw($article, data)
+    })
+
+    function editDraw($article, data) {
+        if ($article.find(".tui-editor-defaultUI").length == 0) {
+            $article.find("div.widget-body div.widget-body-toolbar div.badge").remove()
+            tagInputDraw($article, data.tag)
+            
+            $article.find("h2").html("")
+            $article.find("h2")
+            .append($("<input name='title'>")
+                .addClass("form-control")
+                .val(data.title)
+            )
+
+            let editor = new tui.Editor({
+                el: document.querySelector(`#content_${data.idx}`),
+                initialEditType: 'markdown',
+                previewStyle: 'vertical',
+                initialValue: data.content
+            });
+            
+            $article.find("div.contentView .tui-editor-contents").hide();
+            $article.find("div.contentView .te-preview .tui-editor-contents").show();
+            
+            $article.find("div.jarviswidget-ctrls")
+            .prepend($("<a>")
+                .addClass("button-icon jarviswidget-edit-btn cancelBt")
+                .attr("rel", "tooltip")
+                .attr("title", "")
+                .attr("data-placement", "bottom")
+                .attr("data-original-title", "닫기")
+                .append($("<i>")
+                    .addClass("fa fa-ban")
+                )
+                .click(() => {
+                    removeEditShowView($article)
+                    tagDraw($article, data.tag)
+                })
+            )
+            .prepend($("<a>")
+                .addClass("button-icon jarviswidget-edit-btn saveBt")
+                .attr("rel", "tooltip")
+                .attr("title", "")
+                .attr("data-placement", "bottom")
+                .attr("data-original-title", "입력")
+                .append($("<i>")
+                    .addClass("fa fa-save")
+                )
+                .click(() => {
+                    let method = "post";
+
+                    if (data.idx != 0) {
+                        method = "put"
+                    }
+
+                    $.ajax({
+                        url: "/board/content/form"
+                        , method : method
+                        , data : {
+                            idx : $article.attr("data-idx")
+                            , boardIdx : $("#boardIdx").val()
+                            , title : $article.find("h2 input").val()
+                            , content: editor.getValue()
+                            , tags : $article.find("input[name='tags']").val()
+                        }
+                        , success : (result) => {
+                            if (method == "post") {
+                                $article.attr("id", "readArticle_"+result.idx).attr("data-idx", result.idx);
+                                $article.find("div.widget-body div.contentView").attr("id", `content_${result.idx}`);
+
+                                let viewer = new tui.Viewr({
+                                    el: document.querySelector(`#content_${result.idx}`)
+                                    , initialValue : data.content
+                                });
+                    
+                                data.viewer = viewer;
+                                data.idx = result.idx;
+                                data.title = $article.find("h2 input").val();
+                                data.tag = $("input[name='tags']").val();
+                                data.content = editor.getValue();
+
+                                tagDraw($article, data.tag)
+                                data.viewer.setValue(editor.getValue());
+                                removeEditShowView($article)
+                            } else {
+                                data.title = $article.find("h2 input").val();
+                                data.tag = $("input[name='tags']").val();
+                                data.content = editor.getValue();
+                                
+                                tagDraw($article, data.tag)
+                                data.viewer.setValue(editor.getValue());
+                                removeEditShowView($article)
+                            }
+                        }
+                        , error : (err) => {
+                            alert("error");
+                        }
+                    });
+                })
+            )                    
+        }
+    }
+
     function readDraw(data) {
         if ($("#readArticle_"+data.idx).length == 0) {
 
@@ -165,6 +276,8 @@ $(document).ready(function () {
                 , initialValue : data.content
             });
 
+            data.viewer = viewer;
+
             tagDraw($article, data.tag);
             
             $article.find(".hideBt").click(() => {
@@ -177,76 +290,7 @@ $(document).ready(function () {
             });
             
             $article.find(".editBt").click(() => {
-                if ($article.find(".tui-editor-defaultUI").length == 0) {
-                    $article.find("div.widget-body div.widget-body-toolbar div.badge").remove()
-                    tagInputDraw($article, data.tag)
-                    
-                    $article.find("h2").html("")
-                    $article.find("h2")
-                    .append($("<input name='title'>")
-                        .addClass("form-control")
-                        .val(data.title)
-                    )
-
-                    let editor = new tui.Editor({
-                        el: document.querySelector(`#content_${data.idx}`),
-                        initialEditType: 'markdown',
-                        previewStyle: 'vertical',
-                        height: '400px',
-                        initialValue: data.content
-                    });
-                    
-                    $article.find(".tui-editor-contents").hide();
-                    $article.find("div.jarviswidget-ctrls")
-                    .prepend($("<a>")
-                        .addClass("button-icon jarviswidget-edit-btn cancelBt")
-                        .attr("rel", "tooltip")
-                        .attr("title", "")
-                        .attr("data-placement", "bottom")
-                        .attr("data-original-title", "닫기")
-                        .append($("<i>")
-                            .addClass("fa fa-ban")
-                        )
-                        .click(() => {
-                            removeEditShowView($article)
-                            tagDraw($article, data.tag)
-                        })
-                    )
-                    .prepend($("<a>")
-                        .addClass("button-icon jarviswidget-edit-btn saveBt")
-                        .attr("rel", "tooltip")
-                        .attr("title", "")
-                        .attr("data-placement", "bottom")
-                        .attr("data-original-title", "입력")
-                        .append($("<i>")
-                            .addClass("fa fa-save")
-                        )
-                        .click(() => {
-                            $.ajax({
-                                url: "/board/content/form"
-                                , method : "put"
-                                , data : {
-                                    idx : $article.attr("data-idx")
-                                    , title : $article.find("h2 input").val()
-                                    , content: editor.getValue()
-                                    , tags : $article.find("input[name='tags']").val()
-                                }
-                                , success : (result) => {
-                                    data.title = $article.find("h2 input").val();
-                                    data.tag = $("input[name='tags']").val();
-                                    data.content = editor.getValue();
-                                    
-                                    tagDraw($article, data.tag)
-                                    viewer.setValue(editor.getValue());
-                                    removeEditShowView($article)
-                                }
-                                , error : (err) => {
-                                    alert("error");
-                                }
-                            });
-                        })
-                    )                    
-                }
+                editDraw($article, data);
             });  
         } else {
             return;
