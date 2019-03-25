@@ -78,7 +78,7 @@ exports.BoardContentController = {
         res.render('board/content/list', {menu: ['게시판', '목록'] });
     },
     wikiView: (req, res) => {
-        res.render('board/content/wiki', {menu: ['게시판', '목록'] });
+        res.render('board/content/wiki', {menu: ['게시판', '목록'], boardIdx: req.query.boardIdx });
     },
     readView: (req, res) => {
         let idx = undefinedValueByDefaultValueEnter(req.params.idx, 0);
@@ -116,7 +116,7 @@ exports.BoardContentController = {
     save: (req, res) => {
         connect.dbOpen({
             path: connect.config.db.board
-            , saveParam: [1, req.body.title, req.body.content, 0]
+            , saveParam: [req.body.boardIdx, req.body.title, req.body.content, 0]
             , savesParam: req.body.tags.split(',')
             })
             .then(boardDB.BoardContentService.save)
@@ -129,7 +129,7 @@ exports.BoardContentController = {
     update: (req, res) => {
         connect.dbOpen({
             path: connect.config.db.board
-            , updateParam: [req.body.title, req.body.content, req.body.idx]
+            , updateParam: [req.body.boardIdx, req.body.title, req.body.content, req.body.idx]
             , deleteParam: [req.body.idx]
             , savesParam: req.body.tags.split(',')
             , savelastID: req.body.idx

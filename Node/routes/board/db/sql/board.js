@@ -4,7 +4,7 @@ exports.sql = {
         *
     FROM
         board
-    ORDER BY boardIdx DESC`
+    ORDER BY boardIdx asc`
     , findByIdx: `
     SELECT
         *

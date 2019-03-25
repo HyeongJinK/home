@@ -17,9 +17,18 @@
                     </div>
 
                     <div class="widget-body">
-                        <form id="checkout-form" novalidate="novalidate">
+                        <form id="checkout-form" novalidate="novalidate" class="">
                             <fieldset>
-                                <div class="form-group">
+                                <section>
+                                    <label>카테고리</label>
+                                    <div class="input-group">
+                                        <select name="boardIdx" class="input-sm" id="boardIdx">
+                                            <option value="0" selected="" disabled="">선택하기</option>
+                                        </select> <i></i>
+                                    </div>
+                                </section>
+
+                                <section>
                                     <label>제목</label>
                                     <div class="input-group">
                                         <input type="hidden" name="idx" id="idx" value="<%=idx%>">
@@ -38,19 +47,18 @@
                                     <p class="note">
                                         
                                     </p>
-                                </div>
-                            </fieldset>
-
-
-                            <fieldset>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <label>Tag</label>
-                                            <input class="form-control tagsinput" name="tags" data-role="tagsinput" <% if (row) { %> value="<%=row.tag%>" <% } %> >
+                                </section>
+                                
+                                <section>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label>Tag</label>
+                                                <input class="form-control tagsinput" name="tags" data-role="tagsinput" <% if (row) { %> value="<%=row.tag%>" <% } %> >
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </section>
                             </fieldset>
 
                             <fieldset>
@@ -97,9 +105,10 @@ $(document).ready(function() {
         previewStyle: 'vertical',
         height: '400px'
     });
-
+    let boardIdx = 0;
     <% if (row) {%>
         editor.setValue(`<%=row.content%>`);
+        boardIdx = `<%=row.boardIdx%>`
     <%}%>;
 
     $("#menu-board").addClass("active open");
@@ -116,6 +125,7 @@ $(document).ready(function() {
             , method : method
             , data : {
                 idx : $("#idx").val()
+                , board: $("#boardIdx").val()
                 , title : $("#title").val()
                 , content: editor.getValue().replace(/~~~/g, "```")
                 , tags : $("input[name='tags']").val()
@@ -127,6 +137,27 @@ $(document).ready(function() {
                 alert("error");
             }
         });
-    })
+    });
+
+    
+    $.ajax({
+       url: 'http://localhost/board/list'
+       , method: 'get'
+       , data: {}
+       , success: (data => {
+            data.rows.forEach(element => {
+                let $option = $("<option>")
+                    .val(element.boardIdx)
+                    .text(element.title)
+            
+                if (boardIdx == element.boardIdx) {
+                    $option.prop("selected", true);
+                }
+
+                $("#boardIdx").append($option)
+            });
+       })
+       , error: (err) => {}
+    });
 })
 </script>

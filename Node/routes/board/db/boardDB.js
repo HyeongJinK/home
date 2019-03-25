@@ -76,12 +76,25 @@ exports.TagService = {
     findByIdx: (data) => {
         return template.returnOneDataFunc(data, sql_tag.findByIdx, "findByIdx");
     },
-    saves: (data) => {
-        let lastId = data.savelastID;
-        let tags = data["savesParam"];
-        let placeholders = tags.map((tag) => '('+lastId+', ?)').join(',');
+    save: (data) => {
+        return template.notReturnDataFunc(data, sql_tag.save, "save");
+    },
+    saveTags: (data) => {
+        let lastId = data.lastID;
+        let tags = data.saveTagsParam.split(",");
+        
 
-        return template.notReturnDataFunc(data, sql_tag.save + placeholders, "saves");
+        return new Promise((resolve, reject) => {
+            data.db.run(sql
+                , data[resultStr+"Param"]
+                , (err) => {
+                    if (err) 
+                        data[err] = err
+                    if (this.lastID)
+                        data["lastID"] = this.lastID;
+                    resolve(data);
+            });
+        });
     },
     delete: (data) => {
         return template.notReturnDataFunc(data, sql_tag.delete, "delete");

@@ -9,20 +9,25 @@ $(document).ready(function () {
     }
 
     $("#jqgrid").jqGrid({
-        url: "/board/content/list",
+        url: "/board/content/list?boardIdx="+$("#boardIdx").val(),
         datatype: "json",
         height: 'auto',
-        colNames: ['내용보기', 'idx', '제목', '내용', '태그', '생성일', '수정일'],
+        colNames: ['보기', 'idx', '카테고리', '제목', '내용', '태그', '생성일', '수정일'],
         colModel: [{
             name:'act',
             index:'act',
-            width: 45,
+            width: 30,
             formatter: contentColumn
         }, {
             name: 'idx',
             index: 'idx',
             hidden: true,
             key: true,
+        }, {
+            name: 'boardTitle',
+            index: 'boardTitle',
+            width: 30,
+            editable: true,
         }, {
             name: 'title',
             index: 'title',

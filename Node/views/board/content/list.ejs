@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor.min.css">
+<link rel="stylesheet" href="/javascripts/edit/dist/tui-editor-contents.min.css">
+<link rel="stylesheet" href="/javascripts/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="/javascripts/highlightjs/styles/school-book.css">
+
 <section id="widget-grid" class="">
     <div class="row">
         <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -21,10 +26,46 @@
     </div>
     <div class="row" id="readRow"></div>
 </section>
+
+<div id="readTemplate" style="display:none;">
+<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false" data-widget-deletebutton="false">
+        <header>
+            <div class="jarviswidget-ctrls" role="menu">
+                <a href="javascript:void(0);" class="button-icon jarviswidget-edit-btn editBt" rel="tooltip" title="" data-placement="bottom" data-original-title="수정">
+                    <i class="fa fa-cog "></i>
+                </a>
+                <a href="javascript:void(0);" class="button-icon jarviswidget-toggle-btn hideBt" rel="tooltip" title="" data-placement="bottom" data-original-title="접기">
+                    <i class="fa fa-minus "></i>
+                </a>  
+                <a href="javascript:void(0);" class="button-icon jarviswidget-delete-btn delBt" rel="tooltip" title="" data-placement="bottom" data-original-title="닫기">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+            <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+            <h2>테스트</h2>
+            <div class="widget-toolbar"></div>
+        </header>
+        <div class="content">
+            <div class="widget-body"></div>
+        </div>
+    </div>
+</article>
 </div>
 
 <script src="/js/plugin/jqgrid/jquery.jqGrid.min.js"></script>
 <script src="/js/plugin/jqgrid/grid.locale-en.min.js"></script>
+
+<script src="/javascripts/markdown-it/dist/markdown-it.min.js"></script>
+<script src="/javascripts/to-mark/dist/to-mark.min.js"></script>
+<script src="/javascripts/tui-code-snippet/dist/tui-code-snippet.min.js"></script>
+<script src="/javascripts/codemirror/lib/codemirror.js"></script>
+<script src="/javascripts/highlightjs/highlight.pack.min.js"></script>
+<script src="/javascripts/squire-rte/build/squire-raw.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Viewer.js"></script>
+<script src="/javascripts/edit/dist/tui-editor-Editor.min.js"></script>
+<script src="/javascripts/showdown/showdown.min.js"></script>
+<script src="/js/plugin/bootstrap-tags/bootstrap-tagsinput.min.js"></script>
 <script>
     
 $(document).ready(function () {
@@ -32,10 +73,6 @@ $(document).ready(function () {
 
     $("#menu-board").addClass("active open");
     $("#menu-board-content").addClass("active");
-
-    function contentColumn(cellvalue, options, rowObject) {
-        return `<a href='/board/content/read/${rowObject.idx}' data-idx='${rowObject.idx}' class='contentColumn'>보기</a>`;  
-    }
 
     $("#jqgrid").jqGrid({
         url: "/board/content/list",
@@ -46,7 +83,6 @@ $(document).ready(function () {
             name:'act',
             index:'act',
             width: 45,
-            formatter: contentColumn,
         }, {
             name: 'idx',
             index: 'idx',
@@ -81,16 +117,17 @@ $(document).ready(function () {
         sortorder: "desc",
         caption: "게시판",
         autowidth: true,
-        // gridComplete: function() {
-        //     let ids = $("#jqgrid").jqGrid('getDataIDs');
+        gridComplete: function() {
+            let ids = $("#jqgrid").jqGrid('getDataIDs');
 
-        //     for (let i = 0; i < ids.length; i++) {
-        //         let cl = ids[i];
-        //         re = "<a href='/board/content/read/"+ids[i]+"'>내용보기</a>"
-        //         $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
-        //     }
-        // },
+            for (let i = 0; i < ids.length; i++) {
+                let cl = ids[i];
+                re = "<a href='/board/content/read/"+ids[i]+"'>내용보기</a>"
+                $("#jqgrid").jqGrid('setRowData', ids[i], {act:re});
+            }
+        },
     });
+
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
         , { edit: true, add: true, del: true }
             , {beforeInitData: () => {

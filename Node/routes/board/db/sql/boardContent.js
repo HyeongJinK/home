@@ -3,9 +3,19 @@ exports.sql = {
     , findbyBoardIdx: `
         SELECT
             bc.*
+            , b.title as boardTitle
             , t.tag 
         FROM
             boardContent as bc
+            LEFT JOIN
+			(
+                SELECT
+                    boardIdx
+                    , title
+                FROM
+                    board
+            ) as b
+		ON b.boardIdx = bc.boardIdx
         LEFT JOIN
             (
                 SELECT
@@ -17,7 +27,7 @@ exports.sql = {
             ) as t
         ON bc.idx = t.boardContentIdx
         WHERE
-            boardIdx = ? 
+            bc.boardIdx = ? 
         ORDER BY idx DESC 
         LIMIT ?, ?`
     , findbyText: `select * from boardContent where title like %?% or content like %?% order by idx desc limit ?, ?`
@@ -42,6 +52,6 @@ exports.sql = {
             bc.idx = ?
         `
     , save: `INSERT INTO boardContent (boardIdx, title, content, createDate, hidden) VALUES (?,?,?,datetime('now','localtime'),?)`
-    , update: `UPDATE boardContent SET title = ?, content = ?, modifyDate = datetime('now','localtime') where idx = ?`
+    , update: `UPDATE boardContent SET boardIdx = ?, title = ?, content = ?, modifyDate = datetime('now','localtime') where idx = ?`
     , delete: `DELETE FROM boardContent WHERE idx = ?`
 }
