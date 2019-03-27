@@ -151,15 +151,16 @@ $(document).ready(function () {
     }
 
     function removeEditShowView($article) {
-        $article.find(".tui-editor-defaultUI").remove()
+        $article.find(".tui-editor-defaultUI").remove();
         $article.find(".tui-editor-contents").show();
+        $article.find("div.widget-body div.contentView").css("height", "100%");
         $article.find(".cancelBt").remove();
         $article.find(".saveBt").remove();
         $article.find("div.widget-toolbar div").remove();
-        $article.find("div.widget-body div.widget-body-toolbar div.bootstrap-tagsinput").remove()
-        $article.find("div.widget-body div.widget-body-toolbar input.tagsinput").remove()
+        $article.find("div.widget-body div.widget-body-toolbar div.bootstrap-tagsinput").remove();
+        $article.find("div.widget-body div.widget-body-toolbar input.tagsinput").remove();
         $article.find("h2").text($article.find("h2 input").val());
-        $article.find("h2 input").remove()
+        $article.find("h2 input").remove();
     }
 
     $("#writeBtn").click(() => {
@@ -237,6 +238,7 @@ $(document).ready(function () {
                 el: document.querySelector(`#content_${data.idx}`),
                 initialEditType: 'markdown',
                 previewStyle: 'vertical',
+                height: '600px',
                 initialValue: data.content
             });
             
