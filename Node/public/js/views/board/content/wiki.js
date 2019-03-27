@@ -318,6 +318,7 @@ $(document).ready(function () {
                                 data.viewer.setValue(editor.getValue());
                                 removeEditShowView($article)
                             }
+                            $("#jqgrid").trigger("reloadGrid");
                         }
                         , error : (err) => {
                             alert("error");
