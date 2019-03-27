@@ -4,6 +4,17 @@ $(document).ready(function () {
     $("#menu-board").addClass("active open");
     $("#menu-board-wiki").addClass("active");
 
+    let boardCategories;
+
+    $.ajax({
+        url: "/board/list/"
+        , method : "get"
+        , data : {}
+        , success : (result) => {
+            boardCategories = result.rows;
+        } 
+    });
+
     function contentColumn(cellvalue, options, rowObject) {
         return `<a href='javascript:void(0)' data-idx='${rowObject.idx}' class='contentColumn'>보기</a>`;  
     }
@@ -68,6 +79,7 @@ $(document).ready(function () {
             });
         },
     });
+
     $("#jqgrid").jqGrid('navGrid', "#pjqgrid"
         , { edit: false, add: false, del: true }
             , {beforeInitData: () => {
@@ -143,6 +155,7 @@ $(document).ready(function () {
         $article.find(".tui-editor-contents").show();
         $article.find(".cancelBt").remove();
         $article.find(".saveBt").remove();
+        $article.find("div.widget-toolbar div").remove();
         $article.find("div.widget-body div.widget-body-toolbar div.bootstrap-tagsinput").remove()
         $article.find("div.widget-body div.widget-body-toolbar input.tagsinput").remove()
         $article.find("h2").text($article.find("h2 input").val());
@@ -156,6 +169,20 @@ $(document).ready(function () {
         $article.find("div.widget-body div.contentView").attr("id", `content_0`);
 
         $("section#widget-grid div#readRow").prepend($article)
+
+        $article.find(".hideBt").click(() => {
+            $article.find(".hideBt i").toggleClass("fa-minus").toggleClass("fa-plus")
+            $article.find("div.content").slideToggle(200)
+        })
+
+        $article.find(".delBt").click(() => {
+            $article.remove();
+        });
+        
+        $article.find(".editBt").click(() => {
+            editDraw($article, data);
+        });
+        
         editDraw($article, data)
     })
 
@@ -170,6 +197,41 @@ $(document).ready(function () {
                 .addClass("form-control")
                 .val(data.title)
             )
+
+
+            let $categoryButton = $("<button>");
+            let $categoryUl = $("<ul>").addClass("dropdown-menu pull-right");
+
+            $categoryButton.addClass("btn dropdown-toggle btn-xs btn-warning")
+                .attr("data-toggle", "dropdown")
+                .append($("<i>")
+                    .addClass("fa fa-caret-down")
+            )
+
+            boardCategories.forEach((element) => {
+                if ($("#boardIdx").val() == element.boardIdx) {
+                    $categoryButton.text(element.title);
+                }
+
+                $categoryUl
+                .append($("<li>")
+                    .append($("<a href='javascript:void(0);'>")
+                        .text(element.title)
+                        .attr("data-boardIdx", element.boardIdx)
+                        .click((target) => {
+                            $article.find("div.widget-toolbar div button").text($(target.currentTarget).text())
+                            $("#boardIdx").val($(target.currentTarget).attr("data-boardIdx"));
+                        })
+                    )
+                )
+            });
+
+            $article.find("div.widget-toolbar")
+            .append($("<div>")
+                .addClass("btn-group")
+                .append($categoryButton)
+                .append($categoryUl)
+            );
 
             let editor = new tui.Editor({
                 el: document.querySelector(`#content_${data.idx}`),
@@ -192,8 +254,12 @@ $(document).ready(function () {
                     .addClass("fa fa-ban")
                 )
                 .click(() => {
-                    removeEditShowView($article)
-                    tagDraw($article, data.tag)
+                    if (data.idx == 0) {
+                        $article.remove();
+                    } else {
+                        removeEditShowView($article)
+                        tagDraw($article, data.tag)
+                    }
                 })
             )
             .prepend($("<a>")
