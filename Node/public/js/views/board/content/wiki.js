@@ -159,14 +159,14 @@ $(document).ready(function () {
         $article.find("div.widget-toolbar div").remove();
         $article.find("div.widget-body div.widget-body-toolbar div.bootstrap-tagsinput").remove();
         $article.find("div.widget-body div.widget-body-toolbar input.tagsinput").remove();
-        $article.find("h2").text($article.find("h2 input").val());
-        $article.find("h2 input").remove();
+        $article.find("h2.readTitle").text($article.find("h2.readTitle input").val());
+        $article.find("h2.readTitle input").remove();
     }
 
     $("#writeBtn").click(() => {
         let data = {idx: 0, title: "", tag: "", content: ""}
         let $article = $("#readTemplate article").clone()
-        $article.find("h2").text("");
+        $article.find("h2.readTitle").text("");
         $article.find("div.widget-body div.contentView").attr("id", `content_0`);
 
         $("section#widget-grid div#readRow").prepend($article)
@@ -192,8 +192,8 @@ $(document).ready(function () {
             $article.find("div.widget-body div.widget-body-toolbar div.badge").remove()
             tagInputDraw($article, data.tag)
             
-            $article.find("h2").html("")
-            $article.find("h2")
+            $article.find("h2.readTitle").html("")
+            $article.find("h2.readTitle")
             .append($("<input name='title'>")
                 .addClass("form-control")
                 .val(data.title)
@@ -286,7 +286,7 @@ $(document).ready(function () {
                         , data : {
                             idx : $article.attr("data-idx")
                             , boardIdx : $("#boardIdx").val()
-                            , title : $article.find("h2 input").val()
+                            , title : $article.find("h2.readTitle input").val()
                             , content: editor.getValue()
                             , tags : $article.find("input[name='tags']").val()
                         }
@@ -302,7 +302,7 @@ $(document).ready(function () {
                     
                                 data.viewer = viewer;
                                 data.idx = result.idx;
-                                data.title = $article.find("h2 input").val();
+                                data.title = $article.find("h2.readTitle input").val();
                                 data.tag = $("input[name='tags']").val();
                                 data.content = editor.getValue();
 
@@ -310,7 +310,7 @@ $(document).ready(function () {
                                 data.viewer.setValue(editor.getValue());
                                 removeEditShowView($article)
                             } else {
-                                data.title = $article.find("h2 input").val();
+                                data.title = $article.find("h2.readTitle input").val();
                                 data.tag = $("input[name='tags']").val();
                                 data.content = editor.getValue();
                                 
@@ -334,7 +334,7 @@ $(document).ready(function () {
 
             let $article = $("#readTemplate article").clone()
             $article.attr("id", "readArticle_"+data.idx).attr("data-idx", data.idx);
-            $article.find("h2").text(data.title);
+            $article.find("h2.readTitle").text(data.title);
             $article.find("div.widget-body div.contentView").attr("id", `content_${data.idx}`);
 
            
