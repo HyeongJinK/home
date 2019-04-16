@@ -299,6 +299,7 @@ $(document).ready(function () {
                                 let viewer = new tui.Viewr({
                                     el: document.querySelector(`#content_${result.idx}`)
                                     , initialValue : data.content
+                                    , exts: ['table']
                                 });
                     
                                 data.viewer = viewer;
@@ -344,6 +345,7 @@ $(document).ready(function () {
             let viewer = new tui.Viewr({
                 el: document.querySelector(`#content_${data.idx}`)
                 , initialValue : data.content
+                , exts: ['table']
             });
 
             data.viewer = viewer;
