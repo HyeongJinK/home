@@ -239,7 +239,8 @@ $(document).ready(function () {
                 initialEditType: 'markdown',
                 previewStyle: 'vertical',
                 height: '600px',
-                initialValue: data.content
+                initialValue: data.content,
+                exts: ['table']
             });
             
             $article.find("div.contentView .tui-editor-contents").hide();
